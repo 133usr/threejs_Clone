@@ -1,8 +1,13 @@
 {
-  "homepage": "http://CrypticWizard.github.io/Three.js Solar System",
+  "name": "fly_to_mother",
+  "version": "1.0.0",
+  "repository": {
+    "url": "git+https://github.com/133usr/ThreeJs_Fly_to_Mother.git"
+  },
   "scripts": {
     "build": "webpack --config ./bundler/webpack.prod.js",
     "dev": "webpack serve --config ./bundler/webpack.dev.js",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
@@ -29,6 +34,6 @@
     "webpack-merge": "^5.7.3"
   },
   "devDependencies": {
-    "gh-pages": "^3.2.0"
+    "gh-pages": "^3.2.3"
   }
 }
