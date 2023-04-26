@@ -39,7 +39,7 @@ function onComplete(result){ // When the code completes, do this
 
   
             for(i=7;i<8;i++){
-                modelGlburl[i]= '/assets/glb/low-size/model'+i+'.glb';
+                modelGlburl[i]= './assets/glb/low-size/model'+i+'.glb';
                 var str = modelGlburl[i];
                     loader2.load(modelGlburl[i],function(glb){
                     modelGlb [i]= glb.scene;
