@@ -76,7 +76,7 @@ function onComplete(result){ // When the code completes, do this
                         ease: 'Power2.easeInOut'
                       });
                      
-                    // scene.add(modelGlb[i]);
+                    scene.add(modelGlb[i]);
                     abc[i] = modelGlb[i].children[0];
                     const mixer = new THREE.AnimationMixer(abc[i]);
                     mixer.clipAction(glb.animations[0]).play();
