@@ -119,19 +119,21 @@ function onComplete(result){ // When the code completes, do this
                                // set the camera to frame the box
                                frameArea(boxSize * 2, boxSize, boxCenter, camera);
                       });
-                    TweenMax.from( modelGlb[i].position, 9, {
+                    gsap.from( modelGlb[i].position, {
+                        duration: 9,
                         y: -8,
                         z: 20,
                         yoyo: true,
                         repeat: 0,
-                        ease: 'Power2.easeInOut'
+                        ease: 'power3.inOut'
                       });  
-                      TweenMax.from( modelGlb[i].position, 6, {
+                      gsap.from( modelGlb[i].position,  {
+                        duration: 6,
                         y: -8,
                         x: -2,
                         yoyo: true,
                         repeat: -1,
-                        ease: 'Power2.easeInOut'
+                        ease: 'power3.inOut'
                       });
                      
                     scene.add(modelGlb[i]);
