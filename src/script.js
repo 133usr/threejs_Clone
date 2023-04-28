@@ -80,81 +80,147 @@ const interactionManager = new InteractionManager(
     camera,
     renderer.domElement
   );
-function onComplete(result){ // When the code completes, do this
-   gs_data2threejs.update_total_member = result
-   mixer_total= result;
-    let modelGlburl = [];
-    
-   var i;
-  var mesh =[];
- 
 
-  
-            for(i=7;i<8;i++){
-                modelGlburl[i]= './assets/glb/low-size/model'+i+'.glb';
-                var str = modelGlburl[i];
-                    loader2.load(modelGlburl[i],function(glb){
-                    modelGlb [i]= glb.scene;
-                    modelGlb[i].position.set(1,1,1); 
-                    let mm= modelGlb[i];
-                    //planeFighter
-                    console.log(str);
-                    if( str.indexOf('1') >= 0) {modelGlb[i].rotateY(90); modelGlb[i].scale.set(0.2,0.2,0.2); console.log("set plane"); }
-                    //bird
-                    if( str.indexOf('3') >= 0) {modelGlb[i].rotateY(45); modelGlb[i].scale.set(0.5,0.5,0.5); console.log("set bird"); }
-                    //ww2 plane
-                    if( str.indexOf('4') >= 0) {modelGlb[i].rotateY(15);  console.log("set plane3"); }
-                     //ww2 plane
-                     if( str.indexOf('5') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.2,0.2,0.2); console.log("set plane3"); }
-                     //butterfly
-                     if( str.indexOf('6') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set plane3"); }
-                     //red plane
-                     if( str.indexOf('7') >= 0) {modelGlb[i].rotateY(45);  modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set plane3"); }
-                   
-                     interactionManager.add(modelGlb[i]);
-                     modelGlb[i].addEventListener('click', (event) => {
-                        var root = modelGlb[i];
-                                // compute the box that contains all the stuff
-                               // from root and below
-                               const box = new THREE.Box3().setFromObject(root);
-                               const boxSize = box.getSize(new THREE.Vector3()).length();
-                               const boxCenter = box.getCenter(new THREE.Vector3());
-           
-                               // set the camera to frame the box
-                               frameArea(boxSize * 2, boxSize, boxCenter, camera);
-                      });
-                    gsap.from( modelGlb[i].position, {
-                        duration: 9,
-                        y: -8,
-                        z: 20,
-                        yoyo: true,
-                        repeat: 0,
-                        ease: 'power3.inOut'
-                      });  
-                      gsap.from( modelGlb[i].position,  {
-                        duration: 6,
-                        y: -8,
-                        x: -2,
-                        yoyo: true,
-                        repeat: -1,
-                        ease: 'power3.inOut'
-                      });
-                     
-                    scene.add(modelGlb[i]);
-                    abc[i] = modelGlb[i].children[0];
-                    const mixer = new THREE.AnimationMixer(abc[i]);
-                    mixer.clipAction(glb.animations[0]).play();
-                    mixers.push(mixer);
-                    console.log(i)
-                });  console.log(i)
+
+            function onComplete(allData){ // When the code completes, do this
+
+                
+                    allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
+                    allData = allData.replace('"[{','[{'); //dont' know why data has extra ["  so remove them
+                    allData = allData.replace('}]"','}]'); 
+                    
+                    var sheet_arrayObject = JSON.parse(allData);
+/**
+ * 
+ *                  NOW HERE YOU CAN ACCESS THE DATA WITH 
+ *                      myobje[i].id
+ * 
+ */
+
+                 console.log(sheet_arrayObject);
+                 // myobje.map(x => console.log(x.Id)); to loop it through                     
+                    
+                let modelGlburl = [];
+                
+                var i;
+                var mesh =[];
+            
+                    var participants = Object.keys(sheet_arrayObject).length;
+                        
+            
+                        // for(i=0;i<participants;i++){
+                            // var wanted_char = sheet_arrayObject[i].character;
+                         
+                            const forLoop = async _ => {
+                                console.log("Start");
+                                
+                               for (let index = 0; index < participants; index++) {
+                                var tempsheetObject = sheet_arrayObject[index]
+                                const numFruit = await myPromise(tempsheetObject);
+                                console.log(numFruit);
+                                }
+                                
+                               console.log("End");
+                               };
+                               forLoop();
+
+
+                           
+                        // }
+
+                    //   var  str = JSON.stringify(modelGlb[2]);
+                    //     str = JSON.stringify(modelGlb[2], null, 4); // (Optional) beautiful indented output.
+                    //     console.log(str);
+                // console.log(result)
+
             }
 
-        //   var  str = JSON.stringify(modelGlb[2]);
-        //     str = JSON.stringify(modelGlb[2], null, 4); // (Optional) beautiful indented output.
-        //     console.log(str);
-    console.log(result)
 
-}
+
+
+
+/**
+ * 
+ *                          A PROMISE FUNCTION DECLARATION HERE
+ */
+
+            const myPromise = tempsheetObject => {
+                // Perform some asynchronous operation
+                // If the operation is successful, call the resolve function with the result
+                // If the operation fails, call the reject function with the error
+                console.log(tempsheetObject.Id);
+                var i = tempsheetObject.Id;
+                var score = tempsheetObject.Total;
+                // console.log(i);
+                let modelGlburl = [];
+                var mesh =[];
+                            modelGlburl[i]= './assets/glb/low-size/model'+tempsheetObject.character+'.glb';
+                            var str = modelGlburl[i];
+                                loader2.load(modelGlburl[i],function(glb){
+                                modelGlb [i]= glb.scene;
+                                modelGlb[i].position.set(500,1,1); 
+                                let mm= modelGlb[i];
+                                //planeFighter
+                                console.log(str);
+                                if( str.indexOf('1') >= 0) {modelGlb[i].rotateY(90); modelGlb[i].scale.set(0.2,0.2,0.2); console.log("set plane"); }
+                                //bird
+                                if( str.indexOf('3') >= 0) {modelGlb[i].rotateY(45); modelGlb[i].scale.set(0.5,0.5,0.5); console.log("set bird"); }
+                                //ww2 plane
+                                if( str.indexOf('4') >= 0) {modelGlb[i].rotateY(15);  console.log("set plane3"); }
+                                //ww2 plane
+                                if( str.indexOf('5') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.2,0.2,0.2); console.log("set plane3"); }
+                                //butterfly
+                                if( str.indexOf('6') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set plane3"); }
+                                //red plane
+                                if( str.indexOf('7') >= 0) {modelGlb[i].rotateY(45);  modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set plane3"); }
+                            
+                                interactionManager.add(modelGlb[i]);
+                                modelGlb[i].addEventListener('click', (event) => {
+                                    var root = modelGlb[i];
+                                            // compute the box that contains all the stuff
+                                        // from root and below
+                                        const box = new THREE.Box3().setFromObject(root);
+                                        const boxSize = box.getSize(new THREE.Vector3()).length();
+                                        const boxCenter = box.getCenter(new THREE.Vector3());
+                    
+                                        // set the camera to frame the box
+                                        frameArea(boxSize * 2, boxSize, boxCenter, camera);
+                                });
+                                gsap.to( modelGlb[i].position, {
+                                    duration: 9,
+                                    y: 18,
+                                    z:10 ,
+                                    repeat: -1,
+                                    yoyo: true,
+                                    ease: 'power3.inOut'
+                                });  
+                                gsap.to( modelGlb[i].position,  {
+                                    duration: 20,
+                                    // y: -8,
+                                    x: score,
+                                    // yoyo: true,
+                                    // repeat: 1,
+                                    ease: 'power3.inOut'
+                                });
+                                
+                                scene.add(modelGlb[i]);
+                                abc[i] = modelGlb[i].children[0];
+                                const mixer = new THREE.AnimationMixer(abc[i]);
+                                mixer.clipAction(glb.animations[0]).play();
+                                mixers.push(mixer);
+                                console.log(i)
+                            }); 
+                            // return resolve;
+              };
+              
+
+
+
+
+
+
+
+
 
 
 
@@ -421,46 +487,21 @@ function loadData (){
                   .then(response => response.text())
                   .then(text => { //what to do with result?
                    result = text; 
-                   getParticipants(result);
+                   onComplete(result);
                 }); 
                 }
-  function getParticipants(n_participants)
-        {   n_participants = n_participants.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
-        n_participants = n_participants.replace('"[{','[{'); //dont' know why data has extra ["  so remove them
-        n_participants = n_participants.replace('}]"','}]'); 
-        //    console.log(n_participants);
-            var data21 = [{
-                "ErrorCode":100,
-                "Message":{},
-                "Name":"InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries",
-                "Value":"2"
-            }];
-            var myobje = JSON.parse(n_participants);
+
+  function getAllData(allData)
+        {   allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
+        allData = allData.replace('"[{','[{'); //dont' know why data has extra ["  so remove them
+        allData = allData.replace('}]"','}]'); 
+        
+            var myobje = JSON.parse(allData);
             console.log(myobje[1].Id);
             // myobje.map(x => console.log(x.Id)); to loop it through                     
             
         }              
-        //          function abcd(){
-        //           let  row='2';
-        //             let column ='b'
-        //            let url_string = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range="+column+""+row+"";
-        //           let  url = new URL(url_string);
-        //            let options = url.fetch
-        //             console.log(options);
-        //         }
-        //         abcd();
-
-        // function loadData_row_column (column,row){
-        //     let result;
-        //     // ========================================================================================================================================================================================
-        //     let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range="+column+""+row+""          
-        //                  fetch(url) 
-        //                   .then(response => response.text())
-        //                   .then(text => { //what to do with result?
-        //                    result = text; 
-        //                    return result;
-        //                 }); 
-        //                 }
+       
 
 
 
@@ -471,52 +512,6 @@ function loadData (){
 
 
 
-
-
-
-
-
-
-
-
-
-
-                   
-                    // function Listener(listener, mesh, callback) {
-                    //     let objects = [mesh];
-                    //     let raycaster = new THREE.Raycaster();
-                    //     let mouse = { x: 0, y: 0 };
-                    //     renderer.domElement.addEventListener(listener, raycast, false);
-                    //     function raycast(e) {
-                    //         mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
-                    //         mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
-                    //         raycaster.setFromCamera(mouse, camera);
-                    //         let intersects = raycaster.intersectObjects(scene.children, true);
-                    //         let intersect = intersects[0];
-                    //         if (typeof intersect !== "undefined") {
-                    //             callback(e, intersect);
-                    //         }
-                    //     }
-                    // }
-                    // // for (let i = 0; i < scene.children.length; i++) {
-                    //     Listener('click', scene.children[i], (e, intersect) => {
-                    //         let object = intersect.object;
-                    //         if (object.name === 'Cone') {
-                    //             openNav();
-                    //         }else{
-                    //             var root = object;
-                    //             // compute the box that contains all the stuff
-                    //            // from root and below
-                    //            const box = new THREE.Box3().setFromObject(root);
-                    //            const boxSize = box.getSize(new THREE.Vector3()).length();
-                    //            const boxCenter = box.getCenter(new THREE.Vector3());
-           
-                    //            // set the camera to frame the box
-                    //            frameArea(boxSize * 2, boxSize, boxCenter, camera);
-                    //             console.log(object.userData.blenderPropertyName+'and \n'+object.userData.name);
-                    //         }
-                    //     });
-                    // // }
 
 
 
