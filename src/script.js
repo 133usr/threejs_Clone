@@ -16,22 +16,26 @@ import { InteractionManager } from 'three.interactive';
 /**
  * GET DATA FROM GSHEETS FIRST
  */
-const gs_data2threejs = {
-    totalMember: '1',
 
-    get getTotalMember() {
-        return this.totalMember;
-    },
-     set update_total_member(value) {
-        this.totalMember = value;
-    }
-}
+/**
+ *                                  USING 2D ARRAYS INSTEAD OF ARRAY OF OBJECTS
+ */
+/**                         column
+ *               index      name_participant       char_wanted       totalScore       totalFruits       totalPreach     totalPreach_mean        bonus
+ *     rows                     shane               1                   5000                5               878         112                     444
+ *
+ *      rows                 AND SO ON....
+ *               
+ *               
+ *               
+ *               
+ */
+let gs_data2threejs =[[]]; //TWO DIMENSIONAL ARRAY
 
 var mixer_total;
 var loader2 = new GLTFLoader();
 let modelGlb=[];
 let abc=[];
-// let mixer;
 const mixers = [];
 
 // Canvas
@@ -412,23 +416,70 @@ loadData()
 function loadData (){
     let result;
     // ========================================================================================================================================================================================
-    let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range=a2"          
-    // let  url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR45xjRksAnj4s3bWcLyARSjUWp7hY7rYcATEPty0MHEPdMT6-2WH2In9bjldlgTHSkR2SQn5Jl8tCm/pub?gid=1203789969&single=true&output=csv&range=i2";     
+    let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range=k2"          
                   fetch(url) 
                   .then(response => response.text())
                   .then(text => { //what to do with result?
-              
                    result = text; 
-                   onComplete(result);
-                //    setter(result);
-                // student.change_n_Member = result;
-                } 
-               
-                      //pass url value to variable
-                    ); 
-                    // return result;
-                    }
-                 
+                   getParticipants(result);
+                }); 
+                }
+  function getParticipants(n_participants)
+        {   n_participants = n_participants.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
+        n_participants = n_participants.replace('"[{','[{'); //dont' know why data has extra ["  so remove them
+        n_participants = n_participants.replace('}]"','}]'); 
+        //    console.log(n_participants);
+            var data21 = [{
+                "ErrorCode":100,
+                "Message":{},
+                "Name":"InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries",
+                "Value":"2"
+            }];
+            var myobje = JSON.parse(n_participants);
+            console.log(myobje[1].Id);
+            // myobje.map(x => console.log(x.Id)); to loop it through                     
+            
+        }              
+        //          function abcd(){
+        //           let  row='2';
+        //             let column ='b'
+        //            let url_string = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range="+column+""+row+"";
+        //           let  url = new URL(url_string);
+        //            let options = url.fetch
+        //             console.log(options);
+        //         }
+        //         abcd();
+
+        // function loadData_row_column (column,row){
+        //     let result;
+        //     // ========================================================================================================================================================================================
+        //     let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range="+column+""+row+""          
+        //                  fetch(url) 
+        //                   .then(response => response.text())
+        //                   .then(text => { //what to do with result?
+        //                    result = text; 
+        //                    return result;
+        //                 }); 
+        //                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                    
                     // function Listener(listener, mesh, callback) {
@@ -466,3 +517,6 @@ function loadData (){
                     //         }
                     //     });
                     // // }
+
+
+
