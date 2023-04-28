@@ -6,8 +6,12 @@ import gsap from 'gsap'
 import * as dat from 'dat.gui'
 import { Object3D } from 'three'
 import TWEEN from '@tweenjs/tween.js'
+import { InteractionManager } from 'three.interactive';
 
-
+/**
+ * FOR INTERACTION WITH THE GLTF OBJECTS
+ * 
+ */
 
 /**
  * GET DATA FROM GSHEETS FIRST
@@ -29,6 +33,49 @@ let modelGlb=[];
 let abc=[];
 // let mixer;
 const mixers = [];
+
+// Canvas
+const canvas = document.querySelector('canvas.webgl')
+
+// Scene
+const scene = new THREE.Scene()
+
+/**
+ * Renderer
+ */
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true,
+    alpha: true
+})
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setClearColor(0x131A3D, 1);
+
+
+/**
+ * Sizes
+ */
+const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight
+}
+
+
+/**
+ * Camera
+ */
+// Base camera
+const camera = new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 1, 2000)
+scene.add(camera)
+camera.position.set(0, 15, 100)
+
+
+const interactionManager = new InteractionManager(
+    renderer,
+    camera,
+    renderer.domElement
+  );
 function onComplete(result){ // When the code completes, do this
    gs_data2threejs.update_total_member = result
    mixer_total= result;
@@ -36,6 +83,7 @@ function onComplete(result){ // When the code completes, do this
     
    var i;
   var mesh =[];
+ 
 
   
             for(i=7;i<8;i++){
@@ -59,8 +107,18 @@ function onComplete(result){ // When the code completes, do this
                      //red plane
                      if( str.indexOf('7') >= 0) {modelGlb[i].rotateY(45);  modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set plane3"); }
                    
-                   
-
+                     interactionManager.add(modelGlb[i]);
+                     modelGlb[i].addEventListener('click', (event) => {
+                        var root = modelGlb[i];
+                                // compute the box that contains all the stuff
+                               // from root and below
+                               const box = new THREE.Box3().setFromObject(root);
+                               const boxSize = box.getSize(new THREE.Vector3()).length();
+                               const boxCenter = box.getCenter(new THREE.Vector3());
+           
+                               // set the camera to frame the box
+                               frameArea(boxSize * 2, boxSize, boxCenter, camera);
+                      });
                     TweenMax.from( modelGlb[i].position, 9, {
                         y: -8,
                         z: 20,
@@ -118,7 +176,7 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
     camera.updateProjectionMatrix();
     function tweenCamera( targetPosition, duration ) {
 
-        controls.enabled = false;
+        // controls.enabled = false;
     
         var position = new THREE.Vector3().copy( camera.position );
     
@@ -169,40 +227,34 @@ const orbitRadius = [15, 20, 25, 30, 40, 50, 60, 70]
 const orbitsObject3D = []
 const planetsObject3D = []
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
-
-// Scene
-const scene = new THREE.Scene()
-
 /**
  * Objects
  */
 
- const loader = new THREE.FontLoader(); 
- let geometry;
- loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
+//  const loader = new THREE.FontLoader(); 
+//  let geometry;
+//  loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
  
-    geometry =  new THREE.TextGeometry( 'Three.js Solar System', {
-        font: font,
-        size: 80,
-        height: 20,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 10,
-        bevelSize: 8,
-        bevelOffset: 0,
-        bevelSegments: 5
-    } );
-} )
+//     geometry =  new THREE.TextGeometry( 'Three.js Solar System', {
+//         font: font,
+//         size: 80,
+//         height: 20,
+//         curveSegments: 12,
+//         bevelEnabled: true,
+//         bevelThickness: 10,
+//         bevelSize: 8,
+//         bevelOffset: 0,
+//         bevelSegments: 5
+//     } );
+// } )
 
- const textMesh = new THREE.Mesh(
-    geometry,
-    new THREE.MeshNormalMaterial()
-)
-scene.add(textMesh)
-textMesh.position.y = 20
-const textureLoader = new THREE.TextureLoader()
+//  const textMesh = new THREE.Mesh(
+//     geometry,
+//     new THREE.MeshNormalMaterial()
+// )
+// scene.add(textMesh)
+// textMesh.position.y = 20
+// const textureLoader = new THREE.TextureLoader()
 
 // scene.background = textureLoader.load('/textures/stars.jpg')
 
@@ -242,23 +294,23 @@ const createPlanets = () => {
             orbitMaterial
         )
         
-        const texture = textureLoader.load(`/textures/${planet.name}.jpg`)
-        const planetObject = new THREE.Mesh( 
-            new THREE.SphereGeometry( planet.sizeRatio, 32, 32 ),
-            new THREE.MeshStandardMaterial({ map: texture}))
+        // const texture = textureLoader.load(`/textures/${planet.name}.jpg`)
+        // const planetObject = new THREE.Mesh( 
+        //     new THREE.SphereGeometry( planet.sizeRatio, 32, 32 ),
+        //     new THREE.MeshStandardMaterial({ map: texture}))
 
-        planetObject.position.x = planet.position
+        // planetObject.position.x = planet.position
 
         // if(planet.name === 'saturn') {
         //     saturnRing.position.x = planet.position
         //     orbitGroup.add(saturnRing)
         // }
-        orbitGroup.add(orbit, planetObject)
+        orbitGroup.add(orbit)
 
         orbit.rotateZ(Math.PI /2)
         orbit.rotateY(Math.PI/2)
         orbitsObject3D.push(orbitGroup)
-        planetsObject3D.push(planetObject)
+        // planetsObject3D.push(planetObject)
         scene.add(orbitGroup)
     })
 }
@@ -271,15 +323,6 @@ const ambientLight = new THREE.AmbientLight( '#fffefa' ); // soft white light
 const hemisphereLight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
 
 scene.add( ambientLight, hemisphereLight)
-
-
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
 
 window.addEventListener('resize', () =>
 {
@@ -296,14 +339,6 @@ window.addEventListener('resize', () =>
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 1, 2000)
-scene.add(camera)
-camera.position.set(0, 15, 100)
-
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
@@ -311,17 +346,6 @@ controls.zoomSpeed = 1.5
 // controls.minZoom = 200
 controls.maxDistance =1000
 
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    antialias: true,
-    alpha: true
-})
-renderer.setSize(window.innerWidth, window.innerHeight)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.setClearColor(0x131A3D, 1);
 // const axesHelper = new THREE.AxesHelper(20);
 // scene.add(axesHelper)
 
@@ -339,8 +363,9 @@ const gui = new dat.GUI({
  */
 
 const tick = () =>
-{
-   
+{   //interaction manager
+    interactionManager.update();
+
     const delta = clock.getDelta();
     mixers.forEach(function(mixer) {
         mixer.update(delta);
@@ -404,38 +429,38 @@ function loadData (){
                  
 
                    
-                    function Listener(listener, mesh, callback) {
-                        let objects = [mesh];
-                        let raycaster = new THREE.Raycaster();
-                        let mouse = { x: 0, y: 0 };
-                        renderer.domElement.addEventListener(listener, raycast, false);
-                        function raycast(e) {
-                            mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
-                            mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
-                            raycaster.setFromCamera(mouse, camera);
-                            let intersects = raycaster.intersectObjects(scene.children, true);
-                            let intersect = intersects[0];
-                            if (typeof intersect !== "undefined") {
-                                callback(e, intersect);
-                            }
-                        }
-                    }
-                    // for (let i = 0; i < scene.children.length; i++) {
-                        Listener('click', scene.children[i], (e, intersect) => {
-                            let object = intersect.object;
-                            if (object.name === 'Cone') {
-                                openNav();
-                            }else{
-                                var root = object;
-                                // compute the box that contains all the stuff
-                               // from root and below
-                               const box = new THREE.Box3().setFromObject(root);
-                               const boxSize = box.getSize(new THREE.Vector3()).length();
-                               const boxCenter = box.getCenter(new THREE.Vector3());
-           
-                               // set the camera to frame the box
-                               frameArea(boxSize * 2, boxSize, boxCenter, camera);
-                                console.log(object.userData.blenderPropertyName+'and \n'+object.userData.name);
-                            }
-                        });
+                    // function Listener(listener, mesh, callback) {
+                    //     let objects = [mesh];
+                    //     let raycaster = new THREE.Raycaster();
+                    //     let mouse = { x: 0, y: 0 };
+                    //     renderer.domElement.addEventListener(listener, raycast, false);
+                    //     function raycast(e) {
+                    //         mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
+                    //         mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
+                    //         raycaster.setFromCamera(mouse, camera);
+                    //         let intersects = raycaster.intersectObjects(scene.children, true);
+                    //         let intersect = intersects[0];
+                    //         if (typeof intersect !== "undefined") {
+                    //             callback(e, intersect);
+                    //         }
+                    //     }
                     // }
+                    // // for (let i = 0; i < scene.children.length; i++) {
+                    //     Listener('click', scene.children[i], (e, intersect) => {
+                    //         let object = intersect.object;
+                    //         if (object.name === 'Cone') {
+                    //             openNav();
+                    //         }else{
+                    //             var root = object;
+                    //             // compute the box that contains all the stuff
+                    //            // from root and below
+                    //            const box = new THREE.Box3().setFromObject(root);
+                    //            const boxSize = box.getSize(new THREE.Vector3()).length();
+                    //            const boxCenter = box.getCenter(new THREE.Vector3());
+           
+                    //            // set the camera to frame the box
+                    //            frameArea(boxSize * 2, boxSize, boxCenter, camera);
+                    //             console.log(object.userData.blenderPropertyName+'and \n'+object.userData.name);
+                    //         }
+                    //     });
+                    // // }
