@@ -8,6 +8,7 @@ import { Object3D } from 'three'
 import TWEEN from '@tweenjs/tween.js'
 import { InteractionManager } from 'three.interactive';
 
+
 /**
  * FOR INTERACTION WITH THE GLTF OBJECTS
  * 
@@ -66,6 +67,8 @@ const sizes = {
 }
 
 
+
+
 /**
  * Camera
  */
@@ -80,15 +83,26 @@ const interactionManager = new InteractionManager(
     camera,
     renderer.domElement
   );
+  const gui = new dat.GUI({
+    closed: true,
+    width: 400
+})
+  var a_br_folder = gui.addFolder('Adult Brothers');
+  var a_sis_folder = gui.addFolder('Adult Sisters');
+  var y_br_folder = gui.addFolder('Youth & Stud. Brothers');
+  var y_sis_folder = gui.addFolder('Youth & Stud. Sisters');
 
-
+  var a_br_folder_group1 = a_br_folder.addFolder('Group1');
+  var a_br_folder_group2 = a_br_folder.addFolder('Group2');
+  var a_sis_folder_group1 = a_sis_folder.addFolder('Group1');
+  var a_sis_folder_group2 = a_sis_folder.addFolder('Group2');
+  var a_sis_folder_group3 = a_sis_folder.addFolder('Group3');
+//   var y_br_folder_group2 = a_br_folder.addFolder('Group2');
+  
             function onComplete(allData){ // When the code completes, do this
-
-                
                     allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
                     allData = allData.replace('"[{','[{'); //dont' know why data has extra ["  so remove them
-                    allData = allData.replace('}]"','}]'); 
-                    
+                    allData = allData.replace('}]"','}]');         
                     var sheet_arrayObject = JSON.parse(allData);
 /**
  * 
@@ -99,18 +113,12 @@ const interactionManager = new InteractionManager(
 
                  console.log(sheet_arrayObject);
                  // myobje.map(x => console.log(x.Id)); to loop it through                     
-                    
                 let modelGlburl = [];
-                
                 var i;
                 var mesh =[];
-            
                     var participants = Object.keys(sheet_arrayObject).length;
                         
-            
-                        // for(i=0;i<participants;i++){
-                            // var wanted_char = sheet_arrayObject[i].character;
-                         
+              
                             const forLoop = async _ => {
                                 console.log("Start");
                                 
@@ -121,6 +129,7 @@ const interactionManager = new InteractionManager(
                                 }
                                 
                                console.log("End");
+                               
                                };
                                forLoop();
 
@@ -151,9 +160,11 @@ const interactionManager = new InteractionManager(
                 console.log(tempsheetObject.Id);
                 var i = tempsheetObject.Id;
                 var score = tempsheetObject.Total;
+                var age_group = tempsheetObject.group;
+                var name_participant = tempsheetObject.Participant;
                 // console.log(i);
                 let modelGlburl = [];
-                var mesh =[];
+               
                             modelGlburl[i]= './assets/glb/low-size/model'+tempsheetObject.character+'.glb';
                             var str = modelGlburl[i];
                                 loader2.load(modelGlburl[i],function(glb){
@@ -170,9 +181,9 @@ const interactionManager = new InteractionManager(
                                 //ww2 plane
                                 if( str.indexOf('5') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.2,0.2,0.2); console.log("set plane3"); }
                                 //butterfly
-                                if( str.indexOf('6') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set plane3"); }
+                                if( str.indexOf('6') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set butterfly"); }
                                 //red plane
-                                if( str.indexOf('7') >= 0) {modelGlb[i].rotateY(45);  modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set plane3"); }
+                                if( str.indexOf('7') >= 0) {modelGlb[i].rotateY(45);  modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set red plane"); }
                             
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
@@ -182,20 +193,21 @@ const interactionManager = new InteractionManager(
                                         const box = new THREE.Box3().setFromObject(root);
                                         const boxSize = box.getSize(new THREE.Vector3()).length();
                                         const boxCenter = box.getCenter(new THREE.Vector3());
-                    
+                                        console.log('interaction manager trig');
                                         // set the camera to frame the box
                                         frameArea(boxSize * 2, boxSize, boxCenter, camera);
                                 });
+                                
                                 gsap.to( modelGlb[i].position, {
                                     duration: 9,
-                                    y: 18,
-                                    z:10 ,
+                                    y: 2,
+                                    z: 2.5 ,
                                     repeat: -1,
                                     yoyo: true,
                                     ease: 'power3.inOut'
                                 });  
                                 gsap.to( modelGlb[i].position,  {
-                                    duration: 20,
+                                    duration: 9,
                                     // y: -8,
                                     x: score,
                                     // yoyo: true,
@@ -209,7 +221,55 @@ const interactionManager = new InteractionManager(
                                 mixer.clipAction(glb.animations[0]).play();
                                 mixers.push(mixer);
                                 console.log(i)
+
+                                /**
+                                 * ADD BUTTONS TO GUI
+                                 */
+                                
+                                //for GUI
+                                var camerOnClick = {
+                                           [name_participant]: function () {
+                                            var root = modelGlb[i];
+                                            // compute the box that contains all the stuff
+                                            // from root and below
+                                            const box = new THREE.Box3().setFromObject(root);
+                                            const boxSize = box.getSize(new THREE.Vector3()).length();
+                                            const boxCenter = box.getCenter(new THREE.Vector3());
+                                            
+                                            // set the camera to frame the box
+                                            frameArea(boxSize * 2, boxSize, boxCenter, camera);
+                                          }
+
+                                };
+                                    
+                               console.log("age group is :"+age_group);
+                                if(age_group==='Adult Brother1')
+                                a_br_folder_group1.add(camerOnClick[name_participant] );
+
+                                else if(age_group==='Adult Brother2')
+                                a_br_folder_group2.add(camerOnClick, name_participant);
+
+                                else if(age_group==='Adult Sister1')
+                                a_sis_folder_group1.add(camerOnClick, name_participant);
+
+                                else if(age_group==='Adult Sister2')
+                                a_sis_folder_group2.add(camerOnClick, name_participant);
+
+                                else if(age_group==='Adult Sister3')
+                                a_sis_folder_group3.add(camerOnClick, name_participant);
+
+                                else if(age_group==='Youth Brother')
+                                y_br_folder.add(camerOnClick, name_participant);
+                                
+                                else if(age_group==='Youth Sister')
+                                y_sis_folder.add(camerOnClick, name_participant);
+
+                                // collapse folder1
+                                // folder1.close();
+
+
                             }); 
+                            
                             // return resolve;
               };
               
@@ -238,40 +298,47 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
 
     // move the camera to a position distance units way from the center
     // in whatever direction the camera was from the center already
-    camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
+    // camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
 
     // pick some near and far values for the frustum that
     // will contain the box.
     camera.near = boxSize / 200;
     camera.far = boxSize * 1000;
+    // 
+    var x = boxCenter.x+7;
+    var y = boxCenter.y;
+    var z = boxCenter.z;
+    console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
+    gsap.to( camera.position, {
+        duration: 3, // seconds
+        x: x,
+        y: y,
+        z: z,
+        onUpdate: function() {
+            controls.enabled = true;
+            console.log('gsap ran 319');
+         }
+    } );
+   
+    // gsap.timeline({ defaults: { duration: 1.5, ease: "expo.out", onUpdate: function() {controls.enabled = true;}} })
+    // .to(controls.target, { x,y,z})
+	// 	.to(camera.position, { x:boxCenter.x+7, y:boxCenter.y, z: boxCenter.z+4 },0);
 
     camera.updateProjectionMatrix();
-    function tweenCamera( targetPosition, duration ) {
 
-        // controls.enabled = false;
-    
-        var position = new THREE.Vector3().copy( camera.position );
-    
-        var tween = new TWEEN.Tween( position )
-            .to( targetPosition, duration )
-            .easing( TWEEN.Easing.Back.InOut )
-            .onUpdate( function () {
-                camera.position.copy( position );
-                camera.lookAt( controls.target );
-            } )
-            .onComplete( function () {
-                camera.position.copy( targetPosition );
-                camera.lookAt( controls.target );
-                controls.enabled = true;
-            } )
-            .start();
-    
-    }
-    
-    var targetPosition = new THREE.Vector3(boxCenter.x, boxCenter.y, boxCenter.z);
-    var duration = 5000;
-    
-    tweenCamera( targetPosition, duration );
+
+                            var text2 = document.createElement('div');
+                            text2.style.position = 'absolute';
+                            //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+                            text2.style.width = 100;
+                            text2.style.height = 100;
+                            text2.style.backgroundColor = "blue";
+                            text2.innerHTML = "hi there!";
+                            text2.style.top = boxCenter.x + 'px';
+                            text2.style.left = boxCenter.y + 'px';
+                            document.body.appendChild(text2);
+                            
+
     // point the camera to look at the center of the box
     // camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
   }
@@ -424,10 +491,7 @@ controls.maxDistance =1000
 /**
  * Debug
  */
-const gui = new dat.GUI({
-    closed: true,
-    width: 400
-})
+
 
 
 /**
@@ -507,8 +571,68 @@ function loadData (){
 
 
 
+      function Listener(listener, mesh, callback) {
+                        let objects = [mesh];
+                        let raycaster = new THREE.Raycaster();
+                        let mouse = { x: 0, y: 0 };
+                        renderer.domElement.addEventListener(listener, raycast, false);
+                        function raycast(e) {
+                            mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
+                            mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
+                            raycaster.setFromCamera(mouse, camera);
+                            let intersects = raycaster.intersectObjects(scene.children, true);
+                            let intersect = intersects[0];
+                           //Click anywhere outside of object to leave focus
+                        //    console.log(intersects[0].object);
 
+                            var clickedit = 1;
 
+                        document.body.addEventListener('click', function( event ){
+                           //this will work in mobile only
+                           clickedit = clickedit + 1; //handle multiple clicks but proceed only once
+                           console.log(clickedit);
+                          var isMesh;
+                            // console.log(intersects[0].object.type)
+                            try {
+                                isMesh = intersects[0].object.type;
+                                console.log(isMesh);
+                            } catch (error) {
+                                isMesh = 'no';
+                                console.log(isMesh);
+                            }
+                            if ( isMesh !== 'Mesh' && clickedit == 2 ) {
+                               
+                                gsap.to( camera.position, {
+                                    duration: 1, // seconds
+                                    x: 6,
+                                    y: 4,
+                                    z: 4,
+                                    onUpdate: function() {
+                                        controls.enabled = true;
+                                        console.log('clicked outside');
+                                    }
+                                } );
+                               
+                            } else{
+                               
+                               
+                            }
+                        });
+                         
+                       
+                                }
+                    }
+                    // for (let i = 0; i < scene.children.length; i++) {
+                        Listener('click', scene.children[i], (e, intersect) => {
+                            let object = intersect.object;
+                            alert('clicked : notice 1')
+                            if (object.name === 'Cone') {
+                                openNav();
+                            }else{ alert('clicked : notice 2')
+                                
+                            }
+                        });
+                    // }
 
 
 
