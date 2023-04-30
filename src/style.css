@@ -17,3 +17,343 @@ body
     top: 0;
     left: 0;
 } */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+p {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.container {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 10px 0;
+    justify-content: space-evenly;
+}
+.item {
+    width: 300px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #dbf1f05d;
+}
+
+
+
+.animat-1 {
+    animation: animat-1 2s 250ms  alternate;
+}
+@keyframes animat-1 {
+    from {
+        letter-spacing: 20px;
+        opacity: 0;
+        filter: blur(5px);
+    }
+    to {
+        letter-spacing: 0;
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+
+.animat-2 {
+    animation: animat-2 2s 250ms infinite alternate;
+}
+@keyframes animat-2 {
+    from {
+        opacity: 0;
+        filter: blur(13px);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+
+.animat-3 {
+    animation: animat-3 2s 250ms infinite alternate;
+}
+@keyframes animat-3 {
+    from {
+        transform: translateY(150px);
+        letter-spacing: 20px;
+        opacity: 0;
+        filter: blur(5px);
+    }
+    to {
+        letter-spacing: 0;
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+    }
+}
+
+
+.animat-4 {
+    animation: animat-4 2s 250ms infinite alternate;
+}
+@keyframes animat-4 {
+    from {
+        transform: translateY(-150px);
+        letter-spacing: 20px;
+        opacity: 0;
+        filter: blur(5px);
+    }
+    to {
+        letter-spacing: 0;
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+    }
+}
+
+
+.animat-5 {
+    animation: animat-5 2s 250ms infinite;
+}
+@keyframes animat-5 {
+    from {
+        letter-spacing: -15px;
+        opacity: 0;
+        filter: blur(12px);
+    }
+    to {
+        letter-spacing: 0;
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+
+.animat-6 {
+    animation: animat-6 2s 250ms infinite forwards;
+}
+@keyframes animat-6 {
+    from {
+        filter: blur(0);
+    }
+    to {
+        filter: blur(17px);
+        opacity: 0;
+    }
+}
+
+
+.animat-7 {
+    animation: animat-7 2s 250ms infinite forwards;
+}
+
+@keyframes animat-7 {
+    from {
+        filter: blur(0);
+        transform: translateY(0);
+    }
+    to {
+        letter-spacing: -15px;
+        filter: blur(17px);
+        opacity: 0;
+        transform: translateY(-150px);
+    }
+}
+
+
+.animat-8 {
+    animation: animat-8 2s 250ms infinite forwards;
+}
+
+@keyframes animat-8 {
+    from {
+        filter: blur(0);
+    }
+    to {
+        letter-spacing: 25px;
+        filter: blur(17px);
+        opacity: 0;
+    }
+}
+
+.animat-17 {
+    animation: animat-17 2s 250ms infinite forwards;
+}
+
+@keyframes animat-17 {
+    from {
+        filter: blur(0);
+    }
+    to {
+        letter-spacing: -15px;
+        filter: blur(17px);
+        opacity: 0;
+    }
+}
+
+
+
+.animat-9 {
+    animation: animat-9 1.5s infinite;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-9 {
+    from {
+        transform: rotateX(85deg);
+        transform-origin: top;
+        opacity: 0;
+    }
+    to {
+        transform: rotateX(0);
+        transform-origin: top;
+        opacity: 1;
+    }
+}
+
+.animat-10 {
+    animation: animat-10 1.5s infinite;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-10 {
+    from {
+        transform: rotateY(85deg);
+        transform-origin: right;
+        opacity: 0;
+    }
+    to {
+        transform: rotateY(0);
+        transform-origin: right;
+        opacity: 1;
+    }
+}
+
+.animat-11 {
+    animation: animat-11 1.5s infinite;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-11 {
+    from {
+        transform: rotateY(85deg);
+        transform-origin: left;
+        opacity: 0;
+    }
+    to {
+        transform: rotateY(0);
+        transform-origin: left;
+        opacity: 1;
+    }
+}
+
+.animat-12 {
+    animation: animat-12 1.5s infinite;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-12 {
+    from {
+        transform: rotateX(85deg);
+        transform-origin: bottom;
+        opacity: 0;
+    }
+    to {
+        transform: rotateX(0);
+        transform-origin: bottom;
+        opacity: 1;
+    }
+}
+
+.animat-13 {
+    animation: animat-13 1.5s infinite forwards;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-13 {
+    from {
+        transform: rotateX(0);
+        transform-origin: top;
+        opacity: 1;
+    }
+    to {
+        transform: rotateX(85deg);
+        transform-origin: top;
+        opacity: 0;
+    }
+}
+
+.animat-14 {
+    animation: animat-14 1.5s infinite forwards;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-14 {
+    from {
+        transform: rotateY(0);
+        transform-origin: right;
+        opacity: 1;
+    }
+    to {
+        transform: rotateY(85deg);
+        transform-origin: right;
+        opacity: 0;
+    }
+}
+
+.animat-15 {
+    animation: animat-15 1.5s infinite forwards;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-15 {
+    from {
+        transform: rotateX(0);
+        transform-origin: bottom;
+        opacity: 1;
+    }
+    to {
+        transform: rotateX(85deg);
+        transform-origin: bottom;
+        opacity: 0;
+    }
+}
+
+.animat-16 {
+    animation: animat-16 1.5s infinite forwards;
+    background: #e67e22;
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes animat-16 {
+    from {
+        transform: rotateY(0);
+        transform-origin: left;
+        opacity: 1;
+    }
+    to {
+        transform: rotateY(85deg);
+        transform-origin: left;
+        opacity: 0;
+    }
+}

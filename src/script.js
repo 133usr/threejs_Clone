@@ -229,6 +229,11 @@ const interactionManager = new InteractionManager(
                                 //for GUI
                                 var camerOnClick = {
                                            [name_participant]: function () {
+                                             //remove box
+                                            var container = document.querySelectorAll("container")[0];
+                                            if(container != null)
+                                            {console.log('not')
+                                            document.querySelectorAll("container")[0].remove();}
                                             var root = modelGlb[i];
                                             // compute the box that contains all the stuff
                                             // from root and below
@@ -327,17 +332,27 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
     camera.updateProjectionMatrix();
 
 
-                            var text2 = document.createElement('div');
+                            var text2 = document.createElement('container');
                             text2.style.position = 'absolute';
                             //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
                             text2.style.width = 100;
-                            text2.style.height = 100;
-                            text2.style.backgroundColor = "blue";
-                            text2.innerHTML = "hi there!";
+                            text2.classList.add('item');
+                            text2.classList.add('animat-1');
+
+                            // text2.style.height = 100;
+                            // text2.style.backgroundColor = "blue";
+                            text2.innerHTML = "Name: \n Total Fruits: \n Total Preach: \n Total M.Preach: \n Elohim Academy:\n Bonus:";
                             text2.style.top = boxCenter.x + 'px';
                             text2.style.left = boxCenter.y + 'px';
                             document.body.appendChild(text2);
-                            
+                            $("container").click(function(){
+                                //clicked on the box
+                                 //remove box
+                                 var container = document.querySelectorAll("container")[0];
+                                 if(container != null)
+                                 {console.log('not')
+                                 document.querySelectorAll("container")[0].remove();}
+                                });
 
     // point the camera to look at the center of the box
     // camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
@@ -609,7 +624,12 @@ function loadData (){
                                     z: 4,
                                     onUpdate: function() {
                                         controls.enabled = true;
-                                        console.log('clicked outside');
+                                        console.log('clicked outside\n remove textbox');
+                                        //remove box
+                                        var container = document.querySelectorAll("container")[0];
+                                        if(container != null)
+                                        {console.log('not')
+                                        document.querySelectorAll("container")[0].remove();}
                                     }
                                 } );
                                
