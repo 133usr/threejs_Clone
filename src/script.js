@@ -545,7 +545,7 @@ window.addEventListener('resize', () =>
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
-controls.zoomSpeed = 1.5
+controls.zoomSpeed = 0.5
 // controls.minZoom = 200
 controls.minDistance = 30
 controls.maxDistance =2000
