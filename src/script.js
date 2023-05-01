@@ -282,8 +282,42 @@ const interactionManager = new InteractionManager(
 
 
 
+/***
+ * NEW JERUSALEM IS HERE
+ */
+   
+const loader22 = new GLTFLoader();
+var galaxy,cinder_castle;
+loader22.load('/assets/glb/castle.glb',function(glb){
+    
+    glb.scene.scale.set(0.4,0.4,0.4);
+    glb.scene.position.set(1,1,1);
+    glb.scene.rotateX('4.7');
+    glb.scene.rotateY('0');
+    glb.scene.rotateZ('0')
+    galaxy= glb.scene;
+   scene.add(galaxy);
+},function(error){
+    console.log("error occ");
+});
 
+// loader2.load('/assets/glb/mew_-_flying.glb',function(glb){
+    
+//     mixer = new THREE.AnimationMixer(glb.scene);
 
+//         const animationAction = mixer.clipAction(animations[0])
+//         animationActions.push(animationAction)
+//         animationsFolder.add(animations, 'default')
+//         activeAction = animationActions[0]
+    
+//     cinder_castle= glb.scene;
+//     // galaxy2.position.set(-140,-150,130);
+//     cinder_castle.scale.set(0.1,0.1,0.1);
+//     // galaxy2.scale.
+//    scene.add(cinder_castle);
+// },function(error){
+//     console.log("error occ");
+// });
 
 
 
@@ -487,9 +521,9 @@ const clock = new THREE.Clock();
 createPlanets();
 
 
-const ambientLight = new THREE.AmbientLight( '#fffefa' ); // soft white light
+const ambientLight = new THREE.AmbientLight( '#696969' ); // soft white light
 
-const hemisphereLight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+const hemisphereLight = new THREE.HemisphereLight( '#4b88c2', '#cacaca', 1 );
 
 scene.add( ambientLight, hemisphereLight)
 
@@ -513,7 +547,8 @@ const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.zoomSpeed = 1.5
 // controls.minZoom = 200
-controls.maxDistance =1000
+controls.minDistance = 30
+controls.maxDistance =2000
 
 // const axesHelper = new THREE.AxesHelper(20);
 // scene.add(axesHelper)
@@ -634,7 +669,7 @@ function loadData (){
                                
                                 gsap.to( camera.position, {
                                     duration: 1, // seconds
-                                    x: 6,
+                                    x: 500,
                                     y: 4,
                                     z: 4,
                                     onUpdate: function() {
