@@ -195,7 +195,7 @@ const interactionManager = new InteractionManager(
                                         const boxCenter = box.getCenter(new THREE.Vector3());
                                         console.log('interaction manager trig');
                                         // set the camera to frame the box
-                                        frameArea(boxSize * 2, boxSize, boxCenter, camera);
+                                        frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject);
                                 });
                                 
                                 gsap.to( modelGlb[i].position, {
@@ -242,7 +242,7 @@ const interactionManager = new InteractionManager(
                                             const boxCenter = box.getCenter(new THREE.Vector3());
                                             
                                             // set the camera to frame the box
-                                            frameArea(boxSize * 2, boxSize, boxCenter, camera);
+                                            frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject);
                                           }
 
                                 };
@@ -289,7 +289,7 @@ const interactionManager = new InteractionManager(
 
 
 
-function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
+function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject) {
 
     const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
     const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
@@ -330,18 +330,31 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
 	// 	.to(camera.position, { x:boxCenter.x+7, y:boxCenter.y, z: boxCenter.z+4 },0);
 
     camera.updateProjectionMatrix();
-
+                            console.log(tempsheetObject);
+                            var parti_name  = tempsheetObject.Participant;
+                            var preach      = tempsheetObject.totalPreach;
+                            var m_Preach    = tempsheetObject.totalPreach_mean;
+                            var bonus       = tempsheetObject.bonus;
+                            var total_score = tempsheetObject.Total;
+                            var elohim_aca  = tempsheetObject.elohim_aca;
 
                             var text2 = document.createElement('container');
                             text2.style.position = 'absolute';
                             //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-                            text2.style.width = 100;
-                            text2.classList.add('item');
-                            text2.classList.add('animat-1');
-
+                            // text2.style.width = 100;
+                            text2.classList.add('animated-border-box-glow');
+                            text2.classList.add('animated-border-box');
+                            text2.classList.add('center-box');
+                           
                             // text2.style.height = 100;
                             // text2.style.backgroundColor = "blue";
-                            text2.innerHTML = "Name: \n Total Fruits: \n Total Preach: \n Total M.Preach: \n Elohim Academy:\n Bonus:";
+                            text2.innerHTML = "<p class='titles' > Name: <f class='score' style = 'alight-right:100%'>"+parti_name+"</f></p>";
+                            text2.innerHTML += "<p class='titles' > Preach: <f class='score' style = 'alight-right:100%'>"+preach+"</f></p>";
+                            text2.innerHTML += "<p class='titles' > M.Preach: <f class='score' style = 'alight-right:100%'>"+m_Preach+"</f></p>";
+                            text2.innerHTML += "<p class='titles' > Elohim Aca.: <f class='score' style = 'alight-right:100%'>"+elohim_aca+"</f></p>";
+                            text2.innerHTML += "<p class='titles' > Bonus: <f class='score' style = 'alight-right:100%'>"+bonus+"</f></p>";
+                            text2.innerHTML += "<p class='titles' > Total: <f class='score' style = 'alight-right:100%'>"+total_score+"</f></p>";
+                            
                             text2.style.top = boxCenter.x + 'px';
                             text2.style.left = boxCenter.y + 'px';
                             document.body.appendChild(text2);
@@ -351,7 +364,9 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
                                  var container = document.querySelectorAll("container")[0];
                                  if(container != null)
                                  {console.log('not')
-                                 document.querySelectorAll("container")[0].remove();}
+                                 document.querySelectorAll("container")[0].remove();
+                                
+                                }
                                 });
 
     // point the camera to look at the center of the box
@@ -561,7 +576,7 @@ loadData()
 function loadData (){
     let result;
     // ========================================================================================================================================================================================
-    let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range=k2"          
+    let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range=m2"          
                   fetch(url) 
                   .then(response => response.text())
                   .then(text => { //what to do with result?
