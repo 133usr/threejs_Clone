@@ -288,7 +288,7 @@ const interactionManager = new InteractionManager(
    
 const loader22 = new GLTFLoader();
 var galaxy,cinder_castle;
-loader22.load('/assets/glb/castle.glb',function(glb){
+loader22.load('./assets/glb/castle.glb',function(glb){
     
     glb.scene.scale.set(0.4,0.4,0.4);
     glb.scene.position.set(1,1,1);
