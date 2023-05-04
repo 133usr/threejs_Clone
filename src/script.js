@@ -75,7 +75,7 @@ const sizes = {
 // Base camera
 const camera = new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 1, 2000)
 scene.add(camera)
-camera.position.set(0, 15, 100)
+camera.position.set(0, 15, 1000)
 
 
 const interactionManager = new InteractionManager(
@@ -100,10 +100,13 @@ const interactionManager = new InteractionManager(
 //   var y_br_folder_group2 = a_br_folder.addFolder('Group2');
   
             function onComplete(allData){ // When the code completes, do this
+                
                     allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
                     allData = allData.replace('"[{','[{'); //dont' know why data has extra ["  so remove them
-                    allData = allData.replace('}]"','}]');         
+                    allData = allData.replace('}]"','}]');     
+                    // console.log(allData);    
                     var sheet_arrayObject = JSON.parse(allData);
+                    // console.log(sheet_arrayObject);
 /**
  * 
  *                  NOW HERE YOU CAN ACCESS THE DATA WITH 
@@ -111,13 +114,13 @@ const interactionManager = new InteractionManager(
  * 
  */
 
-                 console.log(sheet_arrayObject);
+                 
                  // myobje.map(x => console.log(x.Id)); to loop it through                     
-                let modelGlburl = [];
+                let modelGlb_source = [];
                 var i;
                 var mesh =[];
                     var participants = Object.keys(sheet_arrayObject).length;
-                        
+                        console.log(participants);
               
                             const forLoop = async _ => {
                                 console.log("Start");
@@ -157,34 +160,64 @@ const interactionManager = new InteractionManager(
                 // Perform some asynchronous operation
                 // If the operation is successful, call the resolve function with the result
                 // If the operation fails, call the reject function with the error
-                console.log(tempsheetObject.Id);
+                var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
+                ['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
+                ['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','4.2','0','false'],
+                ['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','5.2','0','false'],
+                ['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
+                ['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
+                ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
+                ['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
+                ['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
+                ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '4', '1','9','0','4.2','0','true'],
+                ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
+                ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
+                ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
+                ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','3.2','0','false'],
+                ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','4.2','0','false'],
+                ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.05', '1','9','0','4.2','0','false'],
+                ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','6.2','0','false'],
+                
+                ['18','Plane with scene','./assets/glb/low-size/plane__stylized_scene.glb', '2', '-700','9','0','4.2','0','false'],
+                ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','4.2','0','false'],
+                ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','4.2','0','false'],//
+                ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
+                
+                ];
                 var i = tempsheetObject.Id;
+                console.log(tempsheetObject);
+                // console.log('Model Name:: '+all_models[i][1]);
+                // let objectscale = all_models[i][3];
+                // let objectPos_X = all_models[i][4];
+                // let objectPos_Y = all_models[i][5];
+                // let objectRot_X = all_models[i][6];
+                // let objectRot_Y = all_models[i][7];
+                // let objectRot_Z = all_models[i][8];
+
                 var score = tempsheetObject.Total;
                 var age_group = tempsheetObject.group;
                 var name_participant = tempsheetObject.Participant;
-                // console.log(i);
-                let modelGlburl = [];
+                let search = tempsheetObject.character;
+                var arr = all_models.filter( function( el ) {   //to find the string in 2d array then return whole index
+                    return !!~el.indexOf( search );
+                } );
+              
+
+                var objectFilename = arr[0][2]; //url Of chosed Object ENABLE THIS !! already chosed the model with "return !!~el.indexof(search)"
+                console.log('object File:: '+objectFilename);                                                          
+                let modelGlb_source = [];
                
-                            modelGlburl[i]= './assets/glb/low-size/model'+tempsheetObject.character+'.glb';
-                            var str = modelGlburl[i];
-                                loader2.load(modelGlburl[i],function(glb){
+                            modelGlb_source[i]= objectFilename;
+                           
+                                loader2.load(modelGlb_source[i],function(glb){
                                 modelGlb [i]= glb.scene;
-                                modelGlb[i].position.set(500,1,1); 
-                                let mm= modelGlb[i];
-                                //planeFighter
-                                console.log(str);
-                                if( str.indexOf('1') >= 0) {modelGlb[i].rotateY(90); modelGlb[i].scale.set(0.2,0.2,0.2); console.log("set plane"); }
-                                //bird
-                                if( str.indexOf('3') >= 0) {modelGlb[i].rotateY(45); modelGlb[i].scale.set(0.5,0.5,0.5); console.log("set bird"); }
-                                //ww2 plane
-                                if( str.indexOf('4') >= 0) {modelGlb[i].rotateY(15);  console.log("set plane3"); }
-                                //ww2 plane
-                                if( str.indexOf('5') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.2,0.2,0.2); console.log("set plane3"); }
-                                //butterfly
-                                if( str.indexOf('6') >= 0) {modelGlb[i].rotateY(10); modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set butterfly"); }
-                                //red plane
-                                if( str.indexOf('7') >= 0) {modelGlb[i].rotateY(45);  modelGlb[i].scale.set(0.8,0.8,0.8); console.log("set red plane"); }
-                            
+                                
+                             
+                               modelGlb[i].scale.set(objectscale,objectscale,objectscale);
+                               modelGlb[i].rotateX(objectRot_X);
+                               modelGlb[i].rotateY(objectRot_Y);
+                               modelGlb[i].rotateZ(objectRot_Z);
+                               modelGlb[i].position.set(objectPos_X,objectPos_Y,2000); 
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
                                     var root = modelGlb[i];
@@ -285,7 +318,7 @@ const interactionManager = new InteractionManager(
 /***
  * NEW JERUSALEM IS HERE
  */
-   
+    
 const loader22 = new GLTFLoader();
 var galaxy,cinder_castle;
 loader22.load('./assets/glb/castle.glb',function(glb){
@@ -298,8 +331,81 @@ loader22.load('./assets/glb/castle.glb',function(glb){
     galaxy= glb.scene;
    scene.add(galaxy);
 },function(error){
+    console.log("error");
+});
+var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
+['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
+['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','4.2','0','false'],
+['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','5.2','0','false'],
+['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
+['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
+['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
+['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
+['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
+['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '4', '1','9','0','4.2','0','true'],
+['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
+['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
+['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
+['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','3.2','0','false'],
+['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','4.2','0','false'],
+['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.05', '1','9','0','4.2','0','false'],
+['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','6.2','0','false'],
+
+['18','Plane with scene','./assets/glb/low-size/plane__stylized_scene.glb', '2', '-700','9','0','4.2','0','false'],
+['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','4.2','0','false'],
+['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','4.2','0','false'],//
+['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
+
+];
+// const axesHelper = new THREE.AxesHelper(2000 );
+// scene.add( axesHelper );
+
+let modelNumber = 19;
+let objecturl = all_models[modelNumber][2];
+console.log('Model Name:: '+all_models[modelNumber][1]);
+let objectscale = all_models[modelNumber][3];
+let objectPos_X = 1; //this should be in - of score but 0 in the end then it will reach the center
+let objectPos_Y = all_models[modelNumber][5];
+let objectRot_X = all_models[modelNumber][6];
+let objectRot_Y = all_models[modelNumber][7];
+let objectRot_Z = all_models[modelNumber][8];
+let x_y_exchange = all_models[modelNumber][9];
+// console.log('scale:'+objectscale+'  posx: '+objectPos_X+'  posy: '+objectPos_Y+'  rotateY: '+objectRot_Y+'  posx: ');
+
+// const loader22 = new GLTFLoader();
+var obj;
+loader22.load(objecturl,function(glb){
+    
+    glb.scene.scale.set(objectscale,objectscale,objectscale);
+    if (x_y_exchange.includes('false')){
+        glb.scene.position.set(objectPos_X,objectPos_Y,10); //last one is score
+        }else
+            {glb.scene.position.set(900,objectPos_Y,objectPos_X); //first one is score
+                console.log('x_y_exchangef'); 
+            }
+    
+    glb.scene.rotateX(objectRot_X);
+    glb.scene.rotateY(objectRot_Y);
+    glb.scene.rotateZ(objectRot_Z)
+    obj= glb.scene;
+   scene.add(obj);
+},function(error){
     console.log("error occ");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // loader2.load('/assets/glb/mew_-_flying.glb',function(glb){
     
@@ -347,7 +453,7 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
     var x = boxCenter.x+7;
     var y = boxCenter.y;
     var z = boxCenter.z;
-    console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
+    // console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
     gsap.to( camera.position, {
         duration: 3, // seconds
         x: x,
@@ -355,59 +461,65 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
         z: z,
         onUpdate: function() {
             controls.enabled = true;
-            console.log('gsap ran 319');
+            
          }
     } );
-   
-    // gsap.timeline({ defaults: { duration: 1.5, ease: "expo.out", onUpdate: function() {controls.enabled = true;}} })
-    // .to(controls.target, { x,y,z})
-	// 	.to(camera.position, { x:boxCenter.x+7, y:boxCenter.y, z: boxCenter.z+4 },0);
 
     camera.updateProjectionMatrix();
-                            console.log(tempsheetObject);
-                            var parti_name  = tempsheetObject.Participant;
-                            var preach      = tempsheetObject.totalPreach;
-                            var m_Preach    = tempsheetObject.totalPreach_mean;
-                            var bonus       = tempsheetObject.bonus;
-                            var total_score = tempsheetObject.Total;
-                            var elohim_aca  = tempsheetObject.elohim_aca;
-
-                            var text2 = document.createElement('container');
-                            text2.style.position = 'absolute';
-                            //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-                            // text2.style.width = 100;
-                            text2.classList.add('animated-border-box-glow');
-                            text2.classList.add('animated-border-box');
-                            text2.classList.add('center-box');
-                           
-                            // text2.style.height = 100;
-                            // text2.style.backgroundColor = "blue";
-                            text2.innerHTML = "<p class='titles' > Name: <f class='score' style = 'alight-right:100%'>"+parti_name+"</f></p>";
-                            text2.innerHTML += "<p class='titles' > Preach: <f class='score' style = 'alight-right:100%'>"+preach+"</f></p>";
-                            text2.innerHTML += "<p class='titles' > M.Preach: <f class='score' style = 'alight-right:100%'>"+m_Preach+"</f></p>";
-                            text2.innerHTML += "<p class='titles' > Elohim Aca.: <f class='score' style = 'alight-right:100%'>"+elohim_aca+"</f></p>";
-                            text2.innerHTML += "<p class='titles' > Bonus: <f class='score' style = 'alight-right:100%'>"+bonus+"</f></p>";
-                            text2.innerHTML += "<p class='titles' > Total: <f class='score' style = 'alight-right:100%'>"+total_score+"</f></p>";
-                            
-                            text2.style.top = boxCenter.x + 'px';
-                            text2.style.left = boxCenter.y + 'px';
-                            document.body.appendChild(text2);
-                            $("container").click(function(){
-                                //clicked on the box
-                                 //remove box
-                                 var container = document.querySelectorAll("container")[0];
-                                 if(container != null)
-                                 {console.log('not')
-                                 document.querySelectorAll("container")[0].remove();
-                                
-                                }
-                                });
+     x = boxCenter.x;
+     y = boxCenter.y;
+     
+    scoreBox_CSS(x,y,tempsheetObject);                       
 
     // point the camera to look at the center of the box
     // camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
   }
 
+/***
+ * 
+ *                                  ADD SCORE BOX
+ * 
+ */
+        function scoreBox_CSS (x,y,tempsheetObject){
+            
+            var parti_name  = tempsheetObject.Participant;
+            var preach      = tempsheetObject.totalPreach;
+            var m_Preach    = tempsheetObject.totalPreach_mean;
+            var bonus       = tempsheetObject.bonus;
+            var total_score = tempsheetObject.Total;
+            var elohim_aca  = tempsheetObject.elohim_aca;
 
+            var text2 = document.createElement('container');
+            text2.style.position = 'absolute';
+            //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+            // text2.style.width = 100;
+            text2.classList.add('animated-border-box-glow');
+            text2.classList.add('animated-border-box');
+            text2.classList.add('center-box');
+           
+            // text2.style.height = 100;
+            // text2.style.backgroundColor = "blue";
+            text2.innerHTML = "<p class='titles' > Name: <f class='score' style = 'alight-right:100%'>"+parti_name+"</f></p>";
+            text2.innerHTML += "<p class='titles' > Preach: <f class='score' style = 'alight-right:100%'>"+preach+"</f></p>";
+            text2.innerHTML += "<p class='titles' > M.Preach: <f class='score' style = 'alight-right:100%'>"+m_Preach+"</f></p>";
+            text2.innerHTML += "<p class='titles' > Elohim Aca.: <f class='score' style = 'alight-right:100%'>"+elohim_aca+"</f></p>";
+            text2.innerHTML += "<p class='titles' > Bonus: <f class='score' style = 'alight-right:100%'>"+bonus+"</f></p>";
+            text2.innerHTML += "<p class='titles' > Total: <f class='score' style = 'alight-right:100%'>"+total_score+"</f></p>";
+            
+            text2.style.top = x + 'px';
+            text2.style.left = y + 'px';
+            document.body.appendChild(text2);
+            $("container").click(function(){
+                //clicked on the box
+                 //remove box
+                 var container = document.querySelectorAll("container")[0];
+                 if(container != null)
+                 {console.log('not')
+                 document.querySelectorAll("container")[0].remove();
+                
+                }
+                });
+        }
 
 /**
  * Base 
@@ -545,10 +657,10 @@ window.addEventListener('resize', () =>
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
-controls.zoomSpeed = 0.5
+controls.zoomSpeed = 1.5
 // controls.minZoom = 200
-controls.minDistance = 30
-controls.maxDistance =2000
+controls.minDistance = 70
+controls.maxDistance =3000
 
 // const axesHelper = new THREE.AxesHelper(20);
 // scene.add(axesHelper)
@@ -611,7 +723,7 @@ loadData()
 function loadData (){
     let result;
     // ========================================================================================================================================================================================
-    let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRe-NuXNEolTwg4iBlJtM4Lc7v8N-K8Be90s5mF0a0R6RUJP8NskA8PvxWMyAtOm_gjmaOoG_yA1w14/pub?gid=0&single=true&output=csv&range=m2"          
+    let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vQidY8rz1hBWMGH3hfskku6TDrqHKxLSCAwDiCV2lmmw-Ec5BDdycbwEvfDu5pKtKf45OeGQ81C7M3q/pub?gid=1245805841&single=true&output=csv&range=U2"          
                   fetch(url) 
                   .then(response => response.text())
                   .then(text => { //what to do with result?
