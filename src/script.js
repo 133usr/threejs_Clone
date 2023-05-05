@@ -200,7 +200,31 @@ const interactionManager = new InteractionManager(
                 // let objectRot_Y = all_models[i][7];
                 // let objectRot_Z = all_models[i][8];
 
-                var score = tempsheetObject.Total;
+                var actual_total_score = tempsheetObject.Total;
+
+/**
+ * ACCORDING TO GOOGLE SHEETS TOTAL IS 70000 AND MAX ZOOM OUT 3500 
+ * WHICH IS 20X OF TOTAL SO 
+ * WE HAVE TO DIVIDE THE TOTAL SCORE FROM 20 
+ * BUT WHEN YOU SHOW THE SCORE IT SHOULD BE AS IT IS
+ * 
+ * NOW
+ * X AND Y BOTH MOVE THE CHARACTER SO ONE SHOULD BE IN NEGATIVE AND ONE SHOULD BE POSITIVE WITH SAME VALUES
+ */             let distance_travel_score_X = actual_total_score;
+                let distance_travel_score_Y;
+                if(distance_travel_score_X<20){
+                    distance_travel_score_X =  2500;
+                    distance_travel_score_Y = -2500;    
+
+                    }else{
+                        distance_travel_score_X = distance_travel_score_X/20;
+                        distance_travel_score_X = 3500-distance_travel_score_X;
+                        distance_travel_score_Y = -Math.abs(distance_travel_score_X);
+
+                        console.log("distance_travel_score for "+tempsheetObject.Participant+" and Y is: "+distance_travel_score_X+"   "+distance_travel_score_Y);
+                    }
+
+
                 var age_group = tempsheetObject.group;
                 var name_participant = tempsheetObject.Participant;
                
@@ -209,8 +233,7 @@ const interactionManager = new InteractionManager(
                
                 console.log('object File:: '+objectFilename);                                                          
                 let modelGlb_source = [];
-               
-                            modelGlb_source[i]= objectFilename;
+                modelGlb_source[i]= objectFilename;
                            
                                 loader2.load(modelGlb_source[i],function(glb){
                                 modelGlb [i]= glb.scene;
@@ -220,7 +243,7 @@ const interactionManager = new InteractionManager(
                                modelGlb[i].rotateX(objectRot_X);
                                modelGlb[i].rotateY(objectRot_Y);
                                modelGlb[i].rotateZ(objectRot_Z);
-                               modelGlb[i].position.set(objectPos_X,objectPos_Y,2000); 
+                               modelGlb[i].position.set(distance_travel_score_X,objectPos_Y,distance_travel_score_Y); 
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
                                     var root = modelGlb[i];
@@ -237,7 +260,7 @@ const interactionManager = new InteractionManager(
                                 gsap.to( modelGlb[i].position, {
                                     duration: 9,
                                     y: 2,
-                                    z: 2.5 ,
+                                    // z: 2.5 ,
                                     repeat: -1,
                                     yoyo: true,
                                     ease: 'power3.inOut'
@@ -245,7 +268,7 @@ const interactionManager = new InteractionManager(
                                 gsap.to( modelGlb[i].position,  {
                                     duration: 9,
                                     // y: -8,
-                                    x: score,
+                                    
                                     // yoyo: true,
                                     // repeat: 1,
                                     ease: 'power3.inOut'
@@ -279,13 +302,14 @@ const interactionManager = new InteractionManager(
                                             
                                             // set the camera to frame the box
                                             frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject);
+                                            
                                           }
 
                                 };
                                     
                                console.log("age group is :"+age_group);
                                 if(age_group==='Adult Brother1')
-                                a_br_folder_group1.add(camerOnClick[name_participant] );
+                                a_br_folder_group1.add(camerOnClick, name_participant );
 
                                 else if(age_group==='Adult Brother2')
                                 a_br_folder_group2.add(camerOnClick, name_participant);
@@ -483,14 +507,14 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
  *                                  ADD SCORE BOX
  * 
  */
-        function scoreBox_CSS (x,y,tempsheetObject){
+        function scoreBox_CSS (x,y,tempsheetObject){ // NOT USING X AND Y
             
             var parti_name  = tempsheetObject.Participant;
             var preach      = tempsheetObject.totalPreach;
-            var m_Preach    = tempsheetObject.totalPreach_mean;
+            var m_Preach    = tempsheetObject.totalPreach_m;
             var bonus       = tempsheetObject.bonus;
             var total_score = tempsheetObject.Total;
-            var elohim_aca  = tempsheetObject.elohim_aca;
+            var elohim_aca  = (tempsheetObject.totalSign+tempsheetObject.chap_complete);
 
             var text2 = document.createElement('container');
             text2.style.position = 'absolute';
@@ -509,8 +533,8 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
             text2.innerHTML += "<p class='titles' > Bonus: <f class='score' style = 'alight-right:100%'>"+bonus+"</f></p>";
             text2.innerHTML += "<p class='titles' > Total: <f class='score' style = 'alight-right:100%'>"+total_score+"</f></p>";
             
-            text2.style.top = x + 'px';
-            text2.style.left = y + 'px';
+            text2.style.bottom = 0 + 'px';
+            // text2.style.center = 0 + 'px';
             document.body.appendChild(text2);
             $("container").click(function(){
                 //clicked on the box
@@ -663,7 +687,7 @@ controls.enableDamping = true
 controls.zoomSpeed = 1.5
 // controls.minZoom = 200
 controls.minDistance = 70
-controls.maxDistance =3000
+controls.maxDistance =5000
 
 // const axesHelper = new THREE.AxesHelper(20);
 // scene.add(axesHelper)
