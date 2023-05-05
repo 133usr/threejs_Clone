@@ -211,17 +211,19 @@ const interactionManager = new InteractionManager(
  * NOW
  * X AND Y BOTH MOVE THE CHARACTER SO ONE SHOULD BE IN NEGATIVE AND ONE SHOULD BE POSITIVE WITH SAME VALUES
  */             let distance_travel_score_X = actual_total_score;
-                let distance_travel_score_Y;
+                let distance_travel_score_Z;
+                let random_distance_Z;
                 if(distance_travel_score_X<20){
                     distance_travel_score_X =  2500;
-                    distance_travel_score_Y = -2500;    
+                    distance_travel_score_Z = -2500;    
 
                     }else{
                         distance_travel_score_X = distance_travel_score_X/20;
                         distance_travel_score_X = 3500-distance_travel_score_X;
-                        distance_travel_score_Y = -Math.abs(distance_travel_score_X);
+                        distance_travel_score_Z = -Math.abs(distance_travel_score_X);
+                        random_distance_Z       = randomGenerator(distance_travel_score_Z,distance_travel_score_X);
 
-                        console.log("distance_travel_score for "+tempsheetObject.Participant+" and Y is: "+distance_travel_score_X+"   "+distance_travel_score_Y);
+                        console.log("distance_travel_score for "+tempsheetObject.Participant+" and Y is: "+distance_travel_score_X+"   "+distance_travel_score_Z);
                     }
 
 
@@ -243,7 +245,7 @@ const interactionManager = new InteractionManager(
                                modelGlb[i].rotateX(objectRot_X);
                                modelGlb[i].rotateY(objectRot_Y);
                                modelGlb[i].rotateZ(objectRot_Z);
-                               modelGlb[i].position.set(distance_travel_score_X,objectPos_Y,distance_travel_score_Y); 
+                               modelGlb[i].position.set(distance_travel_score_X,objectPos_Y,distance_travel_score_Z); 
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
                                     var root = modelGlb[i];
@@ -273,7 +275,7 @@ const interactionManager = new InteractionManager(
                                     // repeat: 1,
                                     ease: 'power3.inOut'
                                 });
-                                
+                                modelGlb[i].rotateY(Math.PI/2)
                                 scene.add(modelGlb[i]);
                                 abc[i] = modelGlb[i].children[0];
                                 const mixer = new THREE.AnimationMixer(abc[i]);
@@ -405,7 +407,7 @@ loader22.load(objecturl,function(glb){
     
     glb.scene.scale.set(objectscale,objectscale,objectscale);
     if (x_y_exchange.includes('false')){
-        glb.scene.position.set(objectPos_X,objectPos_Y,10); //last one is score
+        glb.scene.position.set(objectPos_X,objectPos_Y,100); //last one is score
         }else
             {glb.scene.position.set(900,objectPos_Y,objectPos_X); //first one is score
                 console.log('x_y_exchangef'); 
@@ -477,9 +479,9 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
     camera.near = boxSize / 200;
     camera.far = boxSize * 1000;
     // 
-    var x = boxCenter.x+7;
+    var x = boxCenter.x+12;  // + to zoomout and - to zoom in
     var y = boxCenter.y;
-    var z = boxCenter.z;
+    var z = boxCenter.z-10; //to cneter it
     // console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
     gsap.to( camera.position, {
         duration: 3, // seconds
@@ -684,7 +686,7 @@ window.addEventListener('resize', () =>
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
-controls.zoomSpeed = 1.5
+controls.zoomSpeed = 0.5
 // controls.minZoom = 200
 controls.minDistance = 70
 controls.maxDistance =5000
@@ -701,7 +703,34 @@ controls.maxDistance =5000
 /**
  * Animate
  */
+// Ellipse class, which extends the virtual base class Curve
+function Ellipse( xRadius, yRadius ) {
+	new THREE.EllipseCurve( this );
+    // let curve = new THREE.Curve.call(this)
+	// add radius as a property
+	this.xRadius = xRadius;
+	this.yRadius = yRadius;
+	}
 
+Ellipse.prototype = Object.create( THREE.Curve.prototype );
+	Ellipse.prototype.constructor = Ellipse;
+
+	// define the getPoint function for the subClass
+	Ellipse.prototype.getPoint = function ( t ) {
+
+		var radians = 2 * Math.PI * t;
+
+		return new THREE.Vector3( this.xRadius * Math.cos( radians ),
+								0,
+								this.yRadius * Math.sin( radians ) );
+
+	};
+
+const rotateAround = 2 * Math.PI * (1/60) * (1/60);
+let earthpath = new Ellipse( 42, -42 );
+let eat= 0;
+var axis = new THREE.Vector3( );
+var up = new THREE.Vector3( 0, 1, 0 );
 const tick = () =>
 {   //interaction manager
     interactionManager.update();
@@ -711,6 +740,27 @@ const tick = () =>
         mixer.update(delta);
     });
     // if ( mixer[1] ) mixer[1].update( delta );
+    // modelGlb.forEach(function (model){
+    //         model.rotation.y += rotateAround *2;
+    //         model.rotation.set(new THREE.Vector3( 0, 0, Math.PI / 2));
+            
+    // });
+    if(obj)
+    {
+        // obj.rotation.y += rotateAround *2
+        // obj.rotation.y+=0.02;
+        
+        var pt = earthpath.getPoint( eat );
+        var tangent = earthpath.getTangent( eat ).normalize();
+        obj.position.set(pt.x,pt.y,pt.z);
+        // calculate the axis to rotate around
+        axis.crossVectors( up, tangent ).normalize();
+        // calcluate the angle between the up vector and the tangent
+        var radians = Math.acos( up.dot( tangent ) );	
+        eat = (eat >= 1) ? 0 : eat += 0.003;
+    
+    }
+    
     // if ( mixer[2] ) mixer[2].update( delta );
     // if ( mixer[0] ) mixer[0].update( delta );
     // if ( mixer[3] ) mixer[3].update( delta );
@@ -845,6 +895,8 @@ function loadData (){
 
 
 
-
-
+// a simple random function
+                    function randomGenerator(min, max) {
+                        return Math.floor(Math.random() * (max - min) ) + min;
+                      }
 
