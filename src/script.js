@@ -184,10 +184,16 @@ const interactionManager = new InteractionManager(
                 ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
                 
                 ];
+                let search = tempsheetObject.character;         // desired character
+                var arr = all_models.filter( function( el ) {   //to find the string in 2d array then return whole index
+                    return !!~el.indexOf( search );                     // find the desired character in array
+                } );
+                var objectFilename = arr[0][2]; //url Of chosed Object ENABLE THIS !! already chosed the model with "return !!~el.indexof(search)"
+                let objectscale = arr[0][3];    // arr is the selected model by user
                 var i = tempsheetObject.Id;
-                console.log(tempsheetObject);
+                // console.log(tempsheetObject);
                 // console.log('Model Name:: '+all_models[i][1]);
-                // let objectscale = all_models[i][3];
+                
                 // let objectPos_X = all_models[i][4];
                 // let objectPos_Y = all_models[i][5];
                 // let objectRot_X = all_models[i][6];
@@ -197,13 +203,10 @@ const interactionManager = new InteractionManager(
                 var score = tempsheetObject.Total;
                 var age_group = tempsheetObject.group;
                 var name_participant = tempsheetObject.Participant;
-                let search = tempsheetObject.character;
-                var arr = all_models.filter( function( el ) {   //to find the string in 2d array then return whole index
-                    return !!~el.indexOf( search );
-                } );
+               
               
 
-                var objectFilename = arr[0][2]; //url Of chosed Object ENABLE THIS !! already chosed the model with "return !!~el.indexof(search)"
+               
                 console.log('object File:: '+objectFilename);                                                          
                 let modelGlb_source = [];
                
@@ -357,8 +360,8 @@ var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot
 ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
 
 ];
-// const axesHelper = new THREE.AxesHelper(2000 );
-// scene.add( axesHelper );
+const axesHelper = new THREE.AxesHelper(2000 );
+scene.add( axesHelper );
 
 let modelNumber = 19;
 let objecturl = all_models[modelNumber][2];
