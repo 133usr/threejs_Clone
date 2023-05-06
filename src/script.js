@@ -840,7 +840,7 @@ const rotateAround = 2 * Math.PI * (1/60) * (1/60);
 var axis = new THREE.Vector3( );
 var up = new THREE.Vector3( 0, 1, 0 );
 var revolveSpeed = {
-    speedx1:0.000007, speedx2:0.000008, speedx3:0.000009, speedx4:0.00001, speedx5:0.00002, speedx6:0.00003, speedx7:0.00004,
+    speedx1:0.000007, speedx2:0.000008, speedx3:0.000009, speedx4:0.00001, speedx5:0.000009, speedx6:0.00003, speedx7:0.00004,
 };
 const tick = () =>
 {   //interaction manager
@@ -862,27 +862,27 @@ const tick = () =>
         
         if(index<10 && index>=0)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx1); }
+                {orbit_around_circle(index,revolveSpeed.speedx1/2); }
              else
-                {orbit_around_circle(index,revolveSpeed.speedx6); }
+                {orbit_around_circle(index,revolveSpeed.speedx6/2); }
             }
         else if(index<16 && index>=10)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx4); }
-            else{orbit_around_circle(index,revolveSpeed.speedx5);}
+                {orbit_around_circle(index,revolveSpeed.speedx4/2); }
+            else{orbit_around_circle(index,revolveSpeed.speedx5/2);}
             }
         else if(index<30 && index>=16)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx6); }
-            else{orbit_around_circle(index,revolveSpeed.speedx7);}
+                {orbit_around_circle(index,revolveSpeed.speedx6/2); }
+            else{orbit_around_circle(index,revolveSpeed.speedx7/2);}
             }
         else if(index<50 && index>=30)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx2);  }
-            else{orbit_around_circle(index,revolveSpeed.speedx3);}
+                {orbit_around_circle(index,revolveSpeed.speedx2/2);  }
+            else{orbit_around_circle(index,revolveSpeed.speedx3/2);}
             }
         else  
-            orbit_around_circle(index,revolveSpeed.speedx6);  
+            orbit_around_circle(index,revolveSpeed.speedx6/2);  
 
                
         
