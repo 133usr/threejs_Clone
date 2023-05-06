@@ -3,10 +3,11 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
 import gsap from 'gsap'
-import * as dat from 'dat.gui'
+// import * as dat from 'dat.gui'
 import { Object3D } from 'three'
 import TWEEN from '@tweenjs/tween.js'
 import { InteractionManager } from 'three.interactive';
+import GUI from 'lil-gui';
 
 
 
@@ -115,10 +116,11 @@ const interactionManager = new InteractionManager(
     camera,
     renderer.domElement
   );
-  const gui = new dat.GUI({
+  const gui = new GUI({
     closed: true,
     width: 400
-})
+});
+
   var a_br_folder = gui.addFolder('Adult Brothers');
   var a_sis_folder = gui.addFolder('Adult Sisters');
   var y_br_folder = gui.addFolder('Youth & Stud. Brothers');
@@ -130,7 +132,19 @@ const interactionManager = new InteractionManager(
   var a_sis_folder_group2 = a_sis_folder.addFolder('Group2');
   var a_sis_folder_group3 = a_sis_folder.addFolder('Group3');
 //   var y_br_folder_group2 = a_br_folder.addFolder('Group2');
-  
+
+// var gui2 = new guify({
+//     title: "Some Title",
+// });
+
+
+
+
+
+
+
+
+
             function onComplete(allData){ // When the code completes, do this
                 
                     allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
