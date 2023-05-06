@@ -116,10 +116,16 @@ const interactionManager = new InteractionManager(
     camera,
     renderer.domElement
   );
+//   https://lil-gui.georgealways.com/#Guide#Installation
   const gui = new GUI({
-    closed: true,
-    width: 400
-});
+    closeFolders : true,
+    autoPlace: true, //autoPlace - Adds the GUI to document.body and fixes it to the top right of the page.
+    title: 'Participants',
+
+    
+
+}); 
+   
 
   var a_br_folder = gui.addFolder('Adult Brothers');
   var a_sis_folder = gui.addFolder('Adult Sisters');
@@ -337,6 +343,9 @@ const interactionManager = new InteractionManager(
                                 //for GUI
                                 var camerOnClick = {
                                            [name_participant]: function () {
+                                            //first collapse all folders
+                                            gui.close(true);
+                                           
                                              //remove box
                                             var container = document.querySelectorAll("container")[0];
                                             if(container != null)
