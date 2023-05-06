@@ -79,7 +79,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.setClearColor(0x131A3D, 1);
+// renderer.setClearColor(0x131A3D, 1);
 
 
 /**
@@ -336,6 +336,7 @@ const interactionManager = new InteractionManager(
                                             const boxCenter = box.getCenter(new THREE.Vector3());
                                             
                                             // set the camera to frame the box
+
                                             frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject);
                                             
                                           }
@@ -379,6 +380,52 @@ const interactionManager = new InteractionManager(
                             // return resolve;
               };
               
+
+
+//load sky map in background
+              const loader = new THREE.CubeTextureLoader();
+              const texture = loader.load([
+                './assets/skyMap/skymap_posx_1024x1024.jpg',
+                './assets/skyMap/skymap_negx_1024x1024.jpg',
+                './assets/skyMap/skymap_posy_1024x1024.jpg',
+                './assets/skyMap/skymap_negy_1024x1024.jpg',
+                './assets/skyMap/skymap_posz_1024x1024.jpg',
+                './assets/skyMap/skymap_negz_1024x1024.jpg',
+                
+                
+              ]);
+              scene.background = texture;
+
+            //   var skyGeo = new THREE.SphereGeometry(1000, 1000, 250); 
+            //   var loaderTexture  = new THREE.TextureLoader(),
+            //    texture2 = loaderTexture.load( "./assets/eso_milkyway.jpg" );
+            //    var material = new THREE.MeshPhongMaterial({ 
+            //     map: texture2,
+            //    });
+            //    var sky = new THREE.Mesh(skyGeo, material);
+            //    sky.material.side = THREE.BackSide;
+            //    scene.add(sky);
+               
+              
+               
+           
+               
+             
+               
+          
+               
+     
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -508,7 +555,7 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
       .subVectors(camera.position, boxCenter)
       .multiply(new THREE.Vector3(1, 0, 1))
       .normalize();
-
+      camera.updateProjectionMatrix();
     // move the camera to a position distance units way from the center
     // in whatever direction the camera was from the center already
     // camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
@@ -530,11 +577,28 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
         z: z,
         onUpdate: function() {
             controls.enabled = true;
-            controls.target = new THREE.Vector3(x, y, z);
+            // controls.target = new THREE.Vector3(x, y, z);
+            
          }
     } );
     
-    camera.updateProjectionMatrix();
+    gsap.to( camera.target, {
+        duration: 2, // seconds
+        x: x,
+        y: y,
+        z: z,
+        onUpdate: function() {
+            controls.enabled = true;
+            controls.target = new THREE.Vector3(x, y, z);
+            controls.update()
+            
+         }
+    } );
+
+
+
+
+    
     //  x = boxCenter.x;
     //  y = boxCenter.y;
      
