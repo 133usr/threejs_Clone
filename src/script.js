@@ -13,6 +13,28 @@ import { InteractionManager } from 'three.interactive';
  * FOR INTERACTION WITH THE GLTF OBJECTS
  * 
  */
+// Ellipse class, which extends the virtual base class Curve
+function Ellipse( xRadius, yRadius ) {
+	new THREE.EllipseCurve( this );
+    // let curve = new THREE.Curve.call(this)
+	// add radius as a property
+	this.xRadius = xRadius;
+	this.yRadius = yRadius;
+	}
+
+Ellipse.prototype = Object.create( THREE.Curve.prototype );
+	Ellipse.prototype.constructor = Ellipse;
+
+	// define the getPoint function for the subClass
+	Ellipse.prototype.getPoint = function ( t ) {
+
+		var radians = 2 * Math.PI * t;
+
+		return new THREE.Vector3( this.xRadius * Math.cos( radians ),
+								0,
+								this.yRadius * Math.sin( radians ) );
+
+	};
 
 /**
  * GET DATA FROM GSHEETS FIRST
@@ -36,6 +58,9 @@ let gs_data2threejs =[[]]; //TWO DIMENSIONAL ARRAY
 var mixer_total;
 var loader2 = new GLTFLoader();
 let modelGlb=[];
+let always_Zero=[];     // WE WANT DIFFERENT VARS WITH 0 VALUE INSIDE THE ORBIT FUNCTION, ARRAY WULD BE GOOD
+  
+
 let abc=[];
 const mixers = [];
 
@@ -147,7 +172,8 @@ const interactionManager = new InteractionManager(
 
             }
 
-
+            let model_OrbitPath =[];
+            
 
 
 
@@ -282,7 +308,7 @@ const interactionManager = new InteractionManager(
                                 mixer.clipAction(glb.animations[0]).play();
                                 mixers.push(mixer);
                                 console.log(i)
-
+                                model_OrbitPath[i] = new Ellipse( distance_travel_score_X, distance_travel_score_Z );
                                 /**
                                  * ADD BUTTONS TO GUI
                                  */
@@ -308,6 +334,12 @@ const interactionManager = new InteractionManager(
                                           }
 
                                 };
+
+                                //a var for orbit control
+                                
+
+                                 always_Zero[i] = 0;
+   
                                     
                                console.log("age group is :"+age_group);
                                 if(age_group==='Adult Brother1')
@@ -703,34 +735,18 @@ controls.maxDistance =5000
 /**
  * Animate
  */
-// Ellipse class, which extends the virtual base class Curve
-function Ellipse( xRadius, yRadius ) {
-	new THREE.EllipseCurve( this );
-    // let curve = new THREE.Curve.call(this)
-	// add radius as a property
-	this.xRadius = xRadius;
-	this.yRadius = yRadius;
-	}
-
-Ellipse.prototype = Object.create( THREE.Curve.prototype );
-	Ellipse.prototype.constructor = Ellipse;
-
-	// define the getPoint function for the subClass
-	Ellipse.prototype.getPoint = function ( t ) {
-
-		var radians = 2 * Math.PI * t;
-
-		return new THREE.Vector3( this.xRadius * Math.cos( radians ),
-								0,
-								this.yRadius * Math.sin( radians ) );
-
-	};
 
 const rotateAround = 2 * Math.PI * (1/60) * (1/60);
-let earthpath = new Ellipse( 42, -42 );
-let eat= 0;
+  //score will be here as this is the orbit distance 
+
+  
+
+
 var axis = new THREE.Vector3( );
 var up = new THREE.Vector3( 0, 1, 0 );
+var revolveSpeed = {
+    speedx1:0.000007, speedx2:0.000008, speedx3:0.000009, speedx4:0.00001, speedx5:0.00002, speedx6:0.00003, speedx7:0.00004,
+};
 const tick = () =>
 {   //interaction manager
     interactionManager.update();
@@ -740,24 +756,60 @@ const tick = () =>
         mixer.update(delta);
     });
     // if ( mixer[1] ) mixer[1].update( delta );
-    // modelGlb.forEach(function (model){
-    //         model.rotation.y += rotateAround *2;
-    //         model.rotation.set(new THREE.Vector3( 0, 0, Math.PI / 2));
+    modelGlb.forEach(function (model,index){
+        // var pt = model_OrbitPath[index].getPoint( eat );
+        // var tangent = model_OrbitPath[index].getTangent( eat ).normalize();
+        // modelGlb[index].position.set(pt.x,pt.y,pt.z);
+        // // calculate the axis to rotate around
+        // axis.crossVectors( up, tangent ).normalize();
+        // // calcluate the angle between the up vector and the tangent
+        // var radians = Math.acos( up.dot( tangent ) );	
+        
+        if(index<10 && index>=0)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx1,always_Zero[index]); }
+             else
+                {orbit_around_circle(index,revolveSpeed.speedx4,always_Zero[index]); }
+            }
+        else if(index<16 && index>=10)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx2,always_Zero[index]); }
+            else{orbit_around_circle(index,revolveSpeed.speedx3,always_Zero[index]);}
+            }
+        else if(index<30 && index>=16)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx4,always_Zero[index]); }
+            else{orbit_around_circle(index,revolveSpeed.speedx5,always_Zero[index]);}
+            }
+        else if(index<50 && index>=30)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx1,always_Zero[index]);  }
+            else{orbit_around_circle(index,revolveSpeed.speedx4,always_Zero[index]);}
+            }
+        else  
+            orbit_around_circle(index,revolveSpeed.speedx6,always_Zero[index]);  
+
+               
+        
+             // speed of the orbit // the nearer they are the faster they get
             
-    // });
+            
+    });
+
+   
+
+
     if(obj)
     {
-        // obj.rotation.y += rotateAround *2
-        // obj.rotation.y+=0.02;
         
-        var pt = earthpath.getPoint( eat );
-        var tangent = earthpath.getTangent( eat ).normalize();
-        obj.position.set(pt.x,pt.y,pt.z);
-        // calculate the axis to rotate around
-        axis.crossVectors( up, tangent ).normalize();
-        // calcluate the angle between the up vector and the tangent
-        var radians = Math.acos( up.dot( tangent ) );	
-        eat = (eat >= 1) ? 0 : eat += 0.003;
+        // var pt = earthpath.getPoint( eat );
+        // var tangent = earthpath.getTangent( eat ).normalize();
+        // obj.position.set(pt.x,pt.y,pt.z);
+        // // calculate the axis to rotate around
+        // axis.crossVectors( up, tangent ).normalize();
+        // // calcluate the angle between the up vector and the tangent
+        // var radians = Math.acos( up.dot( tangent ) );	
+        // eat = (eat >= 1) ? 0 : eat += 0.003;       // speed of the orbit
     
     }
     
@@ -795,6 +847,33 @@ const tick = () =>
 }
 
 tick()
+
+
+
+function orbit_around_circle(index,speed,always_0){
+    // let always_0 = always_Zero[index];
+    var pt = model_OrbitPath[index].getPoint( always_Zero[index] );
+    var tangent = model_OrbitPath[index].getTangent( always_Zero[index] ).normalize();
+    modelGlb[index].position.set(pt.x,pt.y,pt.z);
+    // calculate the axis to rotate around
+    axis.crossVectors( up, tangent ).normalize();
+    // calcluate the angle between the up vector and the tangent
+    var radians = Math.acos( up.dot( tangent ) );	
+    always_Zero[index] = (always_Zero[index] >= 1) ? 0 : always_Zero[index] += speed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 loadData()
 function loadData (){
