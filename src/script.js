@@ -9,10 +9,9 @@ import TWEEN from '@tweenjs/tween.js'
 import { InteractionManager } from 'three.interactive';
 
 
-/**
- * FOR INTERACTION WITH THE GLTF OBJECTS
- * 
- */
+
+
+
 // Ellipse class, which extends the virtual base class Curve
 function Ellipse( xRadius, yRadius ) {
 	new THREE.EllipseCurve( this );
@@ -90,6 +89,14 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -240,8 +247,8 @@ const interactionManager = new InteractionManager(
                 let distance_travel_score_Z;
                 let random_distance_Z;
                 if(distance_travel_score_X<20){
-                    distance_travel_score_X =  2500;
-                    distance_travel_score_Z = -2500;    
+                    distance_travel_score_X =  3500;
+                    distance_travel_score_Z = -3500;    
 
                     }else{
                         distance_travel_score_X = distance_travel_score_X/20;
@@ -268,9 +275,9 @@ const interactionManager = new InteractionManager(
                                 
                              
                                modelGlb[i].scale.set(objectscale,objectscale,objectscale);
-                               modelGlb[i].rotateX(objectRot_X);
-                               modelGlb[i].rotateY(objectRot_Y);
-                               modelGlb[i].rotateZ(objectRot_Z);
+                            //    modelGlb[i].rotateX(objectRot_X);
+                            //    modelGlb[i].rotateY(objectRot_Y);
+                            //    modelGlb[i].rotateZ(objectRot_Z);
                                modelGlb[i].position.set(distance_travel_score_X,objectPos_Y,distance_travel_score_Z); 
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
@@ -301,7 +308,7 @@ const interactionManager = new InteractionManager(
                                     // repeat: 1,
                                     ease: 'power3.inOut'
                                 });
-                                modelGlb[i].rotateY(Math.PI/2)
+                                modelGlb[i].rotateY(Math.PI)
                                 scene.add(modelGlb[i]);
                                 abc[i] = modelGlb[i].children[0];
                                 const mixer = new THREE.AnimationMixer(abc[i]);
@@ -434,25 +441,25 @@ let x_y_exchange = all_models[modelNumber][9];
 // console.log('scale:'+objectscale+'  posx: '+objectPos_X+'  posy: '+objectPos_Y+'  rotateY: '+objectRot_Y+'  posx: ');
 
 // const loader22 = new GLTFLoader();
-var obj;
-loader22.load(objecturl,function(glb){
+// var obj;
+// loader22.load(objecturl,function(glb){
     
-    glb.scene.scale.set(objectscale,objectscale,objectscale);
-    if (x_y_exchange.includes('false')){
-        glb.scene.position.set(objectPos_X,objectPos_Y,100); //last one is score
-        }else
-            {glb.scene.position.set(900,objectPos_Y,objectPos_X); //first one is score
-                console.log('x_y_exchangef'); 
-            }
+//     glb.scene.scale.set(objectscale,objectscale,objectscale);
+//     if (x_y_exchange.includes('false')){
+//         glb.scene.position.set(objectPos_X,objectPos_Y,100); //last one is score
+//         }else
+//             {glb.scene.position.set(900,objectPos_Y,objectPos_X); //first one is score
+//                 console.log('x_y_exchangef'); 
+//             }
     
-    glb.scene.rotateX(objectRot_X);
-    glb.scene.rotateY(objectRot_Y);
-    glb.scene.rotateZ(objectRot_Z)
-    obj= glb.scene;
-   scene.add(obj);
-},function(error){
-    console.log("error occ");
-});
+//     glb.scene.rotateX(objectRot_X);
+//     glb.scene.rotateY(objectRot_Y);
+//     glb.scene.rotateZ(objectRot_Z)
+//     obj= glb.scene;
+//    scene.add(obj);
+// },function(error){
+//     console.log("error occ");
+// });
 
 
 
@@ -511,27 +518,28 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
     camera.near = boxSize / 200;
     camera.far = boxSize * 1000;
     // 
-    var x = boxCenter.x+12;  // + to zoomout and - to zoom in
+    var x = boxCenter.x+6;  // + to zoomout and - to zoom in
     var y = boxCenter.y;
     var z = boxCenter.z-10; //to cneter it
+    
     // console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
     gsap.to( camera.position, {
-        duration: 3, // seconds
+        duration: 2, // seconds
         x: x,
         y: y,
         z: z,
         onUpdate: function() {
             controls.enabled = true;
-            
+            controls.target = new THREE.Vector3(x, y, z);
          }
     } );
-
+    
     camera.updateProjectionMatrix();
-     x = boxCenter.x;
-     y = boxCenter.y;
+    //  x = boxCenter.x;
+    //  y = boxCenter.y;
      
     scoreBox_CSS(x,y,tempsheetObject);                       
-
+    
     // point the camera to look at the center of the box
     // camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
   }
@@ -598,8 +606,8 @@ const planets = [
     // {name: 'galaxy', sizeRatio: 100/277, position: 75, rotation: 0.002},
 ]
 
-const orbitRadius = [15, 20, 25, 30, 40, 50, 60, 70]
-
+// const orbitRadius = [15, 20, 25, 30, 40, 50, 60, 70]
+const orbitRadius = [3500,3400,3300,3200,3000,2000,1000, 60, 70]
 const orbitsObject3D = []
 const planetsObject3D = []
 
@@ -924,12 +932,15 @@ function loadData (){
                                
                                 gsap.to( camera.position, {
                                     duration: 1, // seconds
-                                    x: 500,
-                                    y: 4,
-                                    z: 4,
+                                    x: 10,
+                                    y: 40,
+                                    z: 80,
                                     onUpdate: function() {
                                         controls.enabled = true;
                                         console.log('clicked outside\n remove textbox');
+                                        //center the new Jerusalem
+                                        controls.target = new THREE.Vector3(0, 10, 0);
+                                        controls.update();
                                         //remove box
                                         var container = document.querySelectorAll("container")[0];
                                         if(container != null)
