@@ -418,8 +418,8 @@ var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot
 ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
 
 ];
-const axesHelper = new THREE.AxesHelper(2000 );
-scene.add( axesHelper );
+// const axesHelper = new THREE.AxesHelper(2000 );
+// scene.add( axesHelper );
 
 let modelNumber = 19;
 let objecturl = all_models[modelNumber][2];
@@ -767,27 +767,27 @@ const tick = () =>
         
         if(index<10 && index>=0)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx1,always_Zero[index]); }
+                {orbit_around_circle(index,revolveSpeed.speedx1); }
              else
-                {orbit_around_circle(index,revolveSpeed.speedx4,always_Zero[index]); }
+                {orbit_around_circle(index,revolveSpeed.speedx6); }
             }
         else if(index<16 && index>=10)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx2,always_Zero[index]); }
-            else{orbit_around_circle(index,revolveSpeed.speedx3,always_Zero[index]);}
+                {orbit_around_circle(index,revolveSpeed.speedx4); }
+            else{orbit_around_circle(index,revolveSpeed.speedx5);}
             }
         else if(index<30 && index>=16)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx4,always_Zero[index]); }
-            else{orbit_around_circle(index,revolveSpeed.speedx5,always_Zero[index]);}
+                {orbit_around_circle(index,revolveSpeed.speedx6); }
+            else{orbit_around_circle(index,revolveSpeed.speedx7);}
             }
         else if(index<50 && index>=30)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx1,always_Zero[index]);  }
-            else{orbit_around_circle(index,revolveSpeed.speedx4,always_Zero[index]);}
+                {orbit_around_circle(index,revolveSpeed.speedx2);  }
+            else{orbit_around_circle(index,revolveSpeed.speedx3);}
             }
         else  
-            orbit_around_circle(index,revolveSpeed.speedx6,always_Zero[index]);  
+            orbit_around_circle(index,revolveSpeed.speedx6);  
 
                
         
@@ -799,19 +799,6 @@ const tick = () =>
    
 
 
-    if(obj)
-    {
-        
-        // var pt = earthpath.getPoint( eat );
-        // var tangent = earthpath.getTangent( eat ).normalize();
-        // obj.position.set(pt.x,pt.y,pt.z);
-        // // calculate the axis to rotate around
-        // axis.crossVectors( up, tangent ).normalize();
-        // // calcluate the angle between the up vector and the tangent
-        // var radians = Math.acos( up.dot( tangent ) );	
-        // eat = (eat >= 1) ? 0 : eat += 0.003;       // speed of the orbit
-    
-    }
     
     // if ( mixer[2] ) mixer[2].update( delta );
     // if ( mixer[0] ) mixer[0].update( delta );
@@ -850,7 +837,7 @@ tick()
 
 
 
-function orbit_around_circle(index,speed,always_0){
+function orbit_around_circle(index,speed){
     // let always_0 = always_Zero[index];
     var pt = model_OrbitPath[index].getPoint( always_Zero[index] );
     var tangent = model_OrbitPath[index].getTangent( always_Zero[index] ).normalize();
