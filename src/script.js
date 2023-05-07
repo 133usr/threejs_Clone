@@ -840,8 +840,9 @@ const rotateAround = 2 * Math.PI * (1/60) * (1/60);
 var axis = new THREE.Vector3( );
 var up = new THREE.Vector3( 0, 1, 0 );
 var revolveSpeed = {
-    speedx1:0.000007, speedx2:0.000008, speedx3:0.000009, speedx4:0.00001, speedx5:0.000009, speedx6:0.00003, speedx7:0.00004,
+    speedx1:0.000001, speedx2:0.000002, speedx3:0.000003, speedx4:0.000004, speedx5:0.000005, speedx6:0.000006, speedx7:0.000007,
 };
+
 const tick = () =>
 {   //interaction manager
     interactionManager.update();
