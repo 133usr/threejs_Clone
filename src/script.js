@@ -168,9 +168,8 @@ const interactionManager = new InteractionManager(
 
                  
                  // myobje.map(x => console.log(x.Id)); to loop it through                     
-                let modelGlb_source = [];
-                var i;
-                var mesh =[];
+               
+             
                     var participants = Object.keys(sheet_arrayObject).length;
                         console.log(participants);
               
@@ -222,16 +221,16 @@ const interactionManager = new InteractionManager(
                 ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
                 ['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
                 ['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
-                ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '4', '1','9','0','4.2','0','true'],
+                ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '0.4', '1','9','0','4.2','0','true'],
                 ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
                 ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
                 ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
                 ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','3.2','0','false'],
                 ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','4.2','0','false'],
-                ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.05', '1','9','0','4.2','0','false'],
+                ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.02', '1','9','0','4.2','0','false'],
                 ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','6.2','0','false'],
                 
-                ['18','Plane with scene','./assets/glb/low-size/plane__stylized_scene.glb', '2', '-700','9','0','4.2','0','false'],
+               
                 ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','4.2','0','false'],
                 ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','4.2','0','false'],//
                 ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
@@ -417,8 +416,16 @@ const interactionManager = new InteractionManager(
                 
                 
               ]);
+            //   scene.background.color)
               scene.background = texture;
+                        
+            // Set the texture to repeat horizontally and vertically
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
 
+            // Set the initial offset value
+            var offset = new THREE.Vector2(0, 0);
+              
             //   var skyGeo = new THREE.SphereGeometry(1000, 1000, 250); 
             //   var loaderTexture  = new THREE.TextureLoader(),
             //    texture2 = loaderTexture.load( "./assets/eso_milkyway.jpg" );
@@ -741,10 +748,14 @@ var sphereTab = [];
        var lumiereS = new THREE.MeshPhongMaterial({
             emissive: '#C278F4'
         });
-        sphereTab.push(new THREE.Mesh(new THREE.SphereGeometry(Math.random() * 1, 20, 20), lumiereS));
+        sphereTab.push(new THREE.Mesh(new THREE.SphereGeometry(Math.random() * 2, 20, 20), lumiereS));
     }
     for (var i = 0; i < sphereTab.length; i++) {
-        sphereTab[i].position.set(Math.random() * 1200 - 500, Math.random() * 1200 - 500, Math.random() * 1200 - 500);
+        //where (x,y,z)
+        sphereTab[i].position.set(Math.random() * 1200 - 500, Math.random() * 1200 - 500, Math.random() * 1200 - 500); 
+  
+        // console.log(Math.random() * 1200 - 500+" sdfsdfs");
+        // sphereTab[i].position.set(2121,30,3121 );
         scene.add(sphereTab[i]);
     }
     
@@ -910,6 +921,10 @@ const tick = () =>
     // var axis = new THREE.Vector3(0, 1, 0).normalize();
     // if (galaxy) sun.rotateOnAxis(axis,0.01)
 
+    //rotate the scene.background
+    offset.x +=0.01;
+    texture.offset = offset;
+    // console.log(offset.x,offset.y);
 
     orbitsObject3D.forEach((group, index) => {
         group.rotation.y += planets[index].rotation
