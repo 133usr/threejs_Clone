@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=UTF-8 />
+    <!-- <link rel="stylesheet" type="text/css" href="score_board_styles.css" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"> 
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lil-gui@0.18.1/dist/lil-gui.min.css">
+<link rel="stylesheet" href="./Table6_files/bootstrap.min.css">
+
+<link rel="stylesheet" href="./Table6_files/style(1).css">
+<link rel="stylesheet" href="./stars_styles.css">
+
+  </head>
+  <body>
+    <!-- <div class="text-box">
+      <div class="heading">To infinity and Beyond</div>
+      <div class="button-wrapper">
+          <div class="button">Learn More</div>
+          <div class="button">Contact Us</div>
+      </div>
+    </div> -->
+    
+    <div id="scoreButton">
+      <button class="custom-btn btn-10" onclick = "window.location.href = '/index.html';">New Jerusalem</button>
+    </div>
+
+    <div class="content" style="overflow:scroll;">
+        <div class="container">
+        <h2 class="mb-5">Score Board</h2>
+        <div class="table-responsive" style="overflow:scroll;">
+        <table id="score-table" class="table table-striped custom-table" style="overflow:scroll;">
+        <thead>
+        <tr>
+        
+        <th class="sticky-col" scope="col">Name</th>
+        <th scope="col">Total<br>(Billion Km)</th>
+        <th scope="col">Fruits</th>
+        <th scope="col">S+M<br>Preach</th>
+        <th scope="col">Sign</th>
+        <th scope="col">Chapter<br>Complete</th>
+        <th scope="col">Bonus</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr scope="row">
+        </tbody>
+        </table>
+        </div>
+        </div>
+        </div>
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+<script>
+
+
+
+
+
+
+
+
+  function onComplete(allData){ // When the code completes, do this
+                
+                allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
+                allData = allData.replace('"[{','[{'); //dont' know why data has extra ["  so remove them
+                allData = allData.replace('}]"','}]');     
+                // console.log(allData);    
+                var sheet_arrayObject = JSON.parse(allData);
+
+                console.log(sheet_arrayObject);
+
+                                
+                $(function() {
+                    $.each(sheet_arrayObject, function(i, item) {
+                        var $tr = $('<tr>').append(
+                            $('<td class="sticky-col">').text(item.Participant),
+                            $('<td>').text(item.Total),
+                            $('<td>').text(item.totalFruits),
+                            $('<td>').text(item.totalPreach+item.totalPreach_m),
+                            $('<td>').text(item.totalSign),        
+                            $('<td>').text(item.chap_complete),
+                            $('<td>').text(item.bonus)    
+                            ).appendTo('#score-table');
+                        // console.log($tr.wrap('<p>').html());
+                    });
+                });
+  
+            }
+
+loadData()
+function loadData (){
+    let result;
+    // alert('executing')
+    // ========================================================================================================================================================================================
+    let url ="https://docs.google.com/spreadsheets/d/e/2PACX-1vQidY8rz1hBWMGH3hfskku6TDrqHKxLSCAwDiCV2lmmw-Ec5BDdycbwEvfDu5pKtKf45OeGQ81C7M3q/pub?gid=1245805841&single=true&output=csv&range=U2"          
+                  fetch(url) 
+                  .then(response => response.text())
+                  .then(text => { //what to do with result?
+                   result = text; 
+                   onComplete(result);
+                }); 
+                }
+
+</script>
+
+
+
+
+
+
+
+
+        <script src="./Table6_files/jquery-3.3.1.min.js.download"></script>
+        <!-- <script src="./popper.min.js.download"></script> -->
+        <script src="./Table6_files/bootstrap.min.js.download"></script>
+        <!-- <script src="./Table6_files/main.js.download"></script> -->
+   
+    
+<script src="./Table6_files/jquery-3.3.1.min.js.download"></script>
+<!-- <script src="./Table6_files/popper.min.js.download"></script> -->
+<!-- <script src="./Table6_files/bootstrap.min.js.download"></script> -->
+
+
+  </body>
+</html>
