@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"> 
   
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
 <link rel="stylesheet" href="./Table6_files/bootstrap.min.css">
 
 <link rel="stylesheet" href="./Table6_files/style(1).css">
@@ -53,6 +53,29 @@
         <div id="stars2"></div>
         <div id="stars3"></div>
 <script>
+
+
+gui();
+function gui (){
+    alert('es')
+    const gui = new GUI({
+    closeFolders : true,
+    autoPlace: true, //autoPlace - Adds the GUI to document.body and fixes it to the top right of the page.
+    title: 'Participants',
+
+    
+
+}); 
+const scoreBoard = {
+    
+	Scoreboard: function() { window.location.href = './scoreboard_code/score_board.html' }
+}
+    gui.add(scoreBoard,'Scoreboard');
+
+
+}
+
+
   function onComplete(allData){ // When the code completes, do this
                 
                 allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them

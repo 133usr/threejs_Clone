@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"> 
   
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lil-gui@0.18.1/dist/lil-gui.min.css">
 <link rel="stylesheet" href="./Table6_files/bootstrap.min.css">
 
 <link rel="stylesheet" href="./Table6_files/style(1).css">
@@ -22,8 +22,9 @@
       </div>
     </div> -->
     
-
-  
+    <div id="scoreButton">
+      <button class="custom-btn btn-10" onclick = "window.location.href = '/index.html';">New Jerusalem</button>
+    </div>
 
     <div class="content" style="overflow:scroll;">
         <div class="container">
@@ -53,6 +54,14 @@
         <div id="stars2"></div>
         <div id="stars3"></div>
 <script>
+
+
+
+
+
+
+
+
   function onComplete(allData){ // When the code completes, do this
                 
                 allData = allData.replace(/[""]+/g,'"'); //dont' know why data has extra ""  so remove them
