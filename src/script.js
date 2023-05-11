@@ -53,9 +53,7 @@ Ellipse.prototype = Object.create( THREE.Curve.prototype );
  *               
  *               
  */
-let gs_data2threejs =[[]]; //TWO DIMENSIONAL ARRAY
 
-var mixer_total;
 var loader2 = new GLTFLoader();
 let modelGlb=[];
 let always_Zero=[];     // WE WANT DIFFERENT VARS WITH 0 VALUE INSIDE THE ORBIT FUNCTION, ARRAY WULD BE GOOD
@@ -116,7 +114,7 @@ const interactionManager = new InteractionManager(
     camera,
     renderer.domElement
   );
-//   https://lil-gui.georgealways.com/#Guide#Installation
+//   migrate from dat ui to https://lil-gui.georgealways.com/#Guide#Installation
   const gui = new GUI({
     closeFolders : true,
     autoPlace: true, //autoPlace - Adds the GUI to document.body and fixes it to the top right of the page.
@@ -139,13 +137,11 @@ const interactionManager = new InteractionManager(
   var a_sis_folder_group3 = a_sis_folder.addFolder('Group3');
 //   var y_br_folder_group2 = a_br_folder.addFolder('Group2');
 
-// var gui2 = new guify({
-//     title: "Some Title",
-// });
-
-
-
-
+const scoreBoard = {
+    
+	Scoreboard: function() { window.location.href = './scoreboard_code/score_board.html' }
+}
+    gui.add(scoreBoard,'Scoreboard');
 
 
 
@@ -392,6 +388,8 @@ const interactionManager = new InteractionManager(
                                 
                                 else if(age_group==='Youth Sister')
                                 y_sis_folder.add(camerOnClick, name_participant);
+
+                                
 
                                 // collapse folder1
                                 // folder1.close();
