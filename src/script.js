@@ -271,7 +271,7 @@ const scoreBoard = {
                         distance_travel_score_Z = -Math.abs(distance_travel_score_X);
                         random_distance_Z       = randomGenerator(distance_travel_score_Z,distance_travel_score_X);
 
-                        console.log("distance_travel_score for "+tempsheetObject.Participant+" and Y is: "+distance_travel_score_X+"   "+distance_travel_score_Z);
+                        // console.log("distance_travel_score for "+tempsheetObject.Participant+" and Y is: "+distance_travel_score_X+"   "+distance_travel_score_Z);
                     }
 
 
@@ -281,7 +281,7 @@ const scoreBoard = {
               
 
                
-                console.log('object File:: '+objectFilename);                                                          
+                // console.log('object File:: '+objectFilename);                                                          
                 let modelGlb_source = [];
                 modelGlb_source[i]= objectFilename;
                            
@@ -329,7 +329,7 @@ const scoreBoard = {
                                 const mixer = new THREE.AnimationMixer(abc[i]);
                                 mixer.clipAction(glb.animations[0]).play();
                                 mixers.push(mixer);
-                                console.log(i)
+                                // console.log(i)
                                 model_OrbitPath[i] = new Ellipse( distance_travel_score_X, distance_travel_score_Z );
                                 /**
                                  * ADD BUTTONS TO GUI
@@ -367,7 +367,7 @@ const scoreBoard = {
                                  always_Zero[i] = 0;
    
                                     
-                               console.log("age group is :"+age_group);
+                            //    console.log("age group is :"+age_group);
                                 if(age_group==='Adult Brother1')
                                 a_br_folder_group1.add(camerOnClick, name_participant );
 
@@ -505,7 +505,7 @@ var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot
 
 let modelNumber = 19;
 let objecturl = all_models[modelNumber][2];
-console.log('Model Name:: '+all_models[modelNumber][1]);
+// console.log('Model Name:: '+all_models[modelNumber][1]);
 let objectscale = all_models[modelNumber][3];
 let objectPos_X = 1; //this should be in - of score but 0 in the end then it will reach the center
 let objectPos_Y = all_models[modelNumber][5];
@@ -849,9 +849,10 @@ const rotateAround = 2 * Math.PI * (1/60) * (1/60);
 var axis = new THREE.Vector3( );
 var up = new THREE.Vector3( 0, 1, 0 );
 var revolveSpeed = {
-    speedx1:0.000001, speedx2:0.000002, speedx3:0.000003, speedx4:0.000004, speedx5:0.000005, speedx6:0.000006, speedx7:0.000007,
+    speedx1:1/100000, speedx2:2/100000, speedx3:3/100000, speedx4:4/100000, speedx5:5/100000, speedx6:6/100000, speedx7:7/100000,
+    speedx8:8/100000, speedx9:9/100000, speedx10:10/100000, speedx11:11/100000, speedx12:12/100000, speedx13:13/100000, speedx14:14/100000,
 };
-
+var count =0;
 const tick = () =>
 {   //interaction manager
     interactionManager.update();
@@ -869,31 +870,99 @@ const tick = () =>
         // axis.crossVectors( up, tangent ).normalize();
         // // calcluate the angle between the up vector and the tangent
         // var radians = Math.acos( up.dot( tangent ) );	
+        count++;
+        if(count<50000){
         
-        if(index<10 && index>=0)
+                if(index<10 && index>=0)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx1); }
+                    else
+                        {orbit_around_circle(index,revolveSpeed.speedx2); }
+                    }
+                else if(index<16 && index>=10)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx3); }
+                    else{orbit_around_circle(index,revolveSpeed.speedx4);}
+                    }
+                else if(index<30 && index>=16)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx5); }
+                    else{orbit_around_circle(index,revolveSpeed.speedx6);}
+                    }
+                else if(index<50 && index>=30)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx7);  }
+                    else{orbit_around_circle(index,revolveSpeed.speedx8);}
+                    }
+                else  
+                    orbit_around_circle(index,revolveSpeed.speedx10);  
+
+                    
+            }
+         else if(count>50000 && count<180000)
+            { 
+                //   console.log('>50000');
+                if(index<10 && index>=0)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx1/2); }
+                else
+                    {orbit_around_circle(index,revolveSpeed.speedx2/2); }
+                }
+            else if(index<16 && index>=10)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx3/2); }
+                else{orbit_around_circle(index,revolveSpeed.speedx4/2);}
+                }
+            else if(index<30 && index>=16)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx5/2); }
+                else{orbit_around_circle(index,revolveSpeed.speedx6/2);}
+                }
+            else if(index<50 && index>=30)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx7/2);  }
+                else{orbit_around_circle(index,revolveSpeed.speedx8/2);}
+                }
+            else  
+                orbit_around_circle(index,revolveSpeed.speedx10/2);  
+
+                
+            }   
+
+        else if(count>180000 && count<280000)
+        {   
+            // console.log('>180000');
+            if(index<10 && index>=0)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx1/2); }
-             else
-                {orbit_around_circle(index,revolveSpeed.speedx6/2); }
+                {orbit_around_circle(index,revolveSpeed.speedx1*2); }
+            else
+                {orbit_around_circle(index,revolveSpeed.speedx2*2); }
             }
         else if(index<16 && index>=10)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx4/2); }
-            else{orbit_around_circle(index,revolveSpeed.speedx5/2);}
+                {orbit_around_circle(index,revolveSpeed.speedx3*2); }
+            else{orbit_around_circle(index,revolveSpeed.speedx4*2);}
             }
         else if(index<30 && index>=16)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx6/2); }
-            else{orbit_around_circle(index,revolveSpeed.speedx7/2);}
+                {orbit_around_circle(index,revolveSpeed.speedx5*2); }
+            else{orbit_around_circle(index,revolveSpeed.speedx6*2);}
             }
         else if(index<50 && index>=30)
             {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx2/2);  }
-            else{orbit_around_circle(index,revolveSpeed.speedx3/2);}
+                {orbit_around_circle(index,revolveSpeed.speedx7*2);  }
+            else{orbit_around_circle(index,revolveSpeed.speedx8*2);}
             }
         else  
-            orbit_around_circle(index,revolveSpeed.speedx6/2);  
+            orbit_around_circle(index,revolveSpeed.speedx10*2);  
 
+            
+           
+        }   
+        if(count == 280000)
+        {count =1;
+        // console.log('count reset');
+    }
                
         
              // speed of the orbit // the nearer they are the faster they get
@@ -948,9 +1017,10 @@ tick()
 
 function orbit_around_circle(index,speed){
     // let always_0 = always_Zero[index];
+    
     var pt = model_OrbitPath[index].getPoint( always_Zero[index] );
     var tangent = model_OrbitPath[index].getTangent( always_Zero[index] ).normalize();
-    modelGlb[index].position.set(pt.x,pt.y,pt.z);
+    modelGlb[index].position.set(pt.x,pt.y+index,pt.z);
     // calculate the axis to rotate around
     axis.crossVectors( up, tangent ).normalize();
     // calcluate the angle between the up vector and the tangent

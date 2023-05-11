@@ -26,13 +26,13 @@
       <button class="custom-btn btn-10" onclick = "window.location.href = '/index.html';">New Jerusalem</button>
     </div>
 
-    <div class="content" style="overflow:scroll;">
+    <div class="content" >
         <div class="container">
         <h2 class="mb-5">Score Board</h2>
-        <div class="table-responsive" style="overflow:scroll;">
-        <table id="score-table" class="table table-striped custom-table" style="overflow:scroll;">
+        <div class="table-responsive" >
+        <table id="score-table" class="table table-striped custom-table" >
         <thead>
-        <tr>
+        <tr class="headRow">
         
         <th class="sticky-col" scope="col">Name</th>
         <th scope="col">Total<br>(Billion Km)</th>
@@ -70,7 +70,7 @@
                 // console.log(allData);    
                 var sheet_arrayObject = JSON.parse(allData);
 
-                console.log(sheet_arrayObject);
+                // console.log(sheet_arrayObject);
 
                                 
                 $(function() {

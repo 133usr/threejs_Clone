@@ -27,6 +27,8 @@ h2 {
 
 .custom-table {
   min-width: 400px; 
+  max-height: 600px;
+  overflow: scroll;
   }
   .custom-table thead tr, .custom-table thead th {
     padding-bottom: 30px;
@@ -76,11 +78,14 @@ h2 {
         color: #fdd114; }
   .custom-table .td-box-wrap {
     padding: 0; }
-  .custom-table .box {
+
+  /* .custom-table .box {
     background: #fff;
     border-radius: 4px;
     margin-top: 15px;
     margin-bottom: 15px; }
+
+     */
     .custom-table .box td, .custom-table .box th {
       border: none !important; }
 
@@ -94,11 +99,15 @@ h2 {
        
       }
 
-      .custom-table tr th:first-child, .custom-table td:first-child{
+     
+/* 
+       .headRow thead  {
         position: sticky;
         width: 100px;
         left: 0;
-        z-index: 10; 
-      }
+        z-index: 10;
+       
+      } */
+    
 
-      
+     
