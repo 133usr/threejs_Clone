@@ -57,7 +57,7 @@ Ellipse.prototype = Object.create( THREE.Curve.prototype );
 var loader2 = new GLTFLoader();
 let modelGlb=[];
 let always_Zero=[];     // WE WANT DIFFERENT VARS WITH 0 VALUE INSIDE THE ORBIT FUNCTION, ARRAY WULD BE GOOD
-  
+let spriteText = [];
 
 let abc=[];
 const mixers = [];
@@ -78,7 +78,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-// renderer.setClearColor(0x131A3D, 1);
+renderer.setClearColor(0x131A3D, 1);
 
 
 /**
@@ -106,7 +106,39 @@ const sizes = {
 // Base camera
 const camera = new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 1, 2000)
 scene.add(camera)
-camera.position.set(0, 15, 1000)
+camera.position.set(500, 15, 500)
+
+// here's a setter for object to follow , you can access it by  
+const followObject = {
+    Object_obj : null
+}
+
+// getting property
+Object.defineProperty(followObject, "getObject_obj", {
+    get : function () {
+        return this.Object_obj;
+    }
+});
+
+// setting property
+Object.defineProperty(followObject, "changeObject_obj", {
+    set : function (value) {
+        this.Object_obj = value;
+    }
+});
+
+// console.log(followObject.Object_obj); // Monica
+
+// // changing the property value
+// followObject.changeName = 'Sarah';
+
+// console.log(followObject.Object_obj); // Sarah
+
+
+
+
+
+
 
 
 const interactionManager = new InteractionManager(
@@ -196,6 +228,7 @@ const scoreBoard = {
 
             let model_OrbitPath =[];
             
+            
 
 
 
@@ -284,6 +317,7 @@ const scoreBoard = {
                 // console.log('object File:: '+objectFilename);                                                          
                 let modelGlb_source = [];
                 modelGlb_source[i]= objectFilename;
+              
                            
                                 loader2.load(modelGlb_source[i],function(glb){
                                 modelGlb [i]= glb.scene;
@@ -293,7 +327,7 @@ const scoreBoard = {
                             //    modelGlb[i].rotateX(objectRot_X);
                             //    modelGlb[i].rotateY(objectRot_Y);
                             //    modelGlb[i].rotateZ(objectRot_Z);
-                               modelGlb[i].position.set(distance_travel_score_X,objectPos_Y,distance_travel_score_Z); 
+                               modelGlb[i].position.set(distance_travel_score_X,0,distance_travel_score_Z); 
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
                                     var root = modelGlb[i];
@@ -304,27 +338,42 @@ const scoreBoard = {
                                         const boxCenter = box.getCenter(new THREE.Vector3());
                                         console.log('interaction manager trig');
                                         // set the camera to frame the box
-                                        frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject);
+                                        frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject,root);
                                 });
                                 
-                                gsap.to( modelGlb[i].position, {
-                                    duration: 9,
-                                    y: 2,
-                                    // z: 2.5 ,
-                                    repeat: -1,
-                                    yoyo: true,
-                                    ease: 'power3.inOut'
-                                });  
-                                gsap.to( modelGlb[i].position,  {
-                                    duration: 9,
-                                    // y: -8,
+                                // gsap.to( modelGlb[i].position, {
+                                //     duration: 9,
+                                //     y: 2,
+                                //     // z: 2.5 ,
+                                //     repeat: -1,
+                                //     yoyo: true,
+                                //     ease: 'power3.inOut'
+                                // });  
+                                // gsap.to( modelGlb[i].position,  {
+                                //     duration: 9,
+                                //     // y: -8,
                                     
-                                    // yoyo: true,
-                                    // repeat: 1,
-                                    ease: 'power3.inOut'
-                                });
+                                //     // yoyo: true,
+                                //     // repeat: 1,
+                                //     ease: 'power3.inOut'
+                                // });
                                 modelGlb[i].rotateY(Math.PI)
-                                scene.add(modelGlb[i]);
+                                // scene.add(modelGlb[i]);
+//for text                      
+
+                                spriteText[i] = makeTextSprite( "Name", 
+                                { fontsize: 74, textColor: {r:255, g:255, b:255, a:1.0}} );
+                                spriteText[i].position.set(distance_travel_score_X-1000,i,distance_travel_score_Z+1000);
+
+                                // scene.add( spriteText[i] );
+                                const group = new THREE.Group();
+                                group.add(modelGlb[i]);
+                                group.add(spriteText[i]);
+                                scene.add(group)
+
+
+// console.log(distance_travel_score_X,distance_travel_score_Z);
+                                //animation things
                                 abc[i] = modelGlb[i].children[0];
                                 const mixer = new THREE.AnimationMixer(abc[i]);
                                 mixer.clipAction(glb.animations[0]).play();
@@ -344,7 +393,8 @@ const scoreBoard = {
                                              //remove box
                                             var container = document.querySelectorAll("container")[0];
                                             if(container != null)
-                                            {console.log('not')
+                                            {
+                                                // console.log('not')
                                             document.querySelectorAll("container")[0].remove();}
                                             var root = modelGlb[i];
                                             // compute the box that contains all the stuff
@@ -355,7 +405,7 @@ const scoreBoard = {
                                             
                                             // set the camera to frame the box
 
-                                            frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject);
+                                            frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject,root);
                                             
                                           }
 
@@ -401,6 +451,7 @@ const scoreBoard = {
               };
               
 
+             
 
 //load sky map in background
               const loader = new THREE.CubeTextureLoader();
@@ -415,7 +466,7 @@ const scoreBoard = {
                 
               ]);
             //   scene.background.color)
-              scene.background = texture;
+            //   scene.background = texture;
                         
             // Set the texture to repeat horizontally and vertically
             texture.wrapS = THREE.RepeatWrapping;
@@ -461,61 +512,108 @@ const scoreBoard = {
 /***
  * NEW JERUSALEM IS HERE
  */
+var galaxy,crystal_planet,candyIsland,fantasyIsland;
+
     
 const loader22 = new GLTFLoader();
-var galaxy,cinder_castle;
-loader22.load('./assets/glb/castle.glb',function(glb){
+
+loader22.load('./assets/glb/crystal_planet.glb',function(glb){
     
-    glb.scene.scale.set(0.4,0.4,0.4);
-    glb.scene.position.set(1,1,1);
-    glb.scene.rotateX('4.7');
+    glb.scene.scale.set(10,10,10);
+    glb.scene.position.set(200,1,100);
+    // glb.scene.rotateX('4.7');
     glb.scene.rotateY('0');
     glb.scene.rotateZ('0')
-    galaxy= glb.scene;
-   scene.add(galaxy);
+    crystal_planet= glb.scene;
+   scene.add(crystal_planet);
 },function(error){
     console.log("error");
 });
-var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
-['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
-['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','4.2','0','false'],
-['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','5.2','0','false'],
-['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
-['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
-['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
-['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
-['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
-['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '4', '1','9','0','4.2','0','true'],
-['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
-['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
-['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
-['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','3.2','0','false'],
-['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','4.2','0','false'],
-['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.05', '1','9','0','4.2','0','false'],
-['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','6.2','0','false'],
 
-['18','Plane with scene','./assets/glb/low-size/plane__stylized_scene.glb', '2', '-700','9','0','4.2','0','false'],
-['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','4.2','0','false'],
-['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','4.2','0','false'],//
-['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
+loader22.load('./assets/glb/candy_island.glb',function(glb){
+    
+    glb.scene.scale.set(1,1,1);
+    glb.scene.position.set(-100,1,-160);
+    // glb.scene.rotateX('4.7');
+    glb.scene.rotateY('0');
+    glb.scene.rotateZ('0')
+    candyIsland= glb.scene;
+   scene.add(candyIsland);
+},function(error){
+    console.log("error");
+});
 
-];
+
+
+loader22.load('./assets/glb/dalaran_fantasyislandchallenge.glb',function(glb){
+    
+    glb.scene.scale.set(0.07,0.07,0.07);
+    glb.scene.position.set(10,50,90);
+    // glb.scene.rotateX('4.7');
+    glb.scene.rotateY('0');
+    glb.scene.rotateZ('0')
+    fantasyIsland= glb.scene;
+   scene.add(fantasyIsland);
+},function(error){
+    console.log("error");
+});
+
+
+
+
+
+
+
+
+
+
+
+// var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
+// ['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
+// ['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','4.2','0','false'],
+// ['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','5.2','0','false'],
+// ['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
+// ['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
+// ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
+// ['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
+// ['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
+// ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '4', '1','9','0','4.2','0','true'],
+// ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
+// ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
+// ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
+// ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','3.2','0','false'],
+// ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','4.2','0','false'],
+// ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.05', '1','9','0','4.2','0','false'],
+// ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','6.2','0','false'],
+
+// ['18','Plane with scene','./assets/glb/low-size/plane__stylized_scene.glb', '2', '-700','9','0','4.2','0','false'],
+// ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','4.2','0','false'],
+// ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','4.2','0','false'],//
+// ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
+
+// ];
 // const axesHelper = new THREE.AxesHelper(2000 );
 // scene.add( axesHelper );
 
-let modelNumber = 19;
-let objecturl = all_models[modelNumber][2];
+// let modelNumber = 19;
+// let objecturl = all_models[modelNumber][2];
 // console.log('Model Name:: '+all_models[modelNumber][1]);
-let objectscale = all_models[modelNumber][3];
-let objectPos_X = 1; //this should be in - of score but 0 in the end then it will reach the center
-let objectPos_Y = all_models[modelNumber][5];
-let objectRot_X = all_models[modelNumber][6];
-let objectRot_Y = all_models[modelNumber][7];
-let objectRot_Z = all_models[modelNumber][8];
-let x_y_exchange = all_models[modelNumber][9];
+// let objectscale = all_models[modelNumber][3];
+// let objectPos_X = 1; //this should be in - of score but 0 in the end then it will reach the center
+// let objectPos_Y = all_models[modelNumber][5];
+// let objectRot_X = all_models[modelNumber][6];
+// let objectRot_Y = all_models[modelNumber][7];
+// let objectRot_Z = all_models[modelNumber][8];
+// let x_y_exchange = all_models[modelNumber][9];
 // console.log('scale:'+objectscale+'  posx: '+objectPos_X+'  posy: '+objectPos_Y+'  rotateY: '+objectRot_Y+'  posx: ');
 
-// const loader22 = new GLTFLoader();
+// var spritey = makeTextSprite( " Heo1 ", 
+// { fontsize: 100, textColor: {r:255, g:255, b:255, a:1.0}} );
+// spritey.position.set(3500,1,-3500);
+// scene.add( spritey );
+
+
+
 // var obj;
 // loader22.load(objecturl,function(glb){
     
@@ -535,6 +633,44 @@ let x_y_exchange = all_models[modelNumber][9];
 // },function(error){
 //     console.log("error occ");
 // });
+
+
+
+
+
+
+
+function makeTextSprite( message, parameters )
+    {
+        if ( parameters === undefined ) parameters = {};
+        var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Courier New";
+        var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 18;
+        var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
+        var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+        var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:0, g:0, b:255, a:1.0 };
+        var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:0, g:0, b:0, a:1.0 };
+
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        context.font = "Bold " + fontsize + "px " + fontface;
+        var metrics = context.measureText( message );
+        var textWidth = metrics.width;
+
+        context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+        context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+        context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
+        context.fillText( message, borderThickness, fontsize + borderThickness);
+
+        var texture = new THREE.Texture(canvas) 
+        texture.needsUpdate = true;
+        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+        var sprite = new THREE.Sprite( spriteMaterial );
+        sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
+        return sprite;  
+    }
+
+
+
 
 
 
@@ -572,7 +708,7 @@ let x_y_exchange = all_models[modelNumber][9];
 
 
 
-function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject) {
+function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject,object_O) {
 
     const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
     const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
@@ -598,34 +734,34 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
     var z = boxCenter.z-10; //to cneter it
     
     // console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
-    gsap.to( camera.position, {
-        duration: 2, // seconds
-        x: x,
-        y: y,
-        z: z,
-        onUpdate: function() {
-            controls.enabled = true;
-            // controls.target = new THREE.Vector3(x, y, z);
+    // gsap.to( camera.position, {
+    //     duration: 2, // seconds
+    //     x: x,
+    //     y: y,
+    //     z: z,
+    //     onUpdate: function() {
+    //         controls.enabled = true;
+    //         // controls.target = new THREE.Vector3(x, y, z);
             
-         }
-    } );
+    //      }
+    // } );
     
-    gsap.to( camera.target, {
-        duration: 2, // seconds
-        x: x,
-        y: y,
-        z: z,
-        onUpdate: function() {
-            controls.enabled = true;
-            controls.target = new THREE.Vector3(x, y, z);
-            controls.update()
+    // gsap.to( camera.target, {
+    //     duration: 2, // seconds
+    //     x: x,
+    //     y: y,
+    //     z: z,
+    //     onUpdate: function() {
+    //         controls.enabled = true;
+    //         controls.target = new THREE.Vector3(x, y, z);
+    //         controls.update()
             
-         }
-    } );
+    //      }
+    // } );
+console.log(object_O);
+    followObject.changeObject_obj = object_O;
 
-
-
-
+    console.log(followObject.getObject_obj);
     
     //  x = boxCenter.x;
     //  y = boxCenter.y;
@@ -699,7 +835,7 @@ const planets = [
 ]
 
 // const orbitRadius = [15, 20, 25, 30, 40, 50, 60, 70]
-const orbitRadius = [3500,3400,3300,3200,3000,2000,1000, 60, 70]
+const orbitRadius = [3500,3400,3300,3200,3000,2000,1000, 100, 70]
 const orbitsObject3D = []
 const planetsObject3D = []
 
@@ -875,27 +1011,27 @@ const tick = () =>
         
                 if(index<10 && index>=0)
                     {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx1); }
+                        {orbit_around_circle(index,revolveSpeed.speedx1/2); }
                     else
-                        {orbit_around_circle(index,revolveSpeed.speedx2); }
+                        {orbit_around_circle(index,revolveSpeed.speedx2/2); }
                     }
                 else if(index<16 && index>=10)
                     {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx3); }
-                    else{orbit_around_circle(index,revolveSpeed.speedx4);}
+                        {orbit_around_circle(index,revolveSpeed.speedx3/2); }
+                    else{orbit_around_circle(index,revolveSpeed.speedx4/2);}
                     }
                 else if(index<30 && index>=16)
                     {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx5); }
-                    else{orbit_around_circle(index,revolveSpeed.speedx6);}
+                        {orbit_around_circle(index,revolveSpeed.speedx5/2); }
+                    else{orbit_around_circle(index,revolveSpeed.speedx6/2);}
                     }
                 else if(index<50 && index>=30)
                     {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx7);  }
-                    else{orbit_around_circle(index,revolveSpeed.speedx8);}
+                        {orbit_around_circle(index,revolveSpeed.speedx7/2);  }
+                    else{orbit_around_circle(index,revolveSpeed.speedx8/2);}
                     }
                 else  
-                    orbit_around_circle(index,revolveSpeed.speedx10);  
+                    orbit_around_circle(index,revolveSpeed.speedx10/2);  
 
                     
             }
@@ -904,27 +1040,137 @@ const tick = () =>
                 //   console.log('>50000');
                 if(index<10 && index>=0)
                 {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx1/2); }
+                    {orbit_around_circle(index,revolveSpeed.speedx1/4); }
                 else
-                    {orbit_around_circle(index,revolveSpeed.speedx2/2); }
+                    {orbit_around_circle(index,revolveSpeed.speedx2/4); }
                 }
             else if(index<16 && index>=10)
                 {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx3/2); }
-                else{orbit_around_circle(index,revolveSpeed.speedx4/2);}
+                    {orbit_around_circle(index,revolveSpeed.speedx3/4); }
+                else{orbit_around_circle(index,revolveSpeed.speedx4/4);}
                 }
             else if(index<30 && index>=16)
                 {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx5/2); }
-                else{orbit_around_circle(index,revolveSpeed.speedx6/2);}
+                    {orbit_around_circle(index,revolveSpeed.speedx5/4); }
+                else{orbit_around_circle(index,revolveSpeed.speedx6/4);}
                 }
             else if(index<50 && index>=30)
                 {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx7/2);  }
-                else{orbit_around_circle(index,revolveSpeed.speedx8/2);}
+                    {orbit_around_circle(index,revolveSpeed.speedx7/4);  }
+                else{orbit_around_circle(index,revolveSpeed.speedx8/4);}
                 }
             else  
-                orbit_around_circle(index,revolveSpeed.speedx10/2);  
+                orbit_around_circle(index,revolveSpeed.speedx10/4);  
+
+                
+            }   
+
+        else if(count>180000 && count<280000)
+        {   
+            // console.log('>180000');
+            if(index<10 && index>=0)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx1*2); }
+            else
+                {orbit_around_circle(index,revolveSpeed.speedx2*2); }
+            }
+        else if(index<16 && index>=10)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx3*2); }
+            else{orbit_around_circle(index,revolveSpeed.speedx4*2);}
+            }
+        else if(index<30 && index>=16)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx5*2); }
+            else{orbit_around_circle(index,revolveSpeed.speedx6*2);}
+            }
+        else if(index<50 && index>=30)
+            {if(index % 2 == 0)
+                {orbit_around_circle(index,revolveSpeed.speedx7*2);  }
+            else{orbit_around_circle(index,revolveSpeed.speedx8*2);}
+            }
+        else  
+            orbit_around_circle(index,revolveSpeed.speedx10*2);  
+
+            
+           
+        }   
+        if(count == 280000)
+        {count =1;
+        // console.log('count reset');
+    }
+               
+        
+             // speed of the orbit // the nearer they are the faster they get
+            
+            
+    });
+
+
+
+    spriteText.forEach(function (model,index){
+        // var pt = model_OrbitPath[index].getPoint( eat );
+        // var tangent = model_OrbitPath[index].getTangent( eat ).normalize();
+        // modelGlb[index].position.set(pt.x,pt.y,pt.z);
+        // // calculate the axis to rotate around
+        // axis.crossVectors( up, tangent ).normalize();
+        // // calcluate the angle between the up vector and the tangent
+        // var radians = Math.acos( up.dot( tangent ) );	
+        count++;
+        if(count<50000){
+        
+                if(index<10 && index>=0)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx1/3); }
+                    else
+                        {orbit_around_circle(index,revolveSpeed.speedx2/3); }
+                    }
+                else if(index<16 && index>=10)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx3/3); }
+                    else{orbit_around_circle(index,revolveSpeed.speedx4/3);}
+                    }
+                else if(index<30 && index>=16)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx5/3); }
+                    else{orbit_around_circle(index,revolveSpeed.speedx6/3);}
+                    }
+                else if(index<50 && index>=30)
+                    {if(index % 2 == 0)
+                        {orbit_around_circle(index,revolveSpeed.speedx7/3);  }
+                    else{orbit_around_circle(index,revolveSpeed.speedx8/3);}
+                    }
+                else  
+                    orbit_around_circle(index,revolveSpeed.speedx10/3);  
+
+                    
+            }
+         else if(count>50000 && count<180000)
+            { 
+                //   console.log('>50000');
+                if(index<10 && index>=0)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx1/4); }
+                else
+                    {orbit_around_circle(index,revolveSpeed.speedx2/4); }
+                }
+            else if(index<16 && index>=10)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx3/4); }
+                else{orbit_around_circle(index,revolveSpeed.speedx4/4);}
+                }
+            else if(index<30 && index>=16)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx5/4); }
+                else{orbit_around_circle(index,revolveSpeed.speedx6/4);}
+                }
+            else if(index<50 && index>=30)
+                {if(index % 2 == 0)
+                    {orbit_around_circle(index,revolveSpeed.speedx7/4);  }
+                else{orbit_around_circle(index,revolveSpeed.speedx8/4);}
+                }
+            else  
+                orbit_around_circle(index,revolveSpeed.speedx10/4);  
 
                 
             }   
@@ -987,6 +1233,10 @@ const tick = () =>
 
     // var axis = new THREE.Vector3(0, 1, 0).normalize();
     // if (galaxy) sun.rotateOnAxis(axis,0.01)
+    var axis = new THREE.Vector3(0, 1, 0).normalize();
+    if (candyIsland) candyIsland.rotateOnAxis(axis,0.001)
+    if (crystal_planet) crystal_planet.rotateOnAxis(axis,0.001)
+
 
     //rotate the scene.background
     offset.x +=0.01;
@@ -1001,6 +1251,26 @@ const tick = () =>
         planet.rotation.y += planets[index].rotation
     })
     
+
+    // follow object
+    let objectA = followObject.getObject_obj;
+    // if (objectA){
+    //     console.log('working');
+    //     const offset = new THREE.Vector3(40, 5, 200);
+    //     offset.applyQuaternion(objectA.quaternion);
+    
+    //     // calculate lerp factor to smooth camera movement
+    //     const lerpFactor = 0.1;
+    
+    //     // use lerp to smoothly move camera towards object position
+        
+    //     camera.position.lerp(objectA.position.clone().add(offset), lerpFactor);
+    
+    //     // update controls
+    //     controls.update();
+        
+    // }
+
     // Update controls
     controls.update()
 
@@ -1021,6 +1291,26 @@ function orbit_around_circle(index,speed){
     var pt = model_OrbitPath[index].getPoint( always_Zero[index] );
     var tangent = model_OrbitPath[index].getTangent( always_Zero[index] ).normalize();
     modelGlb[index].position.set(pt.x,pt.y+index,pt.z);
+    // camera.position.set(pt.x+10,pt.y+index+10,pt.z+10)
+    // camera.position.copy(clickedObject.position)
+
+
+      // follow object
+      let objectA = followObject.getObject_obj;
+      if (objectA){
+        //   console.log('working');
+        const x = objectA.position.x;
+        const y = objectA.position.y;
+        const z = objectA.position.z;
+       camera.position.set(x,y,z)
+       controls.target = new THREE.Vector3(x, y-10, z-20);
+       controls.enabled = true;
+
+       
+          // update controls
+        //   controls.update();
+          
+      }
     // calculate the axis to rotate around
     axis.crossVectors( up, tangent ).normalize();
     // calcluate the angle between the up vector and the tangent
@@ -1094,28 +1384,31 @@ function loadData (){
                             // console.log(intersects[0].object.type)
                             try {
                                 isMesh = intersects[0].object.type;
-                                console.log(isMesh);
+                                console.log('isMesh');
                             } catch (error) {
-                                isMesh = 'no';
+                                isMesh = 'not mesh';
                                 console.log(isMesh);
                             }
                             if ( isMesh !== 'Mesh' && clickedit == 2 ) {
                                
                                 gsap.to( camera.position, {
                                     duration: 1, // seconds
-                                    x: 10,
-                                    y: 40,
-                                    z: 80,
+                                    x: 300,
+                                    y: 10,
+                                    z: 300,
                                     onUpdate: function() {
+                                        //moving camera on object set object to null for non focus
+                                        followObject.changeObject_obj = null;
                                         controls.enabled = true;
-                                        console.log('clicked outside\n remove textbox');
+                                        // console.log('clicked outside\n remove textbox');
                                         //center the new Jerusalem
-                                        controls.target = new THREE.Vector3(0, 10, 0);
+                                        controls.target = new THREE.Vector3(1, 1, 1);
                                         controls.update();
                                         //remove box
                                         var container = document.querySelectorAll("container")[0];
                                         if(container != null)
-                                        {console.log('not')
+                                        {
+                                            // console.log('not')
                                         document.querySelectorAll("container")[0].remove();}
                                     }
                                 } );
