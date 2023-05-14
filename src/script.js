@@ -110,7 +110,8 @@ camera.position.set(500, 15, 500)
 
 // here's a setter for object to follow , you can access it by  
 const followObject = {
-    Object_obj : null
+    Object_obj : null,
+    clicking_to_view_model: false
 }
 
 // getting property
@@ -127,6 +128,19 @@ Object.defineProperty(followObject, "changeObject_obj", {
     }
 });
 
+// getting property
+Object.defineProperty(followObject, "getClicking_to_view", {
+    get : function () {
+        return this.clicking_to_view_model;
+    }
+});
+
+// setting property
+Object.defineProperty(followObject, "changeClicking_to_view", {
+    set : function (value) {
+        this.clicking_to_view_model = value;
+    }
+});
 // console.log(followObject.Object_obj); // Monica
 
 // // changing the property value
@@ -1306,9 +1320,6 @@ function orbit_around_circle(index,speed){
        controls.target = new THREE.Vector3(x, y-10, z-20);
        controls.enabled = true;
 
-       
-          // update controls
-        //   controls.update();
           
       }
     // calculate the axis to rotate around
@@ -1358,8 +1369,6 @@ function loadData (){
 
 
 
-
-
       function Listener(listener, mesh, callback) {
                         let objects = [mesh];
                         let raycaster = new THREE.Raycaster();
@@ -1385,11 +1394,49 @@ function loadData (){
                             try {
                                 isMesh = intersects[0].object.type;
                                 console.log('isMesh');
+                            //     followObject.changeClicking_to_view =  true;
+                            //     clickedObject = intersects[0].object;
+                            //     console.log(clickedObject);
+                            //     followObject.changeClicking_to_view =  true;
+
+                            //     const box = new THREE.Box3().setFromObject(clickedObject);
+                            //     const boxSize = box.getSize(new THREE.Vector3()).length();
+                            //     const boxCenter = box.getCenter(new THREE.Vector3());
+                            //     camera.near = boxSize / 200;
+                            //     camera.far = boxSize * 1000;
+                            //     let x = boxCenter.x+6;
+                            //     let y = boxCenter.y;
+                            //     let z = boxCenter.z-10;
+
+
+                            //     // let x = clickedObject.position.x+6;
+                            //     // let y = clickedObject.position.y;
+                            //     // let z = clickedObject.position.z-10;
+
+                            //     gsap.to( camera.target, {
+                            //     duration: 2, // seconds
+                            //     x: x,
+                            //     y: y,
+                            //     z: z,
+                            //     onUpdate: function() {
+                            //         controls.enabled = true;
+                            //         controls.target = new THREE.Vector3(x, y, z);
+                            //         //moving camera on object set object to null for non focus
+                            //         followObject.changeObject_obj = null;
+                                        
+                            //         controls.enabled = true;
+                            //         controls.update()
+                                    
+                            //     }
+                            // } );
+
+
                             } catch (error) {
+                                console.log(followObject.getClicking_to_view); 
                                 isMesh = 'not mesh';
                                 console.log(isMesh);
                             }
-                            if ( isMesh !== 'Mesh' && clickedit == 2 ) {
+                            if ( isMesh !== 'Mesh' && clickedit == 2 && followObject.getClicking_to_view == false ) {
                                
                                 gsap.to( camera.position, {
                                     duration: 1, // seconds
@@ -1399,8 +1446,9 @@ function loadData (){
                                     onUpdate: function() {
                                         //moving camera on object set object to null for non focus
                                         followObject.changeObject_obj = null;
+                                        
                                         controls.enabled = true;
-                                        // console.log('clicked outside\n remove textbox');
+                                        console.log('clicked outside\n remove textbox');
                                         //center the new Jerusalem
                                         controls.target = new THREE.Vector3(1, 1, 1);
                                         controls.update();
@@ -1414,6 +1462,39 @@ function loadData (){
                                 } );
                                
                             } else{
+                               
+                                // try {
+                                //     isMesh = intersects[0].object.type;
+                                //     console.log('isMesh from else try');
+                                //     followObject.changeClicking_to_view =  true;
+                                //     var clickedObject = intersects[0].object;
+                                //     console.log(clickedObject);
+                                //     followObject.changeClicking_to_view =  true;
+    
+                                //     let x = clickedObject.position.x;
+                                //     let y = clickedObject.position.y;
+                                //     let z = clickedObject.position.z;
+    
+                                //     gsap.to( camera.target, {
+                                //     duration: 2, // seconds
+                                //     x: x,
+                                //     y: y,
+                                //     z: z,
+                                //     onUpdate: function() {
+                                //         controls.enabled = true;
+                                //         controls.target = new THREE.Vector3(x, y, z);
+                                //         //moving camera on object set object to null for non focus
+                                //         followObject.changeObject_obj = null;
+                                            
+                                //         controls.enabled = true;
+                                //         controls.update()
+                                        
+                                //     }
+                                // } );
+                                //     followObject.changeClicking_to_view =  false;
+                                // } catch (error) {
+                                //     console.log('triggered else error');
+                                // }
                                
                                
                             }
