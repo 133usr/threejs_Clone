@@ -241,6 +241,7 @@ const scoreBoard = {
             }
 
             let model_OrbitPath =[];
+            let model_OrbitSpeed =[];
             
             
 
@@ -394,6 +395,8 @@ const scoreBoard = {
                                 mixers.push(mixer);
                                 // console.log(i)
                                 model_OrbitPath[i] = new Ellipse( distance_travel_score_X, distance_travel_score_Z );
+
+                                model_OrbitSpeed[i] = Math.random() * 0.000001 + 0.000005;
                                 /**
                                  * ADD BUTTONS TO GUI
                                  */
@@ -1462,7 +1465,7 @@ function loadData (){
                                 } );
                                
                             } else{
-                               
+                               // was trying to control the camera as well while following but not working
                                 // try {
                                 //     isMesh = intersects[0].object.type;
                                 //     console.log('isMesh from else try');
