@@ -79,33 +79,6 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 // renderer.setClearColor(0x131A3D, 1); //background color
-// change backgroundColor by time
-const skyColor = 0x87ceeb; // bright blue color
-const skyGradient = [skyColor, 0xffffff];
-                const now = new Date();
-                const currentHour = now.getHours();
-                console.log(currentHour);
-                if(currentHour<=10 && currentHour >= 0)
-                {
-                renderer.setClearColor('#85b0fa', 1);
-                }
-                else if(currentHour<=16 && currentHour >10)
-                {
-                renderer.setClearColor('#accef7', 1);
-                }
-                else if(currentHour<=20 && currentHour >16)
-                {
-                renderer.setClearColor('#4588f8', 1);
-                }
-                else if(currentHour<=23 && currentHour >20)
-                {
-                renderer.setClearColor('#0646b0', 1);
-                }
-
-
-// color:#0646b0
-
-// renderer.setClearColor('#0646b0', 1);
 
 /**
  * Sizes
@@ -133,6 +106,25 @@ const sizes = {
 const camera = new THREE.PerspectiveCamera(90, sizes.width / sizes.height, 1, 2000)
 scene.add(camera)
 camera.position.set(500, 15, 500)
+// camera.far = 20000;
+// camera.near = 0.1;
+
+const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
+
+// compute a unit vector that points in the direction the camera is now
+// in the xz plane from the center of the box
+
+  camera.updateProjectionMatrix();
+
+camera.near = 0.06;
+camera.far = 24 * 1000;
+
+
+
+
+
+
+
 
 // here's a setter for object to follow , you can access it by  
 const followObject = {
@@ -284,8 +276,8 @@ const scoreBoard = {
                 // If the operation fails, call the reject function with the error
                 var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
                 ['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
-                ['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','4.2','0','false'],
-                ['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','5.2','0','false'],
+                ['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','','0','false'],
+                ['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','','0','false'],
                 ['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
                 ['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
                 ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
@@ -295,15 +287,15 @@ const scoreBoard = {
                 ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
                 ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
                 ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
-                ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','3.2','0','false'],
-                ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','4.2','0','false'],
-                ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.02', '1','9','0','4.2','0','false'],
-                ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','6.2','0','false'],
+                ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','','0','false'],
+                ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','','0','false'],
+                ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.02', '1','9','0','','0','false'],
+                ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','','0','false'],
                 
                
-                ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','4.2','0','false'],
-                ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','4.2','0','false'],//
-                ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '-950','10','0','4.2','0','false']
+                ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','','0','false'],
+                ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','','0','false'],//
+                ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '','','0','3','3.2','false']
                 
                 ];
                 let search = tempsheetObject.character;         // desired character
@@ -537,7 +529,7 @@ const scoreBoard = {
         // create particle material
 const particleMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
-    size: 80.2,
+    size: 120.2,
     map: new THREE.TextureLoader().load('./assets/skyMap/cloud10.png'),
     blending: THREE.AdditiveBlending,
     depthWrite: false,
@@ -553,7 +545,7 @@ const particleVelocities = [];
 const particleLifespans = [];
 
 // create particles and add them to the arrays
-for (let i = 0; i < 3000; i++) {
+for (let i = 0; i < 1000; i++) {
     // generate random position within a cube
     const x = Math.random() * 8000 - 3500;
     const y = Math.random() * 2000 - 1000;
@@ -586,7 +578,85 @@ scene.add(particleSystem);
           
                
      
+/**SET THE BACK GROUND   THAT IS THE SKYBOX */
+// change backgroundColor by time
 
+                const now = new Date();
+                const currentHour = now.getHours();
+                // Get the current day of the month (1-31)
+                const currentDay = now.getDate();
+                console.log(currentDay);
+                var skyBox;
+                
+                const skyBoxLoader = new GLTFLoader();
+                //default colors
+               
+                
+                if(currentDay>=1 && currentDay <= 5){
+                   load_skybox('skybox_orange_day4')
+                   background_setter(ba)
+                }
+                else if(currentDay>=6 && currentDay <= 10){
+                    load_skybox('skybox_night')
+                }
+                else if(currentDay>=11 && currentDay <= 15){
+                    load_skybox('skybox_green_sky_day3')
+                }
+                else if(currentDay>=16 && currentDay <= 20){
+                    load_skybox('skybox_day2')
+                }
+                else if(currentDay>=21 && currentDay <= 25){
+                    load_skybox('skybox_day1')
+                }
+                else if(currentDay>=26 && currentDay <= 31){
+                    load_skybox('skybox_orange_day4')
+                }
+
+
+
+             function load_skybox(file_name){
+                background_setter();
+                skyBoxLoader.load('./assets/skyBox/'+file_name+'.glb',function(glb){
+                    
+                    glb.scene.scale.set(25,25,25);
+                    glb.scene.position.set(1,1,1);
+                    skyBox= glb.scene;
+                   scene.add(skyBox);
+                },function(error){
+                    console.log("error");
+                });
+            }
+                
+
+
+
+
+
+
+
+
+                function background_setter(){
+                    if(currentHour<=10 && currentHour >= 0)
+                    {
+                    renderer.setClearColor('#85b0fa', 1);
+                    }
+                    else if(currentHour<=16 && currentHour >10)
+                    {
+                    renderer.setClearColor('#accef7', 1);
+                    }
+                    else if(currentHour<=20 && currentHour >16)
+                    {
+                    renderer.setClearColor('#4588f8', 1);
+                    }
+                    else if(currentHour<=23 && currentHour >20)
+                    {
+                    renderer.setClearColor('#0646b0', 1);
+                    }
+                }
+
+// color:#0646b0
+
+// renderer.setClearColor('#0646b0', 1);
 
 
 
@@ -667,19 +737,6 @@ loader22.load('./assets/glb/dalaran_fantasyislandchallenge.glb',function(glb){
 
 
 // camera.near = 100
-// var skyBox;
-// loader22.load('./assets/glb/skyBox.glb',function(glb){
-    
-//     glb.scene.scale.set(5,5,5);
-//     glb.scene.position.set(1,1,1);
-//     // glb.scene.rotateX('4.7');
-//     glb.scene.rotateY('0');
-//     glb.scene.rotateZ('0')
-//     skyBox= glb.scene;
-//    scene.add(skyBox);
-// },function(error){
-//     console.log("error");
-// });
 
 
 
@@ -846,6 +903,8 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject
     // will contain the box.
     camera.near = boxSize / 200;
     camera.far = boxSize * 1000;
+    // alert(camera.far)
+    // alert(camera.near)
     // 
     var x = boxCenter.x+6;  // + to zoomout and - to zoom in
     var y = boxCenter.y;
@@ -1051,12 +1110,20 @@ const createPlanets = () => {
 const clock = new THREE.Clock();
 createPlanets();
 
-
+// color:#696969
 const ambientLight = new THREE.AmbientLight( '#696969' ); // soft white light
 
+// color:#4b88c2
+// color:#cacaca
 const hemisphereLight = new THREE.HemisphereLight( '#4b88c2', '#cacaca', 1 );
 
 scene.add( ambientLight, hemisphereLight)
+
+
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(0, 1, 0); // Set the light's position
+scene.add(light);
+
 
 window.addEventListener('resize', () =>
 {
@@ -1066,6 +1133,7 @@ window.addEventListener('resize', () =>
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
+   
     camera.updateProjectionMatrix()
 
     // Update renderer
@@ -1079,7 +1147,8 @@ controls.enableDamping = true
 controls.zoomSpeed = 0.5
 // controls.minZoom = 200
 controls.minDistance = 70
-controls.maxDistance =5000
+controls.maxDistance =4500
+controls.maxPolarAngle = Math.PI/2   // to limit the controls vertically not to look downside
 
 // const axesHelper = new THREE.AxesHelper(20);
 // scene.add(axesHelper)
@@ -1526,19 +1595,22 @@ function loadData (){
                             let intersects = raycaster.intersectObjects(scene.children, true);
                             let intersect = intersects[0];
                            //Click anywhere outside of object to leave focus
-                        //    console.log(intersects[0].object);
+                           console.log(intersects[0].object);
 
                             var clickedit = 1;
 
                         document.body.addEventListener('click', function( event ){
                            //this will work in mobile only
                            clickedit = clickedit + 1; //handle multiple clicks but proceed only once
-                           console.log(clickedit);
-                          var isMesh;
+                        //    console.log(clickedit);
+                          var isMesh, name_of_Mesh,uuid;
                             // console.log(intersects[0].object.type)
                             try {
                                 isMesh = intersects[0].object.type;
-                                console.log('isMesh');
+                                name_of_Mesh = intersects[0].object.name;
+                                uuid = intersects[0].object.uuid;
+
+                                console.log(isMesh);
                             //     followObject.changeClicking_to_view =  true;
                             //     clickedObject = intersects[0].object;
                             //     console.log(clickedObject);
@@ -1581,7 +1653,7 @@ function loadData (){
                                 isMesh = 'not mesh';
                                 console.log(isMesh);
                             }
-                            if ( isMesh !== 'Mesh' && clickedit == 2 && followObject.getClicking_to_view == false ) {
+                            if ( (isMesh !== 'Mesh' || name_of_Mesh.includes('Sky') || name_of_Mesh.includes('Object_4')) && clickedit == 2 && followObject.getClicking_to_view == false ) {
                                
                                 gsap.to( camera.position, {
                                     duration: 1, // seconds
