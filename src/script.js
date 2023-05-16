@@ -8,7 +8,7 @@ import { Object3D } from 'three'
 import TWEEN from '@tweenjs/tween.js'
 import { InteractionManager } from 'three.interactive';
 import GUI from 'lil-gui';
-
+// import { Geometry } from 'three/examples/jsm/';
 
 
 
@@ -78,8 +78,34 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.setClearColor(0x131A3D, 1);
+// renderer.setClearColor(0x131A3D, 1); //background color
+// change backgroundColor by time
+const skyColor = 0x87ceeb; // bright blue color
+const skyGradient = [skyColor, 0xffffff];
+                const now = new Date();
+                const currentHour = now.getHours();
+                console.log(currentHour);
+                if(currentHour<=10 && currentHour >= 0)
+                {
+                renderer.setClearColor('#85b0fa', 1);
+                }
+                else if(currentHour<=16 && currentHour >10)
+                {
+                renderer.setClearColor('#accef7', 1);
+                }
+                else if(currentHour<=20 && currentHour >16)
+                {
+                renderer.setClearColor('#4588f8', 1);
+                }
+                else if(currentHour<=23 && currentHour >20)
+                {
+                renderer.setClearColor('#0646b0', 1);
+                }
 
+
+// color:#0646b0
+
+// renderer.setClearColor('#0646b0', 1);
 
 /**
  * Sizes
@@ -346,8 +372,6 @@ const scoreBoard = {
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
                                     var root = modelGlb[i];
-                                            // compute the box that contains all the stuff
-                                        // from root and below
                                         const box = new THREE.Box3().setFromObject(root);
                                         const boxSize = box.getSize(new THREE.Vector3()).length();
                                         const boxCenter = box.getCenter(new THREE.Vector3());
@@ -396,7 +420,10 @@ const scoreBoard = {
                                 // console.log(i)
                                 model_OrbitPath[i] = new Ellipse( distance_travel_score_X, distance_travel_score_Z );
 
-                                model_OrbitSpeed[i] = Math.random() * 0.000001 + 0.000005;
+                                let random_1 = Math.random() * 0.000001 + 0.000005;
+                                let random_2 = Math.random() * 0.000002 + 0.000006;
+
+                                model_OrbitSpeed[i] = Math.random() * random_1 + random_2;
                                 /**
                                  * ADD BUTTONS TO GUI
                                  */
@@ -503,7 +530,55 @@ const scoreBoard = {
             //    scene.add(sky);
                
               
-               
+
+
+            /**  create clouds*****/
+
+        // create particle material
+const particleMaterial = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 80.2,
+    map: new THREE.TextureLoader().load('./assets/skyMap/cloud10.png'),
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    transparent: true
+});
+
+// create particle geometry
+const particleGeometry = new THREE.BufferGeometry();
+
+// create arrays to hold particle positions, velocities, and lifespan
+const particlePositions = [];
+const particleVelocities = [];
+const particleLifespans = [];
+
+// create particles and add them to the arrays
+for (let i = 0; i < 3000; i++) {
+    // generate random position within a cube
+    const x = Math.random() * 8000 - 3500;
+    const y = Math.random() * 2000 - 1000;
+    const z = Math.random() * 8000 - 3500;
+    particlePositions.push(x, y, z);
+    
+    // generate random velocity
+    const vx = Math.random() * 0.2 - 0.05;
+    const vy = Math.random() * 0.2 - 0.05;
+    const vz = Math.random() * 0.2 - 0.05;
+    particleVelocities.push(vx, vy, vz);
+    
+    // generate random lifespan between 1 and 3 seconds
+    const lifespan = Math.random() * 15 + 5;
+    particleLifespans.push(lifespan);
+}
+
+// add position, velocity, and lifespan attributes to the geometry
+particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particlePositions, 3));
+particleGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(particleVelocities, 3));
+particleGeometry.setAttribute('lifespan', new THREE.Float32BufferAttribute(particleLifespans, 1));
+
+// create particle system
+const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+scene.add(particleSystem);       
            
                
              
@@ -560,6 +635,9 @@ loader22.load('./assets/glb/candy_island.glb',function(glb){
     console.log("error");
 });
 
+const sceneWidth = canvas.clientWidth;
+const sceneHeight = canvas.clientHeight;
+const sceneDepth = 4000;
 
 
 loader22.load('./assets/glb/dalaran_fantasyislandchallenge.glb',function(glb){
@@ -571,14 +649,37 @@ loader22.load('./assets/glb/dalaran_fantasyislandchallenge.glb',function(glb){
     glb.scene.rotateZ('0')
     fantasyIsland= glb.scene;
    scene.add(fantasyIsland);
+
+   
+// if(fantasyIsland){
+//     for (let i = 0; i < 12; i++) {
+//         console.log('sdf');
+//         const cloudClone = fantasyIsland.clone();
+//         cloudClone.position.set(Math.random() * sceneWidth - sceneWidth / 2, Math.random() * sceneHeight - sceneHeight / 2, Math.random() * sceneDepth - sceneDepth / 2);
+//         cloudClone.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+//         scene.add(cloudClone);
+//       }
+//     }
 },function(error){
     console.log("error");
 });
 
 
 
-
-
+// camera.near = 100
+// var skyBox;
+// loader22.load('./assets/glb/skyBox.glb',function(glb){
+    
+//     glb.scene.scale.set(5,5,5);
+//     glb.scene.position.set(1,1,1);
+//     // glb.scene.rotateX('4.7');
+//     glb.scene.rotateY('0');
+//     glb.scene.rotateZ('0')
+//     skyBox= glb.scene;
+//    scene.add(skyBox);
+// },function(error){
+//     console.log("error");
+// });
 
 
 
@@ -983,9 +1084,17 @@ controls.maxDistance =5000
 // const axesHelper = new THREE.AxesHelper(20);
 // scene.add(axesHelper)
 
-/**
- * Debug
- */
+                                    /**
+                                     * Debug
+                                     */
+
+
+
+
+
+
+
+
 
 
 
@@ -1026,90 +1135,90 @@ const tick = () =>
         count++;
         if(count<50000){
         
-                if(index<10 && index>=0)
-                    {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx1/2); }
-                    else
-                        {orbit_around_circle(index,revolveSpeed.speedx2/2); }
-                    }
-                else if(index<16 && index>=10)
-                    {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx3/2); }
-                    else{orbit_around_circle(index,revolveSpeed.speedx4/2);}
-                    }
-                else if(index<30 && index>=16)
-                    {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx5/2); }
-                    else{orbit_around_circle(index,revolveSpeed.speedx6/2);}
-                    }
-                else if(index<50 && index>=30)
-                    {if(index % 2 == 0)
-                        {orbit_around_circle(index,revolveSpeed.speedx7/2);  }
-                    else{orbit_around_circle(index,revolveSpeed.speedx8/2);}
-                    }
-                else  
-                    orbit_around_circle(index,revolveSpeed.speedx10/2);  
-
+                                                                                            // if(index<10 && index>=0)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx1/2); }
+                                                                                            //     else
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx2/2); }
+                                                                                            //     }
+                                                                                            // else if(index<16 && index>=10)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx3/2); }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx4/2);}
+                                                                                            //     }
+                                                                                            // else if(index<30 && index>=16)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx5/2); }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx6/2);}
+                                                                                            //     }
+                                                                                            // else if(index<50 && index>=30)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx7/2);  }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx8/2);}
+                                                                                            //     }
+                                                                                            // else  
+                                                                                            //     orbit_around_circle(index,revolveSpeed.speedx10/2);  
+                                                                                            orbit_around_circle(index,model_OrbitSpeed[index])
                     
             }
          else if(count>50000 && count<180000)
             { 
                 //   console.log('>50000');
-                if(index<10 && index>=0)
-                {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx1/4); }
-                else
-                    {orbit_around_circle(index,revolveSpeed.speedx2/4); }
-                }
-            else if(index<16 && index>=10)
-                {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx3/4); }
-                else{orbit_around_circle(index,revolveSpeed.speedx4/4);}
-                }
-            else if(index<30 && index>=16)
-                {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx5/4); }
-                else{orbit_around_circle(index,revolveSpeed.speedx6/4);}
-                }
-            else if(index<50 && index>=30)
-                {if(index % 2 == 0)
-                    {orbit_around_circle(index,revolveSpeed.speedx7/4);  }
-                else{orbit_around_circle(index,revolveSpeed.speedx8/4);}
-                }
-            else  
-                orbit_around_circle(index,revolveSpeed.speedx10/4);  
-
+                                                                                            //     if(index<10 && index>=0)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx1/4); }
+                                                                                            //     else
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx2/4); }
+                                                                                            //     }
+                                                                                            // else if(index<16 && index>=10)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx3/4); }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx4/4);}
+                                                                                            //     }
+                                                                                            // else if(index<30 && index>=16)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx5/4); }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx6/4);}
+                                                                                            //     }
+                                                                                            // else if(index<50 && index>=30)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx7/4);  }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx8/4);}
+                                                                                            //     }
+                                                                                            // else  
+                                                                                            //     orbit_around_circle(index,revolveSpeed.speedx10/4);  
+                                                                                            orbit_around_circle(index,model_OrbitSpeed[index])
                 
             }   
 
         else if(count>180000 && count<280000)
         {   
             // console.log('>180000');
-            if(index<10 && index>=0)
-            {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx1*2); }
-            else
-                {orbit_around_circle(index,revolveSpeed.speedx2*2); }
-            }
-        else if(index<16 && index>=10)
-            {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx3*2); }
-            else{orbit_around_circle(index,revolveSpeed.speedx4*2);}
-            }
-        else if(index<30 && index>=16)
-            {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx5*2); }
-            else{orbit_around_circle(index,revolveSpeed.speedx6*2);}
-            }
-        else if(index<50 && index>=30)
-            {if(index % 2 == 0)
-                {orbit_around_circle(index,revolveSpeed.speedx7*2);  }
-            else{orbit_around_circle(index,revolveSpeed.speedx8*2);}
-            }
-        else  
-            orbit_around_circle(index,revolveSpeed.speedx10*2);  
+                                                                                            //     if(index<10 && index>=0)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx1*2); }
+                                                                                            //     else
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx2*2); }
+                                                                                            //     }
+                                                                                            // else if(index<16 && index>=10)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx3*2); }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx4*2);}
+                                                                                            //     }
+                                                                                            // else if(index<30 && index>=16)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx5*2); }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx6*2);}
+                                                                                            //     }
+                                                                                            // else if(index<50 && index>=30)
+                                                                                            //     {if(index % 2 == 0)
+                                                                                            //         {orbit_around_circle(index,revolveSpeed.speedx7*2);  }
+                                                                                            //     else{orbit_around_circle(index,revolveSpeed.speedx8*2);}
+                                                                                            //     }
+                                                                                            // else  
+                                                                                            //     orbit_around_circle(index,revolveSpeed.speedx10*2);  
 
-            
+            orbit_around_circle(index,model_OrbitSpeed[index])
            
         }   
         if(count == 280000)
@@ -1287,6 +1396,7 @@ const tick = () =>
     //     controls.update();
         
     // }
+    animate_clouds();
 
     // Update controls
     controls.update()
@@ -1302,6 +1412,37 @@ tick()
 
 
 
+function animate_clouds(){
+    const positions = particleGeometry.attributes.position.array;
+    const velocities = particleGeometry.attributes.velocity.array;
+    const lifespans = particleGeometry.attributes.lifespan.array;  
+    
+    for (let i = 0; i < positions.length; i += 3) {
+        // update position based on velocity
+        positions[i] += velocities[i];
+        positions[i + 1] += velocities[i + 1];
+        positions[i + 2] += velocities[i + 2];
+        
+        // decrease lifespan and reset position if lifespan is up
+        /** TO MAKE THE CLOUDS APPEAR AND DISSAPEAR UN-COMMENT  THE BELOW CODE// LIFESPANS */
+                    // lifespans[i / 3] -= 0.01;
+                    // if (lifespans[i / 3] <= 0) {
+                    //     positions[i] = Math.random() *     3000 - 2000;
+                    //     positions[i + 1] = Math.random() * 3000 - 2000;
+                    //     positions[i + 2] = Math.random() * 3000 - 2000;
+                    //     lifespans[i / 3] = Math.random() * 2 + 1;
+                    // }
+    }
+    
+    // mark attributes as needing update
+    particleGeometry.attributes.position.needsUpdate = true;
+    particleGeometry.attributes.lifespan.needsUpdate = true;
+}
+
+// Create a target vector representing the center point or position you want the object to face
+const target = new THREE.Vector3(0, 0, 0); // Replace with the desired center position
+
+
 function orbit_around_circle(index,speed){
     // let always_0 = always_Zero[index];
     
@@ -1310,8 +1451,9 @@ function orbit_around_circle(index,speed){
     modelGlb[index].position.set(pt.x,pt.y+index,pt.z);
     // camera.position.set(pt.x+10,pt.y+index+10,pt.z+10)
     // camera.position.copy(clickedObject.position)
-
-
+    
+    modelGlb[index].lookAt(target)
+    
       // follow object
       let objectA = followObject.getObject_obj;
       if (objectA){
