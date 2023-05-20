@@ -193,6 +193,7 @@ const interactionManager = new InteractionManager(
   var a_sis_folder = gui.addFolder('Adult Sisters');
   var y_br_folder = gui.addFolder('Youth & Stud. Brothers');
   var y_sis_folder = gui.addFolder('Youth & Stud. Sisters');
+  var group_folder = gui.addFolder('By Group');
 
   var a_br_folder_group1 = a_br_folder.addFolder('Group1');
   var a_br_folder_group2 = a_br_folder.addFolder('Group2');
@@ -474,6 +475,9 @@ const scoreBoard = {
                                 
                                 else if(age_group==='Youth Sister')
                                 y_sis_folder.add(camerOnClick, name_participant);
+
+                                else if(age_group==='Group')
+                                group_folder.add(camerOnClick, name_participant);
 
                                 
 
