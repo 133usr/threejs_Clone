@@ -237,10 +237,17 @@ const scoreBoard = {
                             const forLoop = async _ => {
                                 console.log("Start");
                                 
+                                
                                for (let index = 0; index < participants; index++) {
                                 var tempsheetObject = sheet_arrayObject[index]
-                                const numFruit = await myPromise(tempsheetObject);
-                                console.log(numFruit);
+                                
+                                 await myPromise(tempsheetObject);
+
+                                 let groupType = sheet_arrayObject[index].group;
+                                 if (groupType == "Group")
+                                 {//only run for Group score
+                                    await myPromise2(tempsheetObject);}
+                                
                                 }
                                 
                                console.log("End");
@@ -476,9 +483,6 @@ const scoreBoard = {
                                 else if(age_group==='Youth Sister')
                                 y_sis_folder.add(camerOnClick, name_participant);
 
-                                else if(age_group==='Group')
-                                group_folder.add(camerOnClick, name_participant);
-
                                 
 
                                 // collapse folder1
@@ -492,6 +496,243 @@ const scoreBoard = {
               
 
              
+
+
+
+
+
+/**** NOW TO LOAD THE DATA BY GROUPS 
+ * I DON'T WANNA ANIMATE THEM CIRCLING AROUND THE SCENE
+ * I WANT THEM TO STAY
+ * SO NEED ANOTHER FUNCTION WHICH IS TOTALLY DIFFERENT + NO ANIATION
+ */
+
+/**
+ * 
+ *                          A PROMISE FUNCTION DECLARATION HERE
+ */
+const modelGlb_Group =[], abc2 =[], spriteText2=[];
+
+var loader3 = new GLTFLoader();
+
+const myPromise2 = tempsheetObject => {
+    // Perform some asynchronous operation
+    // If the operation is successful, call the resolve function with the result
+    // If the operation fails, call the reject function with the error
+    var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
+    ['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
+    ['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','','0','false'],
+    ['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','','0','false'],
+    ['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
+    ['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
+    ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
+    ['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
+    ['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
+    ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '0.4', '1','9','0','4.2','0','true'],
+    ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
+    ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
+    ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
+    ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','','0','false'],
+    ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','','0','false'],
+    ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.02', '1','9','0','','0','false'],
+    ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','','0','false'],
+    
+   
+    ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','','0','false'],
+    ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','','0','false'],//
+    ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '','','0','3','3.2','false']
+    
+    ];
+    let search = tempsheetObject.character;         // desired character
+    var arr = all_models.filter( function( el ) {   //to find the string in 2d array then return whole index
+        return !!~el.indexOf( search );                     // find the desired character in array
+    } );
+    var objectFilename = arr[0][2]; //url Of chosed Object ENABLE THIS !! already chosed the model with "return !!~el.indexof(search)"
+    let objectscale = arr[0][3];    // arr is the selected model by user
+    var i = tempsheetObject.Id;
+    // console.log(tempsheetObject);
+    // console.log('Model Name:: '+all_models[i][1]);
+    
+    // let objectPos_X = all_models[i][4];
+    // let objectPos_Y = all_models[i][5];
+    // let objectRot_X = all_models[i][6];
+    // let objectRot_Y = all_models[i][7];
+    // let objectRot_Z = all_models[i][8];
+
+    var actual_total_score = tempsheetObject.Total;
+
+/**
+* ACCORDING TO GOOGLE SHEETS TOTAL IS 70000 AND MAX ZOOM OUT 3500 
+* WHICH IS 20X OF TOTAL SO 
+* WE HAVE TO DIVIDE THE TOTAL SCORE FROM 20 
+* BUT WHEN YOU SHOW THE SCORE IT SHOULD BE AS IT IS
+* 
+* NOW
+* X AND Y BOTH MOVE THE CHARACTER SO ONE SHOULD BE IN NEGATIVE AND ONE SHOULD BE POSITIVE WITH SAME VALUES
+*/             let distance_travel_score_X = actual_total_score;
+    let distance_travel_score_Z;
+    let random_distance_Z;
+    if(distance_travel_score_X<20){
+        distance_travel_score_X =  3500;
+        distance_travel_score_Z = -3500;    
+
+        }else{
+            distance_travel_score_X = distance_travel_score_X/20;
+            distance_travel_score_X = 3500-distance_travel_score_X;
+            distance_travel_score_Z = -Math.abs(distance_travel_score_X);
+            random_distance_Z       = randomGenerator(distance_travel_score_Z,distance_travel_score_X);
+
+            // console.log("distance_travel_score for "+tempsheetObject.Participant+" and Y is: "+distance_travel_score_X+"   "+distance_travel_score_Z);
+        }
+
+
+    var age_group = tempsheetObject.group;
+    var name_participant = tempsheetObject.Participant;
+   
+  
+
+   
+    // console.log('object File:: '+objectFilename);                                                          
+    let modelGlb_source = [];
+    modelGlb_source[i]= objectFilename;
+  
+               
+                    loader3.load(modelGlb_source[i],function(glb){
+                    modelGlb_Group [i]= glb.scene;
+                    
+                 
+                   modelGlb_Group[i].scale.set(objectscale,objectscale,objectscale);
+                //    modelGlb_Group[i].rotateX(objectRot_X);
+                //    modelGlb_Group[i].rotateY(objectRot_Y);
+                //    modelGlb_Group[i].rotateZ(objectRot_Z);
+                   modelGlb_Group[i].position.set(distance_travel_score_X,0,distance_travel_score_Z); 
+                    interactionManager.add(modelGlb_Group[i]);
+                    modelGlb_Group[i].addEventListener('click', (event) => {
+                        var root = modelGlb_Group[i];
+                            const box = new THREE.Box3().setFromObject(root);
+                            const boxSize = box.getSize(new THREE.Vector3()).length();
+                            const boxCenter = box.getCenter(new THREE.Vector3());
+                            console.log('interaction manager trig');
+                            // set the camera to frame the box
+                            frameArea2(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject,root);
+                    });
+                    
+                    // gsap.to( modelGlb_Group[i].position, {
+                    //     duration: 9,
+                    //     y: 2,
+                    //     // z: 2.5 ,
+                    //     repeat: -1,
+                    //     yoyo: true,
+                    //     ease: 'power3.inOut'
+                    // });  
+                    // gsap.to( modelGlb_Group[i].position,  {
+                    //     duration: 9,
+                    //     // y: -8,
+                        
+                    //     // yoyo: true,
+                    //     // repeat: 1,
+                    //     ease: 'power3.inOut'
+                    // });
+                    modelGlb_Group[i].rotateY(Math.PI)
+                    scene.add(modelGlb_Group[i]);
+// //for text                      
+
+//                     spriteText2[i] = makeTextSprite( "Name", 
+//                     { fontsize: 74, textColor: {r:255, g:255, b:255, a:1.0}} );
+//                     spriteText2[i].position.set(distance_travel_score_X-1000,i,distance_travel_score_Z+1000);
+
+//                     // scene.add( spriteText[i] );
+//                     const group = new THREE.Group();
+//                     group.add(modelGlb_Group[i]);
+//                     group.add(spriteText2[i]);
+//                     scene.add(group)
+
+
+// console.log(distance_travel_score_X,distance_travel_score_Z);
+                    //animation things
+                    abc2[i] = modelGlb_Group[i].children[0];
+                    const mixer = new THREE.AnimationMixer(abc2[i]);
+                    mixer.clipAction(glb.animations[0]).play();
+                    mixers.push(mixer);
+                    
+                    /**
+                     * ADD BUTTONS TO GUI
+                     */
+                    
+                    //for GUI
+                    var camerOnClick = {
+                               [name_participant]: function () {
+                                //first collapse all folders
+                                gui.close(true);
+                               
+                                 //remove box
+                                var container = document.querySelectorAll("container")[0];
+                                if(container != null)
+                                {
+                                    // console.log('not')
+                                document.querySelectorAll("container")[0].remove();}
+                                var root = modelGlb_Group[i];
+                                // compute the box that contains all the stuff
+                                // from root and below
+                                const box = new THREE.Box3().setFromObject(root);
+                                const boxSize = box.getSize(new THREE.Vector3()).length();
+                                const boxCenter = box.getCenter(new THREE.Vector3());
+                                
+                                // set the camera to frame the box
+
+                                frameArea2(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject,root);
+                                
+                              }
+
+                    };
+
+                    if(age_group==='Group')
+                    group_folder.add(camerOnClick, name_participant);
+
+                    
+
+                    // collapse folder1
+                    // folder1.close();
+
+
+                }); 
+                
+                // return resolve;
+  };
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //load sky map in background
               const loader = new THREE.CubeTextureLoader();
@@ -998,6 +1239,106 @@ console.log(object_O);
                 }
                 });
         }
+
+
+
+
+
+
+        function frameArea2(sizeToFitOnScreen, boxSize, boxCenter, camera,tempsheetObject,object_O) {
+
+            const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
+            const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
+            const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
+            // compute a unit vector that points in the direction the camera is now
+            // in the xz plane from the center of the box
+            const direction = (new THREE.Vector3())
+              .subVectors(camera.position, boxCenter)
+              .multiply(new THREE.Vector3(1, 0, 1))
+              .normalize();
+              camera.updateProjectionMatrix();
+            // move the camera to a position distance units way from the center
+            // in whatever direction the camera was from the center already
+            // camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
+        
+            // pick some near and far values for the frustum that
+            // will contain the box.
+            camera.near = boxSize / 200;
+            camera.far = boxSize * 1000;
+            // alert(camera.far)
+            // alert(camera.near)
+            // 
+            var x = boxCenter.x+6;  // + to zoomout and - to zoom in
+            var y = boxCenter.y;
+            var z = boxCenter.z-10; //to cneter it
+            
+            // console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
+            gsap.to( camera.position, {
+                duration: 2, // seconds
+                x: x,
+                y: y,
+                z: z,
+                onUpdate: function() {
+                    controls.enabled = true;
+                    // controls.target = new THREE.Vector3(x, y, z);
+                    
+                 }
+            } );
+            
+            gsap.to( camera.target, {
+                duration: 2, // seconds
+                x: x,
+                y: y,
+                z: z,
+                onUpdate: function() {
+                    controls.enabled = true;
+                    controls.target = new THREE.Vector3(x, y, z);
+                    controls.update()
+                    
+                 }
+            } );
+        console.log(object_O);
+            // followObject.changeObject_obj = object_O;
+        
+            console.log(followObject.getObject_obj);
+            
+            //  x = boxCenter.x;
+            //  y = boxCenter.y;
+             
+            scoreBox_CSS(x,y,tempsheetObject);                       
+            
+            // point the camera to look at the center of the box
+            // camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Base 
