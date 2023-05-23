@@ -59,6 +59,7 @@ let modelGlb=[];
 let always_Zero=[];     // WE WANT DIFFERENT VARS WITH 0 VALUE INSIDE THE ORBIT FUNCTION, ARRAY WULD BE GOOD
 let spriteText = [];
 
+
 let abc=[];
 const mixers = [];
 
@@ -240,13 +241,15 @@ const scoreBoard = {
                                 
                                for (let index = 0; index < participants; index++) {
                                 var tempsheetObject = sheet_arrayObject[index]
+                                let groupType = sheet_arrayObject[index].group;
                                 
+                                if (groupType != "Group")
                                  await myPromise(tempsheetObject);
-
-                                 let groupType = sheet_arrayObject[index].group;
+                                
                                  if (groupType == "Group")
                                  {//only run for Group score
-                                    await myPromise2(tempsheetObject);}
+                                    await myPromise2(tempsheetObject);
+                                  }
                                 
                                 }
                                 
@@ -303,7 +306,7 @@ const scoreBoard = {
                
                 ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','','0','false'],
                 ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','','0','false'],//
-                ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '','','0','3','3.2','false']
+                ['21','Dae Flying circus','./assets/glb/low-size/sopup.glb',    '4', '','','0','0','0','false']
                 
                 ];
                 let search = tempsheetObject.character;         // desired character
@@ -318,9 +321,9 @@ const scoreBoard = {
                 
                 // let objectPos_X = all_models[i][4];
                 // let objectPos_Y = all_models[i][5];
-                // let objectRot_X = all_models[i][6];
-                // let objectRot_Y = all_models[i][7];
-                // let objectRot_Z = all_models[i][8];
+                // let objectRot_X = arr[0][6];
+                // let objectRot_Y = arr[0][7];
+                // let objectRot_Z = arr[0][8];
 
                 var actual_total_score = tempsheetObject.Total;
 
@@ -368,7 +371,8 @@ const scoreBoard = {
                             //    modelGlb[i].rotateX(objectRot_X);
                             //    modelGlb[i].rotateY(objectRot_Y);
                             //    modelGlb[i].rotateZ(objectRot_Z);
-                               modelGlb[i].position.set(distance_travel_score_X,0,distance_travel_score_Z); 
+                            let y_position = Math.random() * 500+ 1;
+                               modelGlb[i].position.set(distance_travel_score_X,y_position,distance_travel_score_Z); 
                                 interactionManager.add(modelGlb[i]);
                                 modelGlb[i].addEventListener('click', (event) => {
                                     var root = modelGlb[i];
@@ -396,19 +400,19 @@ const scoreBoard = {
                                 //     // repeat: 1,
                                 //     ease: 'power3.inOut'
                                 // });
-                                modelGlb[i].rotateY(Math.PI)
+                                // modelGlb[i].rotateY(Math.PI)
                                 // scene.add(modelGlb[i]);
 //for text                      
-
+                               
+                                
                                 spriteText[i] = makeTextSprite( "Name", 
                                 { fontsize: 74, textColor: {r:255, g:255, b:255, a:1.0}} );
                                 spriteText[i].position.set(distance_travel_score_X-1000,i,distance_travel_score_Z+1000);
 
                                 // scene.add( spriteText[i] );
-                                const group = new THREE.Group();
-                                group.add(modelGlb[i]);
-                                group.add(spriteText[i]);
-                                scene.add(group)
+                                
+                               
+                                scene.add(modelGlb[i])
 
 
 // console.log(distance_travel_score_X,distance_travel_score_Z);
@@ -519,45 +523,33 @@ const myPromise2 = tempsheetObject => {
     // Perform some asynchronous operation
     // If the operation is successful, call the resolve function with the result
     // If the operation fails, call the reject function with the error
-    var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
-    ['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
-    ['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','','0','false'],
-    ['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','','0','false'],
-    ['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
-    ['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
-    ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
-    ['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
-    ['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
-    ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '0.4', '1','9','0','4.2','0','true'],
-    ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
-    ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
-    ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
-    ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','','0','false'],
-    ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','','0','false'],
-    ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.02', '1','9','0','','0','false'],
-    ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','','0','false'],
-    
-   
-    ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','','0','false'],
-    ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','','0','false'],//
-    ['21','Dae Flying circus','./assets/glb/low-size/dae_flying_circus.glb',    '4', '','','0','3','3.2','false']
-    
+    var all_models2 = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
+    ['1','BirdsBlack',   './assets/glb/forGroup/birds_black.glb',      '5', '-800','90','0','','0','false'],
+    ['2','BirdsBrown',   './assets/glb/forGroup/birds_brown.glb',      '5', '-800','90','0','','0','false'],
+    ['3','BirdsGreen',   './assets/glb/forGroup/birds_greens.glb',      '5', '-800','90','0','','0','false'],
+    ['4','BirdsLightBlue',   './assets/glb/forGroup/birds_lightBlue.glb',      '5', '-800','90','0','','0','false'],
+    ['5','BirdsMagenta',   './assets/glb/forGroup/birds_magenta.glb',      '5', '-800','90','0','','0','false'],
+    ['6','BirdsPink',   './assets/glb/forGroup/birds_pink.glb',      '5', '-800','90','0','','0','false'],
+    ['7','BirdsRed',   './assets/glb/forGroup/birds_red.glb',      '5', '-800','90','0','','0','false'],
+    ['8','BirdsYellow',   './assets/glb/forGroup/birds_yellow.glb',      '5', '-800','90','0','','0','false'],
+
     ];
-    let search = tempsheetObject.character;         // desired character
-    var arr = all_models.filter( function( el ) {   //to find the string in 2d array then return whole index
+    let search = tempsheetObject.character; 
+    console.log(search);        // desired character
+    var arr = all_models2.filter( function( el ) {   //to find the string in 2d array then return whole index
         return !!~el.indexOf( search );                     // find the desired character in array
     } );
     var objectFilename = arr[0][2]; //url Of chosed Object ENABLE THIS !! already chosed the model with "return !!~el.indexof(search)"
     let objectscale = arr[0][3];    // arr is the selected model by user
     var i = tempsheetObject.Id;
     // console.log(tempsheetObject);
-    // console.log('Model Name:: '+all_models[i][1]);
+    // console.log('Model Name:: '+all_models2[i][1]);
     
-    // let objectPos_X = all_models[i][4];
-    // let objectPos_Y = all_models[i][5];
-    // let objectRot_X = all_models[i][6];
-    // let objectRot_Y = all_models[i][7];
-    // let objectRot_Z = all_models[i][8];
+    // let objectPos_X = all_models2[i][4];
+    // let objectPos_Y = all_models2[i][5];
+    // let objectRot_X = all_models2[i][6];
+    // let objectRot_Y = all_models2[i][7];
+    // let objectRot_Z = all_models2[i][8];
 
     var actual_total_score = tempsheetObject.Total;
 
@@ -569,7 +561,9 @@ const myPromise2 = tempsheetObject => {
 * 
 * NOW
 * X AND Y BOTH MOVE THE CHARACTER SO ONE SHOULD BE IN NEGATIVE AND ONE SHOULD BE POSITIVE WITH SAME VALUES
-*/             let distance_travel_score_X = actual_total_score;
+*/  let divide_by_number_of_members;   
+    let number_of_memb_in_group =tempsheetObject.Group_total;  
+      let distance_travel_score_X = actual_total_score;
     let distance_travel_score_Z;
     let random_distance_Z;
     if(distance_travel_score_X<20){
@@ -577,6 +571,7 @@ const myPromise2 = tempsheetObject => {
         distance_travel_score_Z = -3500;    
 
         }else{
+            divide_by_number_of_members = distance_travel_score_X/number_of_memb_in_group;    //only for group
             distance_travel_score_X = distance_travel_score_X/20;
             distance_travel_score_X = 3500-distance_travel_score_X;
             distance_travel_score_Z = -Math.abs(distance_travel_score_X);
@@ -633,7 +628,7 @@ const myPromise2 = tempsheetObject => {
                     //     // repeat: 1,
                     //     ease: 'power3.inOut'
                     // });
-                    modelGlb_Group[i].rotateY(Math.PI)
+                    // modelGlb_Group[i].rotateY(Math.PI)
                     scene.add(modelGlb_Group[i]);
 // //for text                      
 
@@ -790,7 +785,7 @@ const particleVelocities = [];
 const particleLifespans = [];
 
 // create particles and add them to the arrays
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 500; i++) {
     // generate random position within a cube
     const x = Math.random() * 8000 - 3500;
     const y = Math.random() * 2000 - 1000;
@@ -1264,7 +1259,7 @@ console.log(object_O);
             // pick some near and far values for the frustum that
             // will contain the box.
             camera.near = boxSize / 200;
-            camera.far = boxSize * 1000;
+            camera.far = boxSize * 500;
             // alert(camera.far)
             // alert(camera.near)
             // 
@@ -1525,8 +1520,8 @@ const rotateAround = 2 * Math.PI * (1/60) * (1/60);
 var axis = new THREE.Vector3( );
 var up = new THREE.Vector3( 0, 1, 0 );
 var revolveSpeed = {
-    speedx1:1/100000, speedx2:2/100000, speedx3:3/100000, speedx4:4/100000, speedx5:5/100000, speedx6:6/100000, speedx7:7/100000,
-    speedx8:8/100000, speedx9:9/100000, speedx10:10/100000, speedx11:11/100000, speedx12:12/100000, speedx13:13/100000, speedx14:14/100000,
+    speedx1:1/1000000, speedx2:2/1000000, speedx3:3/1000000, speedx4:4/1000000, speedx5:5/1000000, speedx6:6/1000000, speedx7:7/1000000,
+    speedx8:8/1000000, speedx9:9/1000000, speedx10:10/1000000, speedx11:11/1000000, speedx12:12/1000000, speedx13:13/1000000, speedx14:14/1000000,
 };
 var count =0;
 const tick = () =>
@@ -1648,7 +1643,7 @@ const tick = () =>
 
 
 
-    spriteText.forEach(function (model,index){
+    modelGlb.forEach(function (model,index){
         // var pt = model_OrbitPath[index].getPoint( eat );
         // var tangent = model_OrbitPath[index].getTangent( eat ).normalize();
         // modelGlb[index].position.set(pt.x,pt.y,pt.z);
@@ -1656,6 +1651,7 @@ const tick = () =>
         // axis.crossVectors( up, tangent ).normalize();
         // // calcluate the angle between the up vector and the tangent
         // var radians = Math.acos( up.dot( tangent ) );	
+        
         count++;
         if(count<50000){
         
@@ -1862,6 +1858,7 @@ function orbit_around_circle(index,speed){
     
     var pt = model_OrbitPath[index].getPoint( always_Zero[index] );
     var tangent = model_OrbitPath[index].getTangent( always_Zero[index] ).normalize();
+    // modelGlb[index].position.set(pt.x,pt.y+index,pt.z);
     modelGlb[index].position.set(pt.x,pt.y+index,pt.z);
     // camera.position.set(pt.x+10,pt.y+index+10,pt.z+10)
     // camera.position.copy(clickedObject.position)
@@ -1876,7 +1873,7 @@ function orbit_around_circle(index,speed){
         const y = objectA.position.y;
         const z = objectA.position.z;
        camera.position.set(x,y,z)
-       controls.target = new THREE.Vector3(x, y-10, z-20);
+       controls.target = new THREE.Vector3(x, y-10, z-15);
        controls.enabled = true;
 
           
@@ -1885,7 +1882,11 @@ function orbit_around_circle(index,speed){
     axis.crossVectors( up, tangent ).normalize();
     // calcluate the angle between the up vector and the tangent
     var radians = Math.acos( up.dot( tangent ) );	
-    always_Zero[index] = (always_Zero[index] >= 1) ? 0 : always_Zero[index] += speed;
+    if(index % 2 === 1)
+    always_Zero[index] = (always_Zero[index] >= 1) ? 0 : always_Zero[index] += speed;   //move some clockwise and some anti
+
+    else
+    always_Zero[index] = (always_Zero[index] >= 1) ? 0 : always_Zero[index] -= speed;
 }
 
 
