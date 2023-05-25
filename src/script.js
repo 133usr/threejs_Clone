@@ -56,6 +56,7 @@ Ellipse.prototype = Object.create( THREE.Curve.prototype );
 
 var loader2 = new GLTFLoader();
 let modelGlb=[];
+// let models_and_Text_Group = [];
 let always_Zero=[];     // WE WANT DIFFERENT VARS WITH 0 VALUE INSIDE THE ORBIT FUNCTION, ARRAY WULD BE GOOD
 let spriteText = [];
 
@@ -294,7 +295,7 @@ const scoreBoard = {
                 ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
                 ['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
                 ['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
-                ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '0.4', '1','9','0','4.2','0','true'],
+                ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '0.2', '1','9','0','4.2','0','true'],
                 ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
                 ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
                 ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
@@ -384,35 +385,46 @@ const scoreBoard = {
                                         frameArea(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject,root);
                                 });
                                 
-                                // gsap.to( modelGlb[i].position, {
-                                //     duration: 9,
-                                //     y: 2,
-                                //     // z: 2.5 ,
-                                //     repeat: -1,
-                                //     yoyo: true,
-                                //     ease: 'power3.inOut'
-                                // });  
-                                // gsap.to( modelGlb[i].position,  {
-                                //     duration: 9,
-                                //     // y: -8,
-                                    
-                                //     // yoyo: true,
-                                //     // repeat: 1,
-                                //     ease: 'power3.inOut'
-                                // });
-                                // modelGlb[i].rotateY(Math.PI)
-                                // scene.add(modelGlb[i]);
-//for text                      
-                               
-                                
-                                // spriteText[i] = makeTextSprite( "Name", 
-                                // { fontsize: 74, textColor: {r:255, g:255, b:255, a:1.0}} );
-                                // spriteText[i].position.set(distance_travel_score_X-1000,i,distance_travel_score_Z+1000);
+                            
+                                const selectedColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#ff00ff', '#00FFFF',"#FFFFFF","#FFA500"];
+                    
+                                // Usage:
+                                const randomColor = getRandomColorFromArray(selectedColors);
 
-                                // scene.add( spriteText[i] );
-                                
-                               
+                                var config1 = {
+                                    fontFace: 'Helvetica',
+                                    fontSize: 10,
+                                    fontColor: 'rgba(255, 255, 255, 1)',
+                                    fontBold: false,
+                                    fontItalic: false,
+                                    textAlign: 'center',
+                                    borderThickness: 0,
+                                    borderColor: 'rgba(0, 0, 0, 0)',
+                                    borderRadius: 0,
+                                    backgroundColor: 'rgba(0, 0, 0, 0)'
+                                };
+                                let message  = [name_participant];
+                                spriteText[i]  = generateTextSprite(message.join('\n'), config1);
+                                spriteText[i].position.set(distance_travel_score_X+0,5,distance_travel_score_Z);
+                                // const group = new THREE.Group();
+                                // group.add(modelGlb[i]);
+                                // group.add(spriteText[i]);
+                                // models_and_Text_Group[i] = group;
+                                // scene.add(group)
+
                                 scene.add(modelGlb[i])
+                                scene.add(spriteText[i])
+
+
+
+
+
+
+
+
+
+                               
+                                // scene.add(modelGlb[i])
 
 
 // console.log(distance_travel_score_X,distance_travel_score_Z);
@@ -654,7 +666,7 @@ const myPromise2 = tempsheetObject => {
                     var m_Preach    = tempsheetObject.totalPreach_m/5;
                     var fruits       = tempsheetObject.totalFruits;
                                         if(fruits>0)
-                                        {fruits = tempsheetObject.fruits/500}
+                                        {fruits = tempsheetObject.totalFruits/500}
                                         
                     var total_score = tempsheetObject.Total;
                     var elohim_aca  = ((tempsheetObject.totalSign/5)+(tempsheetObject.chap_complete/20));
@@ -2062,6 +2074,7 @@ function orbit_around_circle(index,speed){
     var tangent = model_OrbitPath[index].getTangent( always_Zero[index] ).normalize();
     // modelGlb[index].position.set(pt.x,pt.y+index,pt.z);
     modelGlb[index].position.set(pt.x,pt.y+index,pt.z);
+    spriteText[index].position.set(pt.x,pt.y+index+3,pt.z);
     // camera.position.set(pt.x+10,pt.y+index+10,pt.z+10)
     // camera.position.copy(clickedObject.position)
     
