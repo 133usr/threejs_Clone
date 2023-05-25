@@ -8,7 +8,7 @@ import { Object3D } from 'three'
 import TWEEN from '@tweenjs/tween.js'
 import { InteractionManager } from 'three.interactive';
 import GUI from 'lil-gui';
-// import { Geometry } from 'three/examples/jsm/';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 
 
 
@@ -524,14 +524,14 @@ const myPromise2 = tempsheetObject => {
     // If the operation is successful, call the resolve function with the result
     // If the operation fails, call the reject function with the error
     var all_models2 = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
-    ['1','BirdsBlack',   './assets/glb/forGroup/birds_black.glb',         '15', '0','90','10','','0','false'],
-    ['2','BirdsBrown',   './assets/glb/forGroup/birds_brown.glb',         '15', '0','90','10','','0','false'],
-    ['3','BirdsGreen',   './assets/glb/forGroup/birds_greens.glb',         '15', '0','90','10','','0','false'],
-    ['4','BirdsLightBlue',   './assets/glb/forGroup/birds_lightBlue.glb',  '15', '0','90','0','','0','false'],
-    ['8','BirdsMagenta',   './assets/glb/forGroup/birds_magenta.glb',      '15', '0','90','0','','0','false'],
-    ['6','BirdsPink',   './assets/glb/forGroup/birds_pink.glb',             '15', '0','90','0','','0','false'],
-    ['7','BirdsRed',   './assets/glb/forGroup/birds_red.glb',               '15', '0','90','0','','0','false'],
-    ['8','BirdsYellow',   './assets/glb/forGroup/birds_yellow.glb',        '15', '8','90','0','','0','false'],
+    ['1','BirdsBlack',   './assets/glb/forGroup/birds_black.glb',         '25', '0','90','10','','0','false'],
+    ['2','BirdsBrown',   './assets/glb/forGroup/birds_brown.glb',         '25', '0','90','10','','0','false'],
+    ['3','BirdsGreen',   './assets/glb/forGroup/birds_greens.glb',         '25', '0','90','10','','0','false'],
+    ['4','BirdsLightBlue',   './assets/glb/forGroup/birds_lightBlue.glb',  '25', '0','90','0','','0','false'],
+    ['8','BirdsMagenta',   './assets/glb/forGroup/birds_magenta.glb',      '25', '0','90','0','','0','false'],
+    ['6','BirdsPink',   './assets/glb/forGroup/birds_pink.glb',             '25', '0','90','0','','0','false'],
+    ['7','BirdsRed',   './assets/glb/forGroup/birds_red.glb',               '25', '0','90','0','','0','false'],
+    ['8','BirdsYellow',   './assets/glb/forGroup/birds_yellow.glb',        '25', '8','90','0','','0','false'],
 
     ];
     let search = tempsheetObject.character; 
@@ -604,7 +604,8 @@ const myPromise2 = tempsheetObject => {
                 //    modelGlb_Group[i].rotateZ(objectRot_Z);
                     const target = new THREE.Vector3(80, 0,-90);
                     modelGlb_Group[i].lookAt(target);
-                    const randomPos_Z = Math.random() * 15 + 5;
+                    let randomPos_Z = Math.random() * 15 + 5;
+                    let randomPos_Z_scoreCard = Math.random() * 60 - 20;
                     modelGlb_Group[i].position.set(distance_travel_score_X,randomPos_Z,distance_travel_score_Z); 
 
                     interactionManager.add(modelGlb_Group[i]);
@@ -648,21 +649,77 @@ const myPromise2 = tempsheetObject => {
                     var total_score = tempsheetObject.Total;
                     var elohim_aca  = ((tempsheetObject.totalSign/5)+(tempsheetObject.chap_complete/20));
                     // / Array of selected colors
-                    "color:#00aa55"
+                    // "color:#00aa55"
                     const selectedColors = ['#1b8ae4', '#b6eb14', '#ff8040', '#ffff00', '#ff00ff', '#00aa55'];
                     
                     // Usage:
                     const randomColor = getRandomColorFromArray(selectedColors);
 
-                    let message  = [" "+group_Name,"साधा. प्रचार:"+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलोहिम अकादमी: "+elohim_aca," "];
-                    spriteText2[i] = makeTextSprite( message, 
-                    { fontsize: 34, textColor: randomColor} );
-                    spriteText2[i].position.set(distance_travel_score_X,randomPos_Z,distance_travel_score_Z);
-                    // scene.add( spriteText[i] );
+                    // let message  = [" "+group_Name,"साधा. प्रचार:"+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलोहिम अकादमी: "+elohim_aca," "];
+                    // spriteText2[i] = makeTextSprite( message, 
+                    // { fontsize: 34, textColor: randomColor} );
+                    // spriteText2[i].position.set(distance_travel_score_X,randomPos_Z,distance_travel_score_Z);
+                    // // scene.add( spriteText[i] );
+                    // const group = new THREE.Group();
+                    // group.add(modelGlb_Group[i]);
+                    // group.add(spriteText2[i]);
+                    // scene.add(group)
+
+
+
+// require('../static/fonts/Agra_Condensed_Regular.ttf')
+                   
+
+                    // text sprite
+                    
+                    const fontLoader = new FontLoader();
+                    fontLoader.load('./fonts/Agra_Condensed_Regular.json', function (font) {
+  // Font loading is complete, and you can use the font in your Three.js scene
+  // Create your Three.js objects and apply the loaded font
+
+                    var config1 = {
+                        fontFace: font,
+                        fontSize: 16,
+                        fontColor: 'rgba(255, 255, 255, 1)',
+                        fontBold: false,
+                        fontItalic: false,
+                        textAlign: 'center',
+                        borderThickness: 5,
+                        borderColor: randomColor,
+                        borderRadius: 10,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)'
+                    };
+                    let message  = [""," "+group_Name,"साधा. प्रचार: "+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलो अकादमी: "+elohim_aca,""];
+                    spriteText2[i]  = generateTextSprite(message.join('\n'), config1);
+                    spriteText2[i].position.set(distance_travel_score_X+randomPos_Z_scoreCard,randomPos_Z_scoreCard,distance_travel_score_Z);
                     const group = new THREE.Group();
                     group.add(modelGlb_Group[i]);
                     group.add(spriteText2[i]);
                     scene.add(group)
+                });
+                    // for (var cfg in config1) {
+                    //     text1.push(cfg + ': ' + config1[cfg]);
+                    // }
+
+
+                    // var message = [];
+                    
+                    // scene.add( spriteText[i] );
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // console.log(distance_travel_score_X,distance_travel_score_Z);
@@ -739,6 +796,100 @@ const myPromise2 = tempsheetObject => {
 
 
 
+  var generateTextSprite = function(text, config) {
+    config || (config = { });
+  
+    var fontFace = config.hasOwnProperty('fontFace') ? config['fontFace'] : 'Arial';
+    var fontSize = config.hasOwnProperty('fontSize') ? config['fontSize'] : 18;
+    var fontColor = config.hasOwnProperty('fontColor') ? config['fontColor'] : 'rgba(0, 0, 0, 1)';
+    var fontBold = config.hasOwnProperty('fontBold') ? config['fontBold'] : false;
+    var fontItalic = config.hasOwnProperty('fontItalic') ? config['fontItalic'] : false;
+    var textAlign = config.hasOwnProperty('textAlign') ? config['textAlign'] : 'left';
+    var borderThickness = config.hasOwnProperty('borderThickness') ? config['borderThickness'] : 4;
+    var borderColor = config.hasOwnProperty('borderColor') ? config['borderColor'] : 'rgba(0, 0, 0, 1)';
+    var borderRadius = config.hasOwnProperty('borderRadius') ? config['borderRadius'] : 0;
+    var backgroundColor = config.hasOwnProperty('backgroundColor') ? config['backgroundColor'] : 'rgba(255, 255, 255, 1)';
+  
+    var ruler = document.createElement('canvas').getContext('2d');
+    ruler.font = (fontBold ?  'Bold ' : '') + (fontItalic ? 'Italic ' : '') + fontSize + 'px ' + fontFace;
+      
+    var textLines = text.split('\n');
+    var textWidth = 0;
+    // canvas width shall be based on the longest width of text lines
+    textLines.forEach(function(line) {
+      var metrics = ruler.measureText(line);
+      textWidth = metrics.width > textWidth ? metrics.width : textWidth;  
+    });
+    // 1.4 is extra height factor for text below baseline: g,j,p,q.
+    var textHeight = fontSize * 1.4 * textLines.length;
+    
+    // texture canvas
+    var canvas = document.createElement('canvas');
+    canvas.width = _ceilPow2(textWidth);
+    canvas.height = _ceilPow2(textHeight);
+    var context = canvas.getContext('2d');
+  
+    // draw background
+    context.font = ruler.font;
+    context.fillStyle = backgroundColor;
+    context.strokeStyle = borderColor;
+    context.lineWidth = borderThickness;
+    _roundRect(context, borderThickness / 2, borderThickness / 2, textWidth + borderThickness, textHeight + borderThickness, borderRadius);
+    
+    // draw text
+    context.fillStyle = fontColor;
+    context.textAlign = textAlign;
+    var fillTextX = {
+      left: borderThickness,
+      start: borderThickness,
+      center: textWidth / 2 + borderThickness,
+      right: textWidth + borderThickness,
+      end: textWidth + borderThickness
+    };
+    var curY = fontSize + borderThickness
+    textLines.forEach(function(line) {
+      context.fillText(line, fillTextX[textAlign], curY);
+      curY += fontSize * 1.4;
+    })
+    
+    // generate sprite
+    var texture = new THREE.Texture(canvas);
+    texture.needsUpdate = true;
+    var spriteMaterial = new THREE.SpriteMaterial({ 
+      map: texture,
+      transparent: true
+    });
+    var sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(canvas.width / 2, canvas.height / 2, 1);
+    
+    return sprite;
+  
+    // ceil the input number to the nearest powers of 2
+    function _ceilPow2(num) {
+      var i = 0;
+      while (num > Math.pow(2, i)) { 
+        i++;
+      }
+      return Math.pow(2, i);
+    }
+  
+    // draw round rect
+    function _roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    };
+  }
 
 
 
@@ -1236,6 +1387,7 @@ console.log(object_O);
             var preach      = tempsheetObject.totalPreach;
             var m_Preach    = tempsheetObject.totalPreach_m;
             var bonus       = tempsheetObject.bonus;
+            var fruits       = tempsheetObject.totalFruits;
             var total_score = tempsheetObject.Total;
             var elohim_aca  = (tempsheetObject.totalSign+tempsheetObject.chap_complete);
 
@@ -1249,12 +1401,12 @@ console.log(object_O);
            
             // text2.style.height = 100;
             // text2.style.backgroundColor = "blue";
-            text2.innerHTML = "<p class='titles' > Name: <f class='score' style = 'alight-right:100%'>"+parti_name+"</f></p>";
-            text2.innerHTML += "<p class='titles' > Preach: <f class='score' style = 'alight-right:100%'>"+preach+"</f></p>";
-            text2.innerHTML += "<p class='titles' > M.Preach: <f class='score' style = 'alight-right:100%'>"+m_Preach+"</f></p>";
-            text2.innerHTML += "<p class='titles' > Elohim Aca.: <f class='score' style = 'alight-right:100%'>"+elohim_aca+"</f></p>";
-            text2.innerHTML += "<p class='titles' > Bonus: <f class='score' style = 'alight-right:100%'>"+bonus+"</f></p>";
-            text2.innerHTML += "<p class='titles' > Total: <f class='score' style = 'alight-right:100%'>"+total_score+"</f></p>";
+            text2.innerHTML = "<p class='titles' > नाम: <f class='score' style = 'alight-right:100%'>"+parti_name+"</f></p>";
+            text2.innerHTML += "<p class='titles' > सा.प्रचार(B.km): <f class='score' style = 'alight-right:100%'>"+preach+"</f></p>";
+            text2.innerHTML += "<p class='titles' > अ.प्रचार(B.km): <f class='score' style = 'alight-right:100%'>"+m_Preach+"</f></p>";
+            text2.innerHTML += "<p class='titles' > फल(B.km): <f class='score' style = 'alight-right:100%'>"+fruits+"</f></p>";
+            text2.innerHTML += "<p class='titles' > एलोहिम अका.(B.km): <f class='score' style = 'alight-right:100%'>"+elohim_aca+"</f></p>";
+            text2.innerHTML += "<p class='titles' > Total Score(B.km): <f class='score' style = 'alight-right:100%'>"+total_score+"</f></p>";
             
             text2.style.bottom = 0 + 'px';
             // text2.style.center = 0 + 'px';
