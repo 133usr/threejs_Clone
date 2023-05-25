@@ -535,7 +535,7 @@ const myPromise2 = tempsheetObject => {
 
     ];
     let search = tempsheetObject.character; 
-    console.log(search);        // desired character
+    // console.log(search);        // desired character
     var arr = all_models2.filter( function( el ) {   //to find the string in 2d array then return whole index
         return !!~el.indexOf( search );                     // find the desired character in array
     } );
@@ -575,7 +575,7 @@ const myPromise2 = tempsheetObject => {
             divide_by_number_of_members = distance_travel_score_X/number_of_memb_in_group;    //only for group
             distance_travel_score_X = distance_travel_score_X/20;
             distance_travel_score_X = 3500-distance_travel_score_X;
-            console.log(distance_travel_score_X);
+            // console.log(distance_travel_score_X);
             distance_travel_score_Z = -Math.abs(distance_travel_score_X);
             random_distance_Z       = randomGenerator(distance_travel_score_Z,distance_travel_score_X);
 
@@ -689,7 +689,7 @@ const myPromise2 = tempsheetObject => {
                         borderRadius: 10,
                         backgroundColor: 'rgba(0, 0, 0, 0.8)'
                     };
-                    let message  = [+group_Name,"साधा. प्रचार: "+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलो अकादमी: "+elohim_aca];
+                    let message  = [group_Name,"साधा. प्रचार: "+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलो अकादमी: "+elohim_aca];
                     spriteText2[i]  = generateTextSprite(message.join('\n'), config1);
                     spriteText2[i].position.set(distance_travel_score_X+randomPos_Z_scoreCard,randomPos_Z_scoreCard,distance_travel_score_Z);
                     const group = new THREE.Group();
@@ -1010,7 +1010,7 @@ scene.add(particleSystem);
                 const currentHour = now.getHours();
                 // Get the current day of the month (1-31)
                 const currentDay = now.getDate();
-                console.log(currentDay);
+                // console.log(currentDay);
                 var skyBox;
                 
                 const skyBoxLoader = new GLTFLoader();
