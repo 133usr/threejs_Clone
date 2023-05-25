@@ -233,7 +233,7 @@ const scoreBoard = {
                
              
                     var participants = Object.keys(sheet_arrayObject).length;
-                        console.log(participants);
+                        // console.log(participants);
               
                             const forLoop = async _ => {
                                 console.log("Start");
@@ -524,14 +524,14 @@ const myPromise2 = tempsheetObject => {
     // If the operation is successful, call the resolve function with the result
     // If the operation fails, call the reject function with the error
     var all_models2 = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
-    ['1','BirdsBlack',   './assets/glb/forGroup/birds_black.glb',      '5', '-800','90','0','','0','false'],
-    ['2','BirdsBrown',   './assets/glb/forGroup/birds_brown.glb',      '5', '-800','90','0','','0','false'],
-    ['3','BirdsGreen',   './assets/glb/forGroup/birds_greens.glb',      '5', '-800','90','0','','0','false'],
-    ['4','BirdsLightBlue',   './assets/glb/forGroup/birds_lightBlue.glb',      '5', '-800','90','0','','0','false'],
-    ['5','BirdsMagenta',   './assets/glb/forGroup/birds_magenta.glb',      '5', '-800','90','0','','0','false'],
-    ['6','BirdsPink',   './assets/glb/forGroup/birds_pink.glb',      '5', '-800','90','0','','0','false'],
-    ['7','BirdsRed',   './assets/glb/forGroup/birds_red.glb',      '5', '-800','90','0','','0','false'],
-    ['8','BirdsYellow',   './assets/glb/forGroup/birds_yellow.glb',      '5', '-800','90','0','','0','false'],
+    ['1','BirdsBlack',   './assets/glb/forGroup/birds_black.glb',         '15', '0','90','10','','0','false'],
+    ['2','BirdsBrown',   './assets/glb/forGroup/birds_brown.glb',         '15', '0','90','10','','0','false'],
+    ['3','BirdsGreen',   './assets/glb/forGroup/birds_greens.glb',         '15', '0','90','10','','0','false'],
+    ['4','BirdsLightBlue',   './assets/glb/forGroup/birds_lightBlue.glb',  '15', '0','90','0','','0','false'],
+    ['8','BirdsMagenta',   './assets/glb/forGroup/birds_magenta.glb',      '15', '0','90','0','','0','false'],
+    ['6','BirdsPink',   './assets/glb/forGroup/birds_pink.glb',             '15', '0','90','0','','0','false'],
+    ['7','BirdsRed',   './assets/glb/forGroup/birds_red.glb',               '15', '0','90','0','','0','false'],
+    ['8','BirdsYellow',   './assets/glb/forGroup/birds_yellow.glb',        '15', '8','90','0','','0','false'],
 
     ];
     let search = tempsheetObject.character; 
@@ -547,9 +547,9 @@ const myPromise2 = tempsheetObject => {
     
     // let objectPos_X = all_models2[i][4];
     // let objectPos_Y = all_models2[i][5];
-    // let objectRot_X = all_models2[i][6];
-    // let objectRot_Y = all_models2[i][7];
-    // let objectRot_Z = all_models2[i][8];
+    // let objectRot_X = arr[0][6];
+    // let objectRot_Y = arr[0][7];
+    // let objectRot_Z = arr[0][8];
 
     var actual_total_score = tempsheetObject.Total;
 
@@ -564,6 +564,7 @@ const myPromise2 = tempsheetObject => {
 */  let divide_by_number_of_members;   
     let number_of_memb_in_group =tempsheetObject.Group_total;  
       let distance_travel_score_X = actual_total_score;
+    //   distance_travel_score_X = 60000;
     let distance_travel_score_Z;
     let random_distance_Z;
     if(distance_travel_score_X<20){
@@ -574,6 +575,7 @@ const myPromise2 = tempsheetObject => {
             divide_by_number_of_members = distance_travel_score_X/number_of_memb_in_group;    //only for group
             distance_travel_score_X = distance_travel_score_X/20;
             distance_travel_score_X = 3500-distance_travel_score_X;
+            console.log(distance_travel_score_X);
             distance_travel_score_Z = -Math.abs(distance_travel_score_X);
             random_distance_Z       = randomGenerator(distance_travel_score_Z,distance_travel_score_X);
 
@@ -596,11 +598,15 @@ const myPromise2 = tempsheetObject => {
                     modelGlb_Group [i]= glb.scene;
                     
                  
-                   modelGlb_Group[i].scale.set(objectscale,objectscale,objectscale);
+                     modelGlb_Group[i].scale.set(objectscale,objectscale,objectscale);
                 //    modelGlb_Group[i].rotateX(objectRot_X);
                 //    modelGlb_Group[i].rotateY(objectRot_Y);
                 //    modelGlb_Group[i].rotateZ(objectRot_Z);
-                   modelGlb_Group[i].position.set(distance_travel_score_X,0,distance_travel_score_Z); 
+                    const target = new THREE.Vector3(80, 0,-90);
+                    modelGlb_Group[i].lookAt(target);
+                    const randomPos_Z = Math.random() * 15 + 5;
+                    modelGlb_Group[i].position.set(distance_travel_score_X,randomPos_Z,distance_travel_score_Z); 
+
                     interactionManager.add(modelGlb_Group[i]);
                     modelGlb_Group[i].addEventListener('click', (event) => {
                         var root = modelGlb_Group[i];
@@ -612,35 +618,51 @@ const myPromise2 = tempsheetObject => {
                             frameArea2(boxSize * 2, boxSize, boxCenter, camera,tempsheetObject,root);
                     });
                     
-                    // gsap.to( modelGlb_Group[i].position, {
-                    //     duration: 9,
-                    //     y: 2,
-                    //     // z: 2.5 ,
-                    //     repeat: -1,
-                    //     yoyo: true,
-                    //     ease: 'power3.inOut'
-                    // });  
-                    // gsap.to( modelGlb_Group[i].position,  {
-                    //     duration: 9,
-                    //     // y: -8,
+                    gsap.to( modelGlb_Group[i].position, {
+                        duration: 4,
+                        y: Math.random() * 20 - 5,
                         
-                    //     // yoyo: true,
-                    //     // repeat: 1,
-                    //     ease: 'power3.inOut'
-                    // });
+                        // z: 2.5 ,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: 'power3.inOut'
+                    });  
+                    gsap.to( modelGlb_Group[i].position,  {
+                        duration: 4,
+                        // y: -8,
+                        
+                        // yoyo: true,
+                        // repeat: 1,
+                        ease: 'power3.inOut'
+                    });
                     // modelGlb_Group[i].rotateY(Math.PI)
-                    scene.add(modelGlb_Group[i]);
-// //for text                      
+                    // scene.add(modelGlb_Group[i]);
+// //for text           
+                    var group_Name = tempsheetObject.Participant;
+                    var preach      = tempsheetObject.totalPreach/8;
+                    var m_Preach    = tempsheetObject.totalPreach_m/5;
+                    var fruits       = tempsheetObject.totalFruits;
+                                        if(fruits>0)
+                                        {fruits = tempsheetObject.fruits/500}
+                                        
+                    var total_score = tempsheetObject.Total;
+                    var elohim_aca  = ((tempsheetObject.totalSign/5)+(tempsheetObject.chap_complete/20));
+                    // / Array of selected colors
+                    "color:#00aa55"
+                    const selectedColors = ['#1b8ae4', '#b6eb14', '#ff8040', '#ffff00', '#ff00ff', '#00aa55'];
+                    
+                    // Usage:
+                    const randomColor = getRandomColorFromArray(selectedColors);
 
-//                     spriteText2[i] = makeTextSprite( "Name", 
-//                     { fontsize: 74, textColor: {r:255, g:255, b:255, a:1.0}} );
-//                     spriteText2[i].position.set(distance_travel_score_X-1000,i,distance_travel_score_Z+1000);
-
-//                     // scene.add( spriteText[i] );
-//                     const group = new THREE.Group();
-//                     group.add(modelGlb_Group[i]);
-//                     group.add(spriteText2[i]);
-//                     scene.add(group)
+                    let message  = [" "+group_Name,"साधा. प्रचार:"+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलोहिम अकादमी: "+elohim_aca," "];
+                    spriteText2[i] = makeTextSprite( message, 
+                    { fontsize: 34, textColor: randomColor} );
+                    spriteText2[i].position.set(distance_travel_score_X,randomPos_Z,distance_travel_score_Z);
+                    // scene.add( spriteText[i] );
+                    const group = new THREE.Group();
+                    group.add(modelGlb_Group[i]);
+                    group.add(spriteText2[i]);
+                    scene.add(group)
 
 
 // console.log(distance_travel_score_X,distance_travel_score_Z);
@@ -703,7 +725,15 @@ const myPromise2 = tempsheetObject => {
 
 
 
-
+  function getRandomColorFromArray(colors) {
+    // Generate a random index within the range of the colors array
+    const randomIndex = Math.floor(Math.random() * colors.length);
+  
+    // Retrieve the color at the randomly selected index
+    const randomColor = colors[randomIndex];
+  
+    return randomColor;
+  }
 
 
 
@@ -1055,26 +1085,36 @@ loader22.load('./assets/glb/dalaran_fantasyislandchallenge.glb',function(glb){
 
 
 
-function makeTextSprite( message, parameters )
+function makeTextSprite( lines, parameters )
     {
         if ( parameters === undefined ) parameters = {};
-        var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Courier New";
+        var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Raleway";
         var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 18;
         var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
         var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
         var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:0, g:0, b:255, a:1.0 };
-        var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:0, g:0, b:0, a:1.0 };
+        var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : "#fffff";
 
         var canvas = document.createElement('canvas');
         var context = canvas.getContext('2d');
-        context.font = "Bold " + fontsize + "px " + fontface;
-        var metrics = context.measureText( message );
-        var textWidth = metrics.width;
-
-        context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
-        context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+        context.font = fontsize + "px " + fontface;
+        // var metrics = context.measureText( message );
+        // var textWidth = metrics.width;
+// "color: #00ffff"
+        // context.fillStyle   = "#00ffff";
+        context.strokeStyle = textColor;
         context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
-        context.fillText( message, borderThickness, fontsize + borderThickness);
+        // context.fillStyle = textColor;
+        // context.fillText( message, borderThickness, fontsize + borderThickness);
+
+        const lineHeight = 32; // Height of each line
+        // Draw each line of text on the canvas
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const y = (i + 1) * lineHeight; // Adjust the line spacing as needed
+            context.fillText(line, 0, y);
+        }
+
 
         var texture = new THREE.Texture(canvas) 
         texture.needsUpdate = true;
@@ -1083,10 +1123,6 @@ function makeTextSprite( message, parameters )
         sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
         return sprite;  
     }
-
-
-
-
 
 
 
@@ -1259,13 +1295,13 @@ console.log(object_O);
             // pick some near and far values for the frustum that
             // will contain the box.
             camera.near = boxSize / 200;
-            camera.far = boxSize * 500;
+            camera.far = boxSize * 5000;
             // alert(camera.far)
             // alert(camera.near)
             // 
-            var x = boxCenter.x+6;  // + to zoomout and - to zoom in
+            var x = boxCenter.x;  // + to zoomout and - to zoom in
             var y = boxCenter.y;
-            var z = boxCenter.z-10; //to cneter it
+            var z = boxCenter.z; //to cneter it
             
             // console.log('x:'+boxCenter.x+'\ny:'+boxCenter.y+'\nz:'+boxCenter.z);
             gsap.to( camera.position, {
