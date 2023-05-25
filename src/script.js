@@ -405,9 +405,9 @@ const scoreBoard = {
 //for text                      
                                
                                 
-                                spriteText[i] = makeTextSprite( "Name", 
-                                { fontsize: 74, textColor: {r:255, g:255, b:255, a:1.0}} );
-                                spriteText[i].position.set(distance_travel_score_X-1000,i,distance_travel_score_Z+1000);
+                                // spriteText[i] = makeTextSprite( "Name", 
+                                // { fontsize: 74, textColor: {r:255, g:255, b:255, a:1.0}} );
+                                // spriteText[i].position.set(distance_travel_score_X-1000,i,distance_travel_score_Z+1000);
 
                                 // scene.add( spriteText[i] );
                                 
@@ -437,7 +437,17 @@ const scoreBoard = {
                                            [name_participant]: function () {
                                             //first collapse all folders
                                             gui.close(true);
-                                           
+                                        //    a_br_folder.close(true);
+                                        //    a_br_folder_group1.close(true)
+                                        //    a_br_folder_group2.close(true)
+                                        //    a_sis_folder.close(true)
+                                        //    a_sis_folder_group1.close(true)
+                                        //    a_sis_folder_group2.close(true)
+                                        //    a_sis_folder_group3.close(true)
+                                        //    y_br_folder.close(true)
+                                        //    y_sis_folder.close(true)
+                                        //    group_folder.close(true)
+
                                              //remove box
                                             var container = document.querySelectorAll("container")[0];
                                             if(container != null)
@@ -672,8 +682,7 @@ const myPromise2 = tempsheetObject => {
 
                     // text sprite
                     
-                    const fontLoader = new FontLoader();
-                    fontLoader.load('./fonts/Agra_Condensed_Regular.json', function (font) {
+                    
   // Font loading is complete, and you can use the font in your Three.js scene
   // Create your Three.js objects and apply the loaded font
 
@@ -696,7 +705,7 @@ const myPromise2 = tempsheetObject => {
                     group.add(modelGlb_Group[i]);
                     group.add(spriteText2[i]);
                     scene.add(group)
-                });
+              
                     // for (var cfg in config1) {
                     //     text1.push(cfg + ': ' + config1[cfg]);
                     // }
@@ -1048,7 +1057,7 @@ scene.add(particleSystem);
                     skyBox= glb.scene;
                    scene.add(skyBox);
                 },function(error){
-                    console.log("error");
+                   // console.log("error");
                 });
             }
                 
@@ -1114,7 +1123,7 @@ loader22.load('./assets/glb/crystal_planet.glb',function(glb){
     crystal_planet= glb.scene;
    scene.add(crystal_planet);
 },function(error){
-    console.log("error");
+   // console.log("error");
 });
 
 loader22.load('./assets/glb/candy_island.glb',function(glb){
@@ -1127,7 +1136,7 @@ loader22.load('./assets/glb/candy_island.glb',function(glb){
     candyIsland= glb.scene;
    scene.add(candyIsland);
 },function(error){
-    console.log("error");
+   // console.log("error");
 });
 
 const sceneWidth = canvas.clientWidth;
@@ -1138,7 +1147,7 @@ const sceneDepth = 4000;
 loader22.load('./assets/glb/dalaran_fantasyislandchallenge.glb',function(glb){
     
     glb.scene.scale.set(0.07,0.07,0.07);
-    glb.scene.position.set(10,50,90);
+    glb.scene.position.set(10,10,90);
     // glb.scene.rotateX('4.7');
     glb.scene.rotateY('0');
     glb.scene.rotateZ('0')
@@ -1156,7 +1165,7 @@ loader22.load('./assets/glb/dalaran_fantasyislandchallenge.glb',function(glb){
 //       }
 //     }
 },function(error){
-    console.log("error");
+   // console.log("error");
 });
 
 
@@ -1422,6 +1431,7 @@ console.log(object_O);
                  if(container != null)
                  {console.log('not')
                  document.querySelectorAll("container")[0].remove();
+                 document.querySelectorAll(".title")[0].click()  // toggle the lil-gui
                 
                 }
                 });
@@ -2190,9 +2200,11 @@ function loadData (){
                                 console.log(followObject.getClicking_to_view); 
                                 isMesh = 'not mesh';
                                 console.log(isMesh);
+                                document.querySelectorAll(".title")[0].click()  // toggle the lil-gui
                             }
                             if ( (isMesh !== 'Mesh' || name_of_Mesh.includes('Sky') || name_of_Mesh.includes('Object_4')) && clickedit == 2 && followObject.getClicking_to_view == false ) {
-                               
+                               document.querySelectorAll(".title")[0].click()  // toggle the lil-gui
+                              
                                 gsap.to( camera.position, {
                                     duration: 1, // seconds
                                     x: 300,
@@ -2204,6 +2216,7 @@ function loadData (){
                                         
                                         controls.enabled = true;
                                         console.log('clicked outside\n remove textbox');
+                                        
                                         //center the new Jerusalem
                                         controls.target = new THREE.Vector3(1, 1, 1);
                                         controls.update();
@@ -2212,6 +2225,7 @@ function loadData (){
                                         if(container != null)
                                         {
                                             // console.log('not')
+                                            document.querySelectorAll(".title")[0].click()  // toggle the lil-gui
                                         document.querySelectorAll("container")[0].remove();}
                                     }
                                 } );
