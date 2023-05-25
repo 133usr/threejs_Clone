@@ -650,7 +650,7 @@ const myPromise2 = tempsheetObject => {
                     var elohim_aca  = ((tempsheetObject.totalSign/5)+(tempsheetObject.chap_complete/20));
                     // / Array of selected colors
                     // "color:#00aa55"
-                    const selectedColors = ['#1b8ae4', '#b6eb14', '#ff8040', '#ffff00', '#ff00ff', '#00aa55'];
+                    const selectedColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#ff00ff', '#00FFFF',"#FFFFFF","#FFA500"];
                     
                     // Usage:
                     const randomColor = getRandomColorFromArray(selectedColors);
@@ -678,18 +678,18 @@ const myPromise2 = tempsheetObject => {
   // Create your Three.js objects and apply the loaded font
 
                     var config1 = {
-                        fontFace: font,
-                        fontSize: 16,
+                        fontFace: 'Ariel',
+                        fontSize: 26,
                         fontColor: 'rgba(255, 255, 255, 1)',
                         fontBold: false,
                         fontItalic: false,
                         textAlign: 'center',
-                        borderThickness: 5,
+                        borderThickness: 8,
                         borderColor: randomColor,
                         borderRadius: 10,
                         backgroundColor: 'rgba(0, 0, 0, 0.8)'
                     };
-                    let message  = [""," "+group_Name,"साधा. प्रचार: "+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलो अकादमी: "+elohim_aca,""];
+                    let message  = [+group_Name,"साधा. प्रचार: "+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलो अकादमी: "+elohim_aca];
                     spriteText2[i]  = generateTextSprite(message.join('\n'), config1);
                     spriteText2[i].position.set(distance_travel_score_X+randomPos_Z_scoreCard,randomPos_Z_scoreCard,distance_travel_score_Z);
                     const group = new THREE.Group();
@@ -797,6 +797,10 @@ const myPromise2 = tempsheetObject => {
 
 
   var generateTextSprite = function(text, config) {
+    /**GOT THIS FROM
+     * https://github.com/SouthpawGoblin/threejs-text-sprite/blob/master/index.html
+     * https://southpawgoblin.github.io/threejs-text-sprite/
+     */
     config || (config = { });
   
     var fontFace = config.hasOwnProperty('fontFace') ? config['fontFace'] : 'Arial';
@@ -860,7 +864,7 @@ const myPromise2 = tempsheetObject => {
       transparent: true
     });
     var sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(canvas.width / 2, canvas.height / 2, 1);
+    sprite.scale.set(canvas.width / 4, canvas.height / 4, 1); //here the scale was  /2
     
     return sprite;
   
