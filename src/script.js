@@ -2129,13 +2129,13 @@ function orbit_around_circle(index,speed){
     const acceleration = event.accelerationIncludingGravity;
 
     // Update camera position and rotation based on accelerometer data
-    camera.position.x += acceleration.x * 0.01; // Adjust the multiplier to control the movement speed
-    camera.position.y += acceleration.y * 0.01;
-    camera.position.z += acceleration.z * 0.01;
+    camera.position.x += acceleration.x * 0.1; // Adjust the multiplier to control the movement speed
+    camera.position.y += acceleration.y * 0.1;
+    camera.position.z += acceleration.z * 0.1;
 
-    camera.rotation.x += acceleration.y * 0.001; // Adjust the multiplier to control the rotation speed
-    camera.rotation.y += acceleration.x * 0.001;
-    camera.rotation.z += acceleration.z * 0.001;
+    camera.rotation.x += acceleration.y * 0.01; // Adjust the multiplier to control the rotation speed
+    camera.rotation.y += acceleration.x * 0.01;
+    camera.rotation.z += acceleration.z * 0.01;
   }
 
 
