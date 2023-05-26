@@ -2120,7 +2120,7 @@ function orbit_around_circle(index,speed){
     // Listen to device motion events
     window.addEventListener('devicemotion', handleDeviceMotion);
   } else {
-    console.log('Device motion not supported.');
+    alert('ACCL not supported.');
   }
 
   // Handle device motion event
