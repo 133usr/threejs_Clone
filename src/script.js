@@ -391,6 +391,10 @@ const scoreBoard = {
                                 // Usage:
                                 const randomColor = getRandomColorFromArray(selectedColors);
 
+
+                                const fontLoader = new FontLoader(); 
+
+                                // fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
                                 var config1 = {
                                     fontFace: 'Helvetica',
                                     fontSize: 10,
@@ -405,6 +409,8 @@ const scoreBoard = {
                                 };
                                 let message  = [name_participant];
                                 spriteText[i]  = generateTextSprite(message.join('\n'), config1);
+                               
+                                // });
                                 spriteText[i].position.set(distance_travel_score_X+0,5,distance_travel_score_Z);
                                 // const group = new THREE.Group();
                                 // group.add(modelGlb[i]);
@@ -414,7 +420,6 @@ const scoreBoard = {
 
                                 scene.add(modelGlb[i])
                                 scene.add(spriteText[i])
-
 
 
 
@@ -1986,6 +1991,8 @@ const tick = () =>
     var axis = new THREE.Vector3(0, 1, 0).normalize();
     if (candyIsland) candyIsland.rotateOnAxis(axis,0.001)
     if (crystal_planet) crystal_planet.rotateOnAxis(axis,0.001)
+    if (fantasyIsland) fantasyIsland.rotateOnAxis(axis,-0.0001)
+    if (skyBox) skyBox.rotateOnAxis(axis,0.0001)
 
 
     //rotate the scene.background
@@ -2106,6 +2113,30 @@ function orbit_around_circle(index,speed){
 
 
 
+/**NOW FOR THE ACCELEROMETER */
+
+ // Check if the device supports accelerometer
+ if (window.DeviceMotionEvent) {
+    // Listen to device motion events
+    window.addEventListener('devicemotion', handleDeviceMotion);
+  } else {
+    console.log('Device motion not supported.');
+  }
+
+  // Handle device motion event
+  function handleDeviceMotion(event) {
+    // Get acceleration data from the event
+    const acceleration = event.accelerationIncludingGravity;
+
+    // Update camera position and rotation based on accelerometer data
+    camera.position.x += acceleration.x * 0.01; // Adjust the multiplier to control the movement speed
+    camera.position.y += acceleration.y * 0.01;
+    camera.position.z += acceleration.z * 0.01;
+
+    camera.rotation.x += acceleration.y * 0.001; // Adjust the multiplier to control the rotation speed
+    camera.rotation.y += acceleration.x * 0.001;
+    camera.rotation.z += acceleration.z * 0.001;
+  }
 
 
 
