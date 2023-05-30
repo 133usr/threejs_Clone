@@ -937,26 +937,26 @@ const myPromise2 = tempsheetObject => {
 
 
 //load sky map in background
-              const loader = new THREE.CubeTextureLoader();
-              const texture = loader.load([
-                './assets/skyMap/skymap_posx_1024x1024.jpg',
-                './assets/skyMap/skymap_negx_1024x1024.jpg',
-                './assets/skyMap/skymap_posy_1024x1024.jpg',
-                './assets/skyMap/skymap_negy_1024x1024.jpg',
-                './assets/skyMap/skymap_posz_1024x1024.jpg',
-                './assets/skyMap/skymap_negz_1024x1024.jpg',
+            //   const loader = new THREE.CubeTextureLoader();
+            //   const texture = loader.load([
+            //     './assets/skyMap/skymap_posx_1024x1024.jpg',
+            //     './assets/skyMap/skymap_negx_1024x1024.jpg',
+            //     './assets/skyMap/skymap_posy_1024x1024.jpg',
+            //     './assets/skyMap/skymap_negy_1024x1024.jpg',
+            //     './assets/skyMap/skymap_posz_1024x1024.jpg',
+            //     './assets/skyMap/skymap_negz_1024x1024.jpg',
                 
                 
-              ]);
-            //   scene.background.color)
-            //   scene.background = texture;
+            //   ]);
+            // //   scene.background.color)
+            // //   scene.background = texture;
                         
-            // Set the texture to repeat horizontally and vertically
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
+            // // Set the texture to repeat horizontally and vertically
+            // texture.wrapS = THREE.RepeatWrapping;
+            // texture.wrapT = THREE.RepeatWrapping;
 
-            // Set the initial offset value
-            var offset = new THREE.Vector2(0, 0);
+            // // Set the initial offset value
+            // var offset = new THREE.Vector2(0, 0);
               
             //   var skyGeo = new THREE.SphereGeometry(1000, 1000, 250); 
             //   var loaderTexture  = new THREE.TextureLoader(),
@@ -1992,8 +1992,8 @@ const tick = () =>
 
 
     //rotate the scene.background
-    offset.x +=0.01;
-    texture.offset = offset;
+    // offset.x +=0.01;
+    // texture.offset = offset;
     // console.log(offset.x,offset.y);
 
     orbitsObject3D.forEach((group, index) => {
