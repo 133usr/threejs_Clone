@@ -287,30 +287,26 @@ const scoreBoard = {
                 // If the operation is successful, call the resolve function with the result
                 // If the operation fails, call the reject function with the error
                 var all_models = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
-                ['1','Boeing',          './assets/glb/low-size/boeing_787_dreamliner.glb',  '0.4', '1', '1','0','4.2','0','false'],  
-                ['2','Carton Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','','0','false'],
-                ['3','Sop Wit',         './assets/glb/low-size/sopup.glb',                  '4','-700','1','0','','0','false'],
-                ['4','FlyingBird',      './assets/glb/low-size/flying_bird.glb',           '30','-900','1','0','4.2','0','false'],
+                ['1','Bird2',     './assets/glb/low-size/low_poly_bird.glb', '7', '500','1','0','4.6','0','false'], 
+                ['2','Yellow Cartoon Plane',    "./assets/glb/low-size/cartoon_plane.glb",          '4', '300','1','0','','0','false'],
+                ['3','White Cartoon Plane','./assets/glb/low-size/cartoon_Plane_white.glb',   '4', '300','1','0','','0','false'],
                 ['5','Butterfly',       './assets/glb/low-size/animated_butterfly.glb',     '4', '400','1','0','4.2','0','false'],
                 ['6','SimpleBird',      './assets/glb/low-size/simple_bird.glb',            '3','-200','1','0','1.5','0','false'], 
                 ['7','LowPolyBird',     './assets/glb/low-size/low_poly_bird_animated.glb', '4', '500','1','0','4.6','0','false'], 
                 ['8','LowPolyHumming',  './assets/glb/low-size/lowpoly_humming-bird.glb',   '4', '1','9','0','4.2','0','true'], 
                 ['9','BirdFlig',        './assets/glb/low-size/bird_flight_animation.glb',  '0.2', '1','9','0','4.2','0','true'],
-                ['10','Bird',           './assets/glb/low-size/bird.glb',                   '0.8', '1','9','0','4.2','0','true'],
-                ['11','Butterfly Tsar', './assets/glb/low-size/butterfly_tsar.glb',         '0.1', '-160','9','0','6.6','0','true'],
+                ['10','Good Bird',        './assets/glb/low-size/good_bird.glb',  '0.2', '1','9','0','4.2','0','true'],
+                ['11','Angel',        './assets/glb/low-size/purgatory_angel_blue.glb',  '0.2', '1','9','0','4.2','0','true'],
                 ['12','LowPolyEagle',   './assets/glb/low-size/low_poly_eagle.glb',         '0.9', '100','9','0','4.7','0','true'],
-                ['13','stylized ww1 Plane','./assets/glb/low-size/stylized_ww1_plane.glb',  '5', '100','9','0','','0','false'],
-                ['14','Stylized Plane', './assets/glb/low-size/stylized_airplane.glb',      '0.1', '-300','9','0','','0','false'],
-                ['15','Star sparrow Spaces','./assets/glb/low-size/spaceship.glb',          '0.02', '1','9','0','','0','false'],
-                ['16','Pixel Plane',    './assets/glb/low-size/pixel_plane.glb',            '0.06', '-500','9','0','','0','false'],
-                
+                ['13','Pink Angel',        './assets/glb/low-size/purgatory_angel_pink.glb',  '0.2', '1','9','0','4.2','0','true'],
+                ['14','White Angel',        './assets/glb/low-size/purgatory_angel_white.glb',  '0.2', '1','9','0','4.2','0','true'],
+                ['15','Stylized Falcon','./assets/glb/low-size/stylized_falcon.glb',          '0.02', '1','9','0','','0','false'],
+                ['16','Blue Angel',        './assets/glb/low-size/purgatory_angel_blue.glb',  '0.2', '1','9','0','4.2','0','true']
                
-                ['19','Candy cruise',   './assets/glb/low-size/the_candy_cruiser.glb',      '0.09', '-800','90','0','','0','false'],
-                ['20','Ansaldo',        './assets/glb/low-size/ansaldo.glb',                '0.06', '-900','9','0','','0','false'],//
-                ['21','Dae Flying circus','./assets/glb/low-size/sopup.glb',    '4', '','','0','0','0','false']
-                
                 ];
+                
                 let search = tempsheetObject.character;         // desired character
+                console.log(search);
                 var arr = all_models.filter( function( el ) {   //to find the string in 2d array then return whole index
                     return !!~el.indexOf( search );                     // find the desired character in array
                 } );
@@ -386,19 +382,18 @@ const scoreBoard = {
                                 });
                                 
                             
-                                const selectedColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#ff00ff', '#00FFFF',"#FFFFFF","#FFA500"];
+                                const selectedColors = ['#FF0000', '#008040', '#0000a4', '#FFFF00', '#d500d5', '#31ca98',"#FFFFFF","#FFA500"];
                     
                                 // Usage:
                                 const randomColor = getRandomColorFromArray(selectedColors);
 
-
                                 const fontLoader = new FontLoader(); 
-
+'color:#008040"'
                                 // fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
                                 var config1 = {
-                                    fontFace: 'Helvetica',
-                                    fontSize: 10,
-                                    fontColor: 'rgba(255, 255, 255, 1)',
+                                    fontFace: 'Ariel',
+                                    fontSize: 32,
+                                    fontColor: '#FFFFFF',
                                     fontBold: false,
                                     fontItalic: false,
                                     textAlign: 'center',
@@ -551,14 +546,14 @@ const myPromise2 = tempsheetObject => {
     // If the operation is successful, call the resolve function with the result
     // If the operation fails, call the reject function with the error
     var all_models2 = [ //['number','name','url','scale','pos.x','pos.y','rot.x','rot.y','rot.z','object with X and Y exchnge?'] IF true THEN SCORE SHOULD BE pos.x
-    ['1','BirdsBlack',   './assets/glb/forGroup/birds_black.glb',         '25', '0','90','10','','0','false'],
-    ['2','BirdsBrown',   './assets/glb/forGroup/birds_brown.glb',         '25', '0','90','10','','0','false'],
-    ['3','BirdsGreen',   './assets/glb/forGroup/birds_greens.glb',         '25', '0','90','10','','0','false'],
-    ['4','BirdsLightBlue',   './assets/glb/forGroup/birds_lightBlue.glb',  '25', '0','90','0','','0','false'],
-    ['8','BirdsMagenta',   './assets/glb/forGroup/birds_magenta.glb',      '25', '0','90','0','','0','false'],
-    ['6','BirdsPink',   './assets/glb/forGroup/birds_pink.glb',             '25', '0','90','0','','0','false'],
-    ['7','BirdsRed',   './assets/glb/forGroup/birds_red.glb',               '25', '0','90','0','','0','false'],
-    ['8','BirdsYellow',   './assets/glb/forGroup/birds_yellow.glb',        '25', '8','90','0','','0','false'],
+    ['1','BirdsBlack',   './assets/glb/forGroup/birds_black.glb',         '25', '0','4','10','','0','false'],
+    ['2','BirdsBrown',   './assets/glb/forGroup/birds_brown.glb',         '25', '0','8','10','','0','false'],
+    ['3','BirdsGreen',   './assets/glb/forGroup/birds_greens.glb',         '25', '0','12','10','','0','false'],
+    ['4','BirdsLightBlue',   './assets/glb/forGroup/birds_lightBlue.glb',  '25', '0','16','0','','0','false'],
+    ['8','BirdsMagenta',   './assets/glb/forGroup/birds_magenta.glb',      '25', '0','1','0','','0','false'],
+    ['6','BirdsPink',   './assets/glb/forGroup/birds_pink.glb',             '25', '0','-6','0','','0','false'],
+    ['7','BirdsRed',   './assets/glb/forGroup/birds_red.glb',               '25', '0','-8','0','','0','false'],
+    ['8','BirdsYellow',   './assets/glb/forGroup/birds_yellow.glb',        '25', '8','2','0','','0','false'],
 
     ];
     let search = tempsheetObject.character; 
@@ -568,6 +563,7 @@ const myPromise2 = tempsheetObject => {
     } );
     var objectFilename = arr[0][2]; //url Of chosed Object ENABLE THIS !! already chosed the model with "return !!~el.indexof(search)"
     let objectscale = arr[0][3];    // arr is the selected model by user
+    let objectYpos = arr[0][5];
     var i = tempsheetObject.Id;
     // console.log(tempsheetObject);
     // console.log('Model Name:: '+all_models2[i][1]);
@@ -631,9 +627,9 @@ const myPromise2 = tempsheetObject => {
                 //    modelGlb_Group[i].rotateZ(objectRot_Z);
                     const target = new THREE.Vector3(80, 0,-90);
                     modelGlb_Group[i].lookAt(target);
-                    let randomPos_Z = Math.random() * 15 + 5;
+                    // let randomPos_Z = Math.random() * 15 + 5;
                     let randomPos_Z_scoreCard = Math.random() * 60 - 20;
-                    modelGlb_Group[i].position.set(distance_travel_score_X,randomPos_Z,distance_travel_score_Z); 
+                    modelGlb_Group[i].position.set(distance_travel_score_X,objectYpos,distance_travel_score_Z); 
 
                     interactionManager.add(modelGlb_Group[i]);
                     modelGlb_Group[i].addEventListener('click', (event) => {
@@ -705,7 +701,7 @@ const myPromise2 = tempsheetObject => {
 
                     var config1 = {
                         fontFace: 'Ariel',
-                        fontSize: 26,
+                        fontSize: 36,
                         fontColor: 'rgba(255, 255, 255, 1)',
                         fontBold: false,
                         fontItalic: false,
@@ -717,7 +713,7 @@ const myPromise2 = tempsheetObject => {
                     };
                     let message  = [group_Name,"साधा. प्रचार: "+preach,"अ‍र्थ प्रचार: "+m_Preach,"फल: "+fruits,"एलो अकादमी: "+elohim_aca];
                     spriteText2[i]  = generateTextSprite(message.join('\n'), config1);
-                    spriteText2[i].position.set(distance_travel_score_X+randomPos_Z_scoreCard,randomPos_Z_scoreCard,distance_travel_score_Z);
+                    spriteText2[i].position.set(distance_travel_score_X+randomPos_Z_scoreCard,objectYpos,distance_travel_score_Z);
                     const group = new THREE.Group();
                     group.add(modelGlb_Group[i]);
                     group.add(spriteText2[i]);
@@ -890,7 +886,7 @@ const myPromise2 = tempsheetObject => {
       transparent: true
     });
     var sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(canvas.width / 4, canvas.height / 4, 1); //here the scale was  /2
+    sprite.scale.set(canvas.width / 14, canvas.height / 14, 30); //here the scale was  /2
     
     return sprite;
   
@@ -2120,7 +2116,7 @@ function orbit_around_circle(index,speed){
     // Listen to device motion events
     window.addEventListener('devicemotion', handleDeviceMotion);
   } else {
-    alert('ACCL not supported.');
+    console.log('ACCL not supported.');
   }
 
   // Handle device motion event
