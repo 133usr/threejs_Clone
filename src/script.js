@@ -306,7 +306,7 @@ const scoreBoard = {
                 ];
                 
                 let search = tempsheetObject.character;         // desired character
-                console.log(search);
+                // console.log(search);
                 var arr = all_models.filter( function( el ) {   //to find the string in 2d array then return whole index
                     return !!~el.indexOf( search );                     // find the desired character in array
                 } );
@@ -407,6 +407,11 @@ const scoreBoard = {
                                
                                 // });
                                 spriteText[i].position.set(distance_travel_score_X+0,5,distance_travel_score_Z);
+                                //angel text needs to be above
+                                if(search.includes('Angel'))
+                                {console.log('containts'); spriteText[i].position.set(distance_travel_score_X+0,55,distance_travel_score_Z);}
+
+
                                 // const group = new THREE.Group();
                                 // group.add(modelGlb[i]);
                                 // group.add(spriteText[i]);
