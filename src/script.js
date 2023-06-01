@@ -1046,7 +1046,7 @@ scene.add(particleSystem);
                 
                 if(currentDay>=1 && currentDay <= 5){
                    load_skybox('skybox_orange_day4')
-                   background_setter(ba)
+                   background_setter()
                 }
                 else if(currentDay>=6 && currentDay <= 10){
                     load_skybox('skybox_night')
@@ -2086,6 +2086,7 @@ function orbit_around_circle(index,speed){
     // camera.position.set(pt.x+10,pt.y+index+10,pt.z+10)
     // camera.position.copy(clickedObject.position)
     
+    
     modelGlb[index].lookAt(target)
     
       // follow object
@@ -2095,8 +2096,13 @@ function orbit_around_circle(index,speed){
         const x = objectA.position.x;
         const y = objectA.position.y;
         const z = objectA.position.z;
-       camera.position.set(x,y,z)
-       controls.target = new THREE.Vector3(x, y-10, z-15);
+    //    camera.position.set(x,y,z) or
+       camera.position.x = x;
+       camera.position.z = z;
+       camera.position.y = y;
+       
+
+       controls.target = new THREE.Vector3(x, y-10, z-10);
        controls.enabled = true;
 
           
