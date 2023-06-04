@@ -23,7 +23,9 @@ a {
 
 h2 {
   font-size: 20px;
-  color: #fab700; }
+  color: #000000;
+  animation: glowing-animation 2.5s ease-in-out infinite;
+ }
 
 .custom-table {
   min-width: 400px; 
@@ -129,5 +131,6 @@ h2 {
           0 0 20px #fff, 0 0 30px #ff00de, 0 0 40px #ff00de,
            0 0 50px #ff00de, 0 0 60px #ff00de;
         }
+        
       }
      
