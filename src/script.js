@@ -596,13 +596,13 @@ const myPromise2 = tempsheetObject => {
     let distance_travel_score_Z;
     let random_distance_Z;
     if(distance_travel_score_X<20){
-        distance_travel_score_X =  3500;
-        distance_travel_score_Z = -3500;    
+        distance_travel_score_X =  5500;
+        distance_travel_score_Z = -5500;    
 
         }else{
             divide_by_number_of_members = distance_travel_score_X/number_of_memb_in_group;    //only for group
             distance_travel_score_X = distance_travel_score_X/20;
-            distance_travel_score_X = 3500-distance_travel_score_X;
+            distance_travel_score_X = 5500-distance_travel_score_X;
             // console.log(distance_travel_score_X);
             distance_travel_score_Z = -Math.abs(distance_travel_score_X);
             random_distance_Z       = randomGenerator(distance_travel_score_Z,distance_travel_score_X);
@@ -1070,7 +1070,7 @@ scene.add(particleSystem);
                 background_setter();
                 skyBoxLoader.load('./assets/skyBox/'+file_name+'.glb',function(glb){
                     
-                    glb.scene.scale.set(25,25,25);
+                    glb.scene.scale.set(40,40,40);
                     glb.scene.position.set(1,1,1);
                     skyBox= glb.scene;
                    scene.add(skyBox);

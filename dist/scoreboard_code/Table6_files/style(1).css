@@ -1,6 +1,6 @@
 body {
   font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  background-color: #3c373e;
+  background-color: #cecece;
   font-weight: 300; }
 
 p {
@@ -23,7 +23,9 @@ a {
 
 h2 {
   font-size: 20px;
-  color: #fab700; }
+  color: #000000;
+  animation: glowing-animation 2.5s ease-in-out infinite;
+ }
 
 .custom-table {
   min-width: 400px; 
@@ -34,13 +36,13 @@ h2 {
     padding-bottom: 30px;
     border-top: none;
     border-bottom: none !important;
-    color: #e4d128;
+    color: #1d3fff;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: .1rem; }
     
   .custom-table tbody th, .custom-table tbody td {
-    color: #777;
+    color: #000000;
     font-weight: 400;
     padding-bottom: 20px;
     padding-top: 20px;
@@ -70,12 +72,15 @@ h2 {
     transition: .3s all ease; }
 
     .custom-table tbody tr:hover td, .custom-table tbody tr:focus td {
-      color: #e7d853; }
+      animation: glowing-animation 2.5s ease-in-out infinite;
+      color: #fd1414; }
       
       .custom-table tbody tr:hover td a, .custom-table tbody tr:focus td a {
-        color: #fdd114; }
+        animation: glowing-animation 1.5s ease-in-out infinite;
+        color: #fd1414; }
       .custom-table tbody tr:hover td .more, .custom-table tbody tr:focus td .more {
-        color: #fdd114; }
+        animation: glowing-animation 1.5s ease-in-out infinite;
+        color: #fd1414; }
   .custom-table .td-box-wrap {
     padding: 0; }
 
@@ -110,4 +115,22 @@ h2 {
       } */
     
 
+
+      @keyframes glowing-animation {
+        0% {
+          text-shadow: 0 0 5px #fff, 0 0 10px
+           #fff, 0 0 20px #fff, 0 0 30px
+            #ff00de, 0 0 40px #ff00de,
+             0 0 50px #ff00de, 0 0 60px #ff00de;
+        }
+        50% {
+          text-shadow: none;
+        }
+        100% {
+          text-shadow: 0 0 5px #fff, 0 0 10px #fff, 
+          0 0 20px #fff, 0 0 30px #ff00de, 0 0 40px #ff00de,
+           0 0 50px #ff00de, 0 0 60px #ff00de;
+        }
+        
+      }
      
