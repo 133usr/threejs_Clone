@@ -499,13 +499,13 @@ const scoreBoard = {
                                 else if(age_group==='Adult Brother2')
                                 a_br_folder_group2.add(camerOnClick, name_participant);
 
-                                else if(age_group==='Adult Sister1')
+                                else if(age_group==='Ruth')
                                 a_sis_folder_group1.add(camerOnClick, name_participant);
 
-                                else if(age_group==='Adult Sister2')
+                                else if(age_group==='Sarah')
                                 a_sis_folder_group2.add(camerOnClick, name_participant);
 
-                                else if(age_group==='Adult Sister3')
+                                else if(age_group==='Esther')
                                 a_sis_folder_group3.add(camerOnClick, name_participant);
 
                                 else if(age_group==='Youth Brother')
